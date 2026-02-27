@@ -267,35 +267,37 @@ export default function ReaderPage() {
             </div>
           </div>
 
-          {/* 目录侧边栏 */}
-          {showToc && (
-            <div className="fixed inset-0 z-40 bg-black/50 md:hidden" onClick={() => setShowToc(false)} />
-          )}
-          <div className={`fixed md:relative top-16 md:top-auto left-0 h-[calc(100vh-4rem)] md:h-auto w-64 bg-background border-r transform transition-transform md:transform-none ${
-            showToc ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-          } md:w-auto md:border-r-0 md:border-b overflow-y-auto z-40 md:z-auto`}>
-            <div className="p-4 space-y-2">
-              {chapters.map((chapter, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    handleChapterChange(idx)
-                    setShowToc(false)
-                  }}
-                  className={`w-full text-left p-2 rounded text-sm transition-all ${
-                    idx === currentChapterIndex
-                      ? "bg-primary text-primary-foreground"
-                      : "hover:bg-muted"
-                  }`}
-                >
-                  <div className="line-clamp-2">{chapter.title}</div>
-                </button>
-              ))}
+          {/* 主内容区域 - Flexbox 布局 */}
+          <div className="flex flex-1 overflow-hidden">
+            {/* 目录侧边栏 */}
+            {showToc && (
+              <div className="fixed inset-0 z-40 bg-black/50 md:hidden" onClick={() => setShowToc(false)} />
+            )}
+            <div className={`fixed md:relative top-16 md:top-auto left-0 h-[calc(100vh-4rem)] md:h-full w-64 bg-background border-r transform transition-transform md:transform-none ${
+              showToc ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+            } overflow-y-auto z-40 md:z-auto flex-shrink-0`}>
+              <div className="p-4 space-y-2">
+                {chapters.map((chapter, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      handleChapterChange(idx)
+                      setShowToc(false)
+                    }}
+                    className={`w-full text-left p-2 rounded text-sm transition-all ${
+                      idx === currentChapterIndex
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:bg-muted"
+                    }`}
+                  >
+                    <div className="line-clamp-2">{chapter.title}</div>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* 阅读内容区域 */}
-          <div className="flex-1 overflow-y-auto w-full">
+            {/* 阅读内容区域 */}
+            <div className="flex-1 overflow-y-auto w-full">
             <article className="max-w-3xl mx-auto px-6 py-8 sm:px-8">
               <h1 className="text-2xl sm:text-3xl font-bold mb-2">{currentChapter.title}</h1>
               <div className="text-sm text-muted-foreground mb-8">
@@ -355,6 +357,7 @@ export default function ReaderPage() {
               {/* 底部间距 */}
               <div className="h-12" />
             </article>
+            </div>
           </div>
         </div>
       )}
