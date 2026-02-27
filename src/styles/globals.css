@@ -38,7 +38,8 @@
     --tl-background: 0 0% 98%;
   }
 
-  .dark {
+  .dark,
+  [data-theme='21st-dark'] {
     --background: 240 10% 3.9%;
     --foreground: 240 4.8% 95.9%;
     --card: 240 10% 3.9%;

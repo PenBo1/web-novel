@@ -61,20 +61,12 @@
     "typescript": "5.3.3"
   },
   "manifest": {
+    "permissions": [
+      "storage",
+      "tabs"
+    ],
     "host_permissions": [
       "<all_urls>"
-    ],
-    "permissions": [
-      "activeTab",
-      "alarms",
-      "contextMenus",
-      "notifications",
-      "unlimitedStorage",
-      "webNavigation",
-      "scripting",
-      "storage",
-      "tabs",
-      "downloads"
     ],
     "web_accessible_resources": [
       {
@@ -82,7 +74,8 @@
           "<all_urls>"
         ],
         "resources": [
-          "editor-frame*.html"
+          "editor-frame*.html",
+          "tabs/*.html"
         ]
       }
     ]

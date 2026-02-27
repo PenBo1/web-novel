@@ -1,25 +1,21 @@
 import { useEffect, useRef, useState } from "react"
 import type { PlasmoCSConfig } from "plasmo"
 import { BUILTIN_THEMES } from "@/lib/themes/builtin-themes"
+import { ScraperEngine } from "@/lib/scraper/engine"
+import { BUILTIN_RULES } from "@/lib/scraper/rules"
+import { STORAGE_KEYS, StorageManager, getBookContentKey } from "@/lib/storage"
+import type { Book, BookChapter, Shortcut } from "@/lib/types"
 
+/**
+ * Plasmo 内容脚本配置
+ * 匹配所有网页，确保阅读条可以在任何地方呼出
+ */
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
   all_frames: false
 }
 
-type BookChapter = { title: string; content: string }
-type Shortcut = { id: string; label: string; keys: string[] }
-type BookInfo = { 
-  id: string; 
-  title: string; 
-  author?: string; 
-  cover?: string; 
-  totalChapters: number; 
-  addedAt: number;
-  progress?: { chapterIndex: number; scroll: number }
-}
-
-const DEFAULT_SHORTCUTS = [
+const DEFAULT_SHORTCUTS: Shortcut[] = [
   { id: "toggleReader", label: "显示/隐藏阅读条", keys: ["Alt", "C"] },
   { id: "nextPage", label: "下一页", keys: ["ArrowRight"] },
   { id: "prevPage", label: "上一页", keys: ["ArrowLeft"] },
@@ -29,6 +25,10 @@ const DEFAULT_SHORTCUTS = [
   { id: "switchTheme", label: "切换主题", keys: ["Alt", "T"] }
 ]
 
+/**
+ * 阅读条组件
+ * 注入到网页底部的核心交互界面
+ */
 export default function Reader() {
   const [isVisible, setIsVisible] = useState(false)
   const [chapters, setChapters] = useState<BookChapter[]>([])
@@ -37,25 +37,27 @@ export default function Reader() {
   const [settings, setSettings] = useState({
     readerTheme: "21st-dark",
     defaultShow: true,
-    position: "bottom"
+    position: "bottom" as const
   })
   const [shortcuts, setShortcuts] = useState<Shortcut[]>(DEFAULT_SHORTCUTS)
   const [pageSize, setPageSize] = useState(50)
   const [activeBookId, setActiveBookId] = useState<string | null>(null)
+  const [isFetchingChapter, setIsFetchingChapter] = useState(false)
 
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Initialize data
+  /**
+   * 初始化数据与监听存储变化
+   */
   useEffect(() => {
-    // Cleanup legacy DOM from demo version to prevent double bars
+    // 清理旧版 DOM 以防冲突
     const cleanupLegacy = () => {
       const legacy = document.getElementById("page-footer-host")
       if (legacy) legacy.remove()
     }
-    
     cleanupLegacy()
     
-    // Watch for late injection of legacy script
+    // 监听后期动态生成的旧版 DOM
     const observer = new MutationObserver((mutations) => {
       let found = false
       for (const m of mutations) {
@@ -68,69 +70,56 @@ export default function Reader() {
       }
       if (found) cleanupLegacy()
     })
-    
     observer.observe(document.body, { childList: true })
     
+    // 初始化加载
     const init = async () => {
       const data = await chrome.storage.local.get([
-        "bookChapters",
-        "currentChapterIndex",
-        "currentScroll",
-        "isVisible",
-        "settings",
-        "shortcuts",
-        "activeBookId"
+        STORAGE_KEYS.ACTIVE_CHAPTERS,
+        STORAGE_KEYS.ACTIVE_CURRENT_INDEX,
+        STORAGE_KEYS.ACTIVE_CURRENT_SCROLL,
+        STORAGE_KEYS.IS_VISIBLE,
+        STORAGE_KEYS.SETTINGS,
+        STORAGE_KEYS.SHORTCUTS,
+        STORAGE_KEYS.ACTIVE_BOOK_ID
       ])
       
-      if (data.bookChapters) setChapters(data.bookChapters)
-      if (data.activeBookId) setActiveBookId(data.activeBookId)
+      if (data[STORAGE_KEYS.ACTIVE_CHAPTERS]) setChapters(data[STORAGE_KEYS.ACTIVE_CHAPTERS])
+      if (data[STORAGE_KEYS.ACTIVE_BOOK_ID]) setActiveBookId(data[STORAGE_KEYS.ACTIVE_BOOK_ID])
       
-      // Try to recover from localStorage if storage.local is missing but we have an ID
-      if (typeof data.currentChapterIndex === "number") {
-          setCurrentChapterIndex(data.currentChapterIndex)
-      } else if (data.activeBookId) {
-          const local = localStorage.getItem(`web_novel_progress_${data.activeBookId}`)
-          if (local) {
-              try {
-                  const parsed = JSON.parse(local)
-                  setCurrentChapterIndex(parsed.chapterIndex || 0)
-                  setCurrentScroll(parsed.scroll || 0)
-              } catch (e) {}
-          }
+      // 恢复进度
+      if (typeof data[STORAGE_KEYS.ACTIVE_CURRENT_INDEX] === "number") {
+          setCurrentChapterIndex(data[STORAGE_KEYS.ACTIVE_CURRENT_INDEX])
       }
-
-      if (typeof data.currentScroll === "number") setCurrentScroll(data.currentScroll)
+      if (typeof data[STORAGE_KEYS.ACTIVE_CURRENT_SCROLL] === "number") {
+          setCurrentScroll(data[STORAGE_KEYS.ACTIVE_CURRENT_SCROLL])
+      }
       
-      // Visibility logic: use saved state, or default if not set
-      if (typeof data.isVisible === "boolean") {
-        setIsVisible(data.isVisible)
+      // 显示状态
+      if (typeof data[STORAGE_KEYS.IS_VISIBLE] === "boolean") {
+        setIsVisible(data[STORAGE_KEYS.IS_VISIBLE])
       } else {
-        setIsVisible(data.settings?.defaultShow ?? true)
+        setIsVisible(data[STORAGE_KEYS.SETTINGS]?.defaultShow ?? true)
       }
 
-      if (data.settings) setSettings(prev => ({ ...prev, ...data.settings }))
-      if (data.shortcuts) setShortcuts(data.shortcuts)
+      if (data[STORAGE_KEYS.SETTINGS]) setSettings(prev => ({ ...prev, ...data[STORAGE_KEYS.SETTINGS] }))
+      if (data[STORAGE_KEYS.SHORTCUTS]) setShortcuts(data[STORAGE_KEYS.SHORTCUTS])
     }
     init()
 
+    // 存储联动监听
     const handleChange = (changes: chrome.storage.StorageChange, area: string) => {
       if (area !== "local") return
-      if (changes.bookChapters) {
-        setChapters(changes.bookChapters.newValue || [])
-        // Only reset if activeBookId also changed, otherwise it might be a reload
-        if (changes.activeBookId) {
-             setCurrentChapterIndex(0)
-             setCurrentScroll(0)
-        }
+      if (changes[STORAGE_KEYS.ACTIVE_CHAPTERS]) setChapters(changes[STORAGE_KEYS.ACTIVE_CHAPTERS].newValue || [])
+      if (changes[STORAGE_KEYS.ACTIVE_BOOK_ID]) setActiveBookId(changes[STORAGE_KEYS.ACTIVE_BOOK_ID].newValue)
+      if (changes[STORAGE_KEYS.IS_VISIBLE]) setIsVisible(changes[STORAGE_KEYS.IS_VISIBLE].newValue)
+      if (changes[STORAGE_KEYS.SETTINGS]) {
+        console.log("[WebNovel] Settings updated:", changes[STORAGE_KEYS.SETTINGS].newValue)
+        setSettings(prev => ({ ...prev, ...changes[STORAGE_KEYS.SETTINGS].newValue }))
       }
-      if (changes.activeBookId) setActiveBookId(changes.activeBookId.newValue)
-      if (changes.isVisible) setIsVisible(changes.isVisible.newValue)
-      if (changes.settings) setSettings(prev => ({ ...prev, ...changes.settings.newValue }))
-      if (changes.shortcuts) setShortcuts(changes.shortcuts.newValue)
-      
-      // Sync progress if updated elsewhere (e.g. popup reset)
-      if (changes.currentChapterIndex) setCurrentChapterIndex(changes.currentChapterIndex.newValue)
-      if (changes.currentScroll) setCurrentScroll(changes.currentScroll.newValue)
+      if (changes[STORAGE_KEYS.SHORTCUTS]) setShortcuts(changes[STORAGE_KEYS.SHORTCUTS].newValue)
+      if (changes[STORAGE_KEYS.ACTIVE_CURRENT_INDEX]) setCurrentChapterIndex(changes[STORAGE_KEYS.ACTIVE_CURRENT_INDEX].newValue)
+      if (changes[STORAGE_KEYS.ACTIVE_CURRENT_SCROLL]) setCurrentScroll(changes[STORAGE_KEYS.ACTIVE_CURRENT_SCROLL].newValue)
     }
 
     chrome.storage.onChanged.addListener(handleChange)
@@ -140,22 +129,23 @@ export default function Reader() {
     }
   }, [])
 
-  // Page Size Calculation
+  /**
+   * 自动适应屏幕宽度计算每屏字符数
+   */
   useEffect(() => {
     const calculatePageSize = () => {
-      // Create dummy element to measure char width
       const span = document.createElement("span")
       span.style.fontFamily = "'JetBrains Mono', Consolas, 'Courier New', monospace"
       span.style.fontSize = "13px"
       span.style.position = "absolute"
       span.style.visibility = "hidden"
-      span.textContent = "我" // Wide char
+      span.textContent = "我" 
       document.body.appendChild(span)
       const charWidth = span.getBoundingClientRect().width
       document.body.removeChild(span)
 
       const safeCharWidth = charWidth > 0 ? charWidth : 14
-      const availableWidth = window.innerWidth - 120 // 120px buffer for info/padding
+      const availableWidth = window.innerWidth - 120 
       const newSize = Math.floor(availableWidth / safeCharWidth)
       setPageSize(newSize > 0 ? newSize : 50)
     }
@@ -165,24 +155,74 @@ export default function Reader() {
     return () => window.removeEventListener("resize", calculatePageSize)
   }, [])
 
-  // Save Progress
+  /**
+   * 核心：自动抓取在线章节内容
+   * 当选中的章节内容为空且有来源 URL 时触发
+   */
+  useEffect(() => {
+    if (!isVisible || !activeBookId || chapters.length === 0 || isFetchingChapter) return
+
+    const chapter = chapters[currentChapterIndex]
+    if (chapter && !chapter.content && chapter.url) {
+      const fetchChapter = async () => {
+        setIsFetchingChapter(true)
+        try {
+          const bookshelf = await StorageManager.getBookshelf()
+          const book = bookshelf.find(b => b.id === activeBookId)
+          
+          if (book?.isScraped && book.sourceId) {
+            const rule = BUILTIN_RULES.find(r => r.id === book.sourceId)
+            if (rule) {
+              const engine = new ScraperEngine(rule)
+              const content = await engine.getChapterContent(chapter.url)
+              
+              if (content) {
+                const newChapters = [...chapters]
+                // 文本清洗：HTML -> 纯文本
+                const cleanContent = content
+                  .replace(/<br\s*\/?>/gi, "\n")
+                  .replace(/<\/p>/gi, "\n")
+                  .replace(/<[^>]+>/g, "")
+                  .replace(/&nbsp;/g, " ")
+                  .trim()
+
+                newChapters[currentChapterIndex] = { ...chapter, content: cleanContent }
+                setChapters(newChapters)
+
+                // 持久化缓存：更新当前槽与书籍仓库
+                await chrome.storage.local.set({
+                  [STORAGE_KEYS.ACTIVE_CHAPTERS]: newChapters,
+                  [getBookContentKey(activeBookId)]: newChapters
+                })
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Failed to fetch chapter content:", error)
+        } finally {
+          setIsFetchingChapter(false)
+        }
+      }
+      fetchChapter()
+    }
+  }, [isVisible, currentChapterIndex, chapters, activeBookId, isFetchingChapter])
+
+  /**
+   * 后台静默保存阅读进度
+   */
   useEffect(() => {
     if (!activeBookId) return
 
     const save = async () => {
-      // 1. Save global state (fast, for current session)
       const updates: any = {
-        currentChapterIndex,
-        currentScroll
+        [STORAGE_KEYS.ACTIVE_CURRENT_INDEX]: currentChapterIndex,
+        [STORAGE_KEYS.ACTIVE_CURRENT_SCROLL]: currentScroll
       }
       
-      // 2. Save to bookshelf (persistent, for multi-book support)
-      // We read first to avoid overwriting other books
-      const data = await chrome.storage.local.get("bookshelf")
-      const books = (data.bookshelf as BookInfo[]) || []
+      const bookshelf = await StorageManager.getBookshelf()
       
       let changed = false
-      const newShelf = books.map(b => {
+      const newShelf = bookshelf.map(b => {
           if (b.id === activeBookId) {
               if (b.progress?.chapterIndex !== currentChapterIndex || b.progress?.scroll !== currentScroll) {
                   changed = true
@@ -192,51 +232,65 @@ export default function Reader() {
           return b
       })
 
-      if (changed) {
-          updates.bookshelf = newShelf
-      }
-
+      if (changed) updates[STORAGE_KEYS.BOOKSHELF] = newShelf
       await chrome.storage.local.set(updates)
 
-      // 3. Save to localStorage (Backup / User Request)
+      // 备份到 localStorage 已应对极端清除情况
       try {
           localStorage.setItem(`web_novel_progress_${activeBookId}`, JSON.stringify({
               chapterIndex: currentChapterIndex,
               scroll: currentScroll,
               updatedAt: Date.now()
           }))
-      } catch (e) {
-          // Ignore quota exceeded etc.
-      }
+      } catch (e) {}
     }
 
-    // Debounce 500ms
     const timer = setTimeout(save, 500)
     return () => clearTimeout(timer)
   }, [currentChapterIndex, currentScroll, activeBookId])
 
-  // Current Content
+  /**
+   * 动态获取当前主题样式
+   */
+  const getTheme = () => {
+    const theme = BUILTIN_THEMES.find(t => t.id === settings.readerTheme) || BUILTIN_THEMES[0]
+    return {
+      bg: theme.colors["editor.background"],
+      fg: theme.colors["editor.foreground"],
+      primary: theme.colors["button.background"] || theme.colors["focusBorder"],
+      border: theme.colors["sideBar.border"]
+    }
+  }
+  const theme = getTheme()
+
   const currentChapter = chapters[currentChapterIndex]
   const contentText = currentChapter?.content || ""
   
-  // Ensure scroll is valid
+  /**
+   * 滚动条溢出修正
+   */
   useEffect(() => {
     if (contentText && currentScroll >= contentText.length) {
         setCurrentScroll(Math.max(0, contentText.length - pageSize))
     }
-  }, [contentText, pageSize]) // Don't add currentScroll here to avoid loops
+  }, [contentText, pageSize])
 
-  const displayText = contentText
-    ? contentText.substring(currentScroll, currentScroll + pageSize).replace(/[\r\n]+/g, "  ")
-    : "请在插件中上传并选择书籍..."
+  // 文字显示逻辑
+  const displayText = isFetchingChapter 
+    ? "正在从书源抓取章节内容，请稍候..."
+    : (contentText
+        ? contentText.substring(currentScroll, currentScroll + pageSize).replace(/[\r\n]+/g, "  ")
+        : (isFetchingChapter ? "正在抓取中..." : "暂无内容，请检查书源或稍后重试"))
 
   const percent = contentText.length > 0 
     ? ((currentScroll / contentText.length) * 100).toFixed(1) 
     : "0.0"
 
-  // Navigation Handlers
+  /**
+   * 导航处理
+   */
   const next = () => {
-    if (!contentText) return
+    if (!contentText && !isFetchingChapter) return
     if (currentScroll + pageSize < contentText.length) {
       setCurrentScroll(prev => prev + pageSize)
     } else if (currentChapterIndex < chapters.length - 1) {
@@ -246,13 +300,12 @@ export default function Reader() {
   }
 
   const prev = () => {
-    if (!contentText) return
+    if (!contentText && !isFetchingChapter) return
     if (currentScroll - pageSize >= 0) {
       setCurrentScroll(prev => prev - pageSize)
     } else if (currentChapterIndex > 0) {
-      // Go to end of prev chapter
       const prevIdx = currentChapterIndex - 1
-      const prevLen = chapters[prevIdx].content.length
+      const prevLen = chapters[prevIdx]?.content?.length || 0
       setCurrentChapterIndex(prevIdx)
       setCurrentScroll(Math.max(0, prevLen - pageSize))
     }
@@ -275,7 +328,7 @@ export default function Reader() {
   const toggleVisibility = () => {
     const newVal = !isVisible
     setIsVisible(newVal)
-    chrome.storage.local.set({ isVisible: newVal })
+    chrome.storage.local.set({ [STORAGE_KEYS.IS_VISIBLE]: newVal })
   }
 
   const switchTheme = () => {
@@ -283,26 +336,24 @@ export default function Reader() {
     let nextTheme = "21st-dark"
     if (current === "21st-dark") nextTheme = "21st-light"
     else if (current === "21st-light") nextTheme = "21st-dark"
-    // If user has some other theme, default to 21st-dark or toggle to light?
-    // Let's toggle to 21st-light if it's currently a dark theme, else 21st-dark
     else if (current.includes("dark")) nextTheme = "21st-light"
     
     setSettings(prev => ({ ...prev, readerTheme: nextTheme }))
-    chrome.storage.local.set({ settings: { ...settings, readerTheme: nextTheme } })
+    chrome.storage.local.set({ [STORAGE_KEYS.SETTINGS]: { ...settings, readerTheme: nextTheme } })
   }
 
-  // Keyboard Shortcuts
+  /**
+   * 键盘快捷键监听
+   */
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore inputs
+      // 输入框内禁用快捷键
       if (["INPUT", "TEXTAREA"].includes((e.target as HTMLElement).tagName) || (e.target as HTMLElement).isContentEditable) return
 
-      // Helper to check match
       const match = (id: string) => {
         const config = shortcuts.find(s => s.id === id)
         if (!config || config.keys.length === 0) return false
         
-        // Check modifiers
         const hasCtrl = config.keys.includes("Ctrl")
         const hasAlt = config.keys.includes("Alt")
         const hasShift = config.keys.includes("Shift")
@@ -313,11 +364,9 @@ export default function Reader() {
         if (e.shiftKey !== hasShift) return false
         if (e.metaKey !== hasMeta) return false
 
-        // Check main key
         const mainKey = config.keys.find(k => !["Ctrl", "Alt", "Shift", "Meta"].includes(k))
-        if (!mainKey) return false // Modifier only?
+        if (!mainKey) return false 
 
-        // Normalize
         let pressed = e.key
         if (e.code.startsWith("Arrow")) pressed = e.code
         else if (pressed === " ") pressed = "Space"
@@ -326,47 +375,18 @@ export default function Reader() {
         return pressed === mainKey
       }
 
+      // 切换到书架里的下一本书
       const switchNextBook = async () => {
-        const data = await chrome.storage.local.get(["bookshelf", "activeBookId", "currentChapterIndex", "currentScroll"])
-        const books = (data.bookshelf as BookInfo[]) || []
-        if (books.length === 0) return
-
-        // Save current progress
-        const shelf = books.map(b => 
-             b.id === data.activeBookId
-             ? { ...b, progress: { chapterIndex: data.currentChapterIndex ?? 0, scroll: data.currentScroll ?? 0 } }
-             : b
-        )
-        await chrome.storage.local.set({ bookshelf: shelf })
-
-        // Sort by added time desc (same as popup)
-        shelf.sort((a, b) => b.addedAt - a.addedAt)
+        const bookshelf = await StorageManager.getBookshelf()
+        if (bookshelf.length === 0) return
         
-        const activeId = data.activeBookId
-        const currentIndex = shelf.findIndex(b => b.id === activeId)
+        bookshelf.sort((a, b) => b.addedAt - a.addedAt)
         
-        // If current not found or last, go to first. Else next.
-        const nextIndex = (currentIndex + 1) % shelf.length
-        const nextBook = shelf[nextIndex]
+        const activeId = (await chrome.storage.local.get(STORAGE_KEYS.ACTIVE_BOOK_ID))[STORAGE_KEYS.ACTIVE_BOOK_ID]
+        const currentIndex = bookshelf.findIndex(b => b.id === activeId)
+        const nextIndex = (currentIndex + 1) % bookshelf.length
         
-        // Load next book content
-        const contentData = await chrome.storage.local.get(`book_content_${nextBook.id}`)
-        const chapters = contentData[`book_content_${nextBook.id}`]
-        
-        if (!chapters) {
-           console.error("Book content missing for", nextBook.title)
-           return
-        }
-        
-        await chrome.storage.local.set({
-          bookChapters: chapters,
-          bookTitle: nextBook.title,
-          bookAuthor: nextBook.author,
-          totalChapters: nextBook.totalChapters,
-          currentChapterIndex: nextBook.progress?.chapterIndex ?? 0,
-          currentScroll: nextBook.progress?.scroll ?? 0,
-          activeBookId: nextBook.id
-        })
+        await StorageManager.switchBook(bookshelf[nextIndex].id)
       }
 
       if (match("toggleReader")) {
@@ -374,13 +394,11 @@ export default function Reader() {
         e.preventDefault()
         return
       }
-
       if (match("switchTheme")) {
         switchTheme()
         e.preventDefault()
         return
       }
-
       if (match("selectNovel")) {
         switchNextBook()
         e.preventDefault()
@@ -404,108 +422,131 @@ export default function Reader() {
       }
     }
 
-    // Use capture=true to ensure we handle shortcuts before the website
-    window.addEventListener("keydown", handleKeyDown, true)
-    return () => window.removeEventListener("keydown", handleKeyDown, true)
-  }, [isVisible, shortcuts, chapters, currentChapterIndex, currentScroll, pageSize, settings]) // dependencies for closures
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [isVisible, currentChapterIndex, chapters, currentScroll, pageSize, shortcuts, settings, activeBookId])
 
-  // Styles
-  const theme = BUILTIN_THEMES.find(t => t.id === settings.readerTheme) || BUILTIN_THEMES[0]
-  const position = settings.position || "bottom"
-  
-  const baseBarStyle: React.CSSProperties = {
-      position: "fixed",
-      background: theme.colors["editor.background"] || "#0a0a0a",
-      color: theme.colors["editor.foreground"] || "#f4f4f5",
-      fontSize: "13px",
-      lineHeight: (position === "left" || position === "right") ? "normal" : "28px",
-      padding: (position === "left" || position === "right") ? "16px 0" : "0 16px",
-      boxSizing: "border-box",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      overflow: "hidden",
-      whiteSpace: "pre",
-      cursor: "default",
-      userSelect: "none",
-      boxShadow: "0 0 8px rgba(0,0,0,0.1)",
-      fontFamily: "'JetBrains Mono', Consolas, 'Courier New', monospace",
-      zIndex: 2147483647,
-      transition: "transform 0.2s ease-in-out, opacity 0.2s",
-      opacity: isVisible ? 1 : 0,
-      pointerEvents: isVisible ? "auto" : "none",
-  }
-
-  let posStyle: React.CSSProperties = {}
-  if (position === "top") {
-      posStyle = {
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "28px",
-          borderBottom: `1px solid ${theme.colors["panel.border"] || "#27272a"}`,
-          transform: isVisible ? "translateY(0)" : "translateY(-100%)",
-      }
-  } else if (position === "bottom") {
-      posStyle = {
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          height: "28px",
-          borderTop: `1px solid ${theme.colors["panel.border"] || "#27272a"}`,
-          transform: isVisible ? "translateY(0)" : "translateY(100%)",
-      }
-  } else if (position === "left") {
-      posStyle = {
-          top: 0,
-          left: 0,
-          width: "28px",
-          height: "100%",
-          borderRight: `1px solid ${theme.colors["panel.border"] || "#27272a"}`,
-          transform: isVisible ? "translateX(0)" : "translateX(-100%)",
-          flexDirection: "column",
-          writingMode: "vertical-rl",
-      }
-  } else if (position === "right") {
-      posStyle = {
-          top: 0,
-          right: 0,
-          width: "28px",
-          height: "100%",
-          borderLeft: `1px solid ${theme.colors["panel.border"] || "#27272a"}`,
-          transform: isVisible ? "translateX(0)" : "translateX(100%)",
-          flexDirection: "column",
-          writingMode: "vertical-rl",
-      }
-  }
-
-  const styles = {
-    bar: { ...baseBarStyle, ...posStyle },
-    content: {
-      flex: 1,
-      marginRight: (position === "left" || position === "right") ? 0 : "15px",
-      marginBottom: (position === "left" || position === "right") ? "15px" : 0,
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
-    info: {
-      fontSize: "11px",
-      opacity: 0.6,
-      minWidth: (position === "left" || position === "right") ? "auto" : "60px",
-      minHeight: (position === "left" || position === "right") ? "60px" : "auto",
-      textAlign: (position === "left" || position === "right") ? "center" : "right" as const,
-      fontVariantNumeric: "tabular-nums",
-    }
-  }
-
-  if (!chapters.length && !isVisible) return null
+  if (!isVisible) return null
 
   return (
-    <div style={styles.bar}>
-      <span style={styles.content}>{displayText}</span>
-      <span style={styles.info}>
-        Ch:{currentChapterIndex + 1} {percent}%
-      </span>
+    <div 
+      key={settings.readerTheme}
+      id="web-novel-host"
+      style={{
+        position: "fixed",
+        zIndex: 2147483647,
+        left: 0,
+        right: 0,
+        top: settings.position === "top" ? 0 : "auto",
+        bottom: settings.position === "top" ? "auto" : 0,
+        pointerEvents: "none",
+        height: "28px",
+        overflow: "visible",
+        display: "flex", // 确保子元素正确布局
+        flexDirection: "column",
+        justifyContent: settings.position === "top" ? "flex-start" : "flex-end"
+      }}
+    >
+      <div 
+        ref={containerRef}
+        style={{
+          pointerEvents: "auto",
+          width: "100%",
+          height: "28px",
+          backgroundColor: theme.bg,
+          color: theme.fg,
+          borderTop: settings.position === "bottom" ? `1px solid ${theme.border}` : "none",
+          borderBottom: settings.position === "top" ? `1px solid ${theme.border}` : "none",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0 12px",
+          fontFamily: "'JetBrains Mono', Consolas, 'Courier New', monospace",
+          fontSize: "13px",
+          boxSizing: "border-box",
+          boxShadow: "0 -2px 8px rgba(0,0,0,0.05)",
+          transition: "all 0.2s ease"
+        }}
+      >
+        {/* 左侧：内容区域 (占据绝大部分空间) */}
+        <div style={{ flex: 1, overflow: "hidden", display: "flex", alignItems: "center", marginRight: "12px" }}>
+           <div style={{ 
+              display: "flex", 
+              alignItems: "center", 
+              gap: "6px", 
+              marginRight: "12px", 
+              opacity: 0.7,
+              flexShrink: 0,
+              fontSize: "11px",
+              fontWeight: "bold",
+              userSelect: "none"
+           }}>
+              <div style={{ 
+                width: "6px", 
+                height: "6px", 
+                borderRadius: "50%", 
+                backgroundColor: isFetchingChapter ? "#EAB308" : theme.primary,
+                opacity: isFetchingChapter ? 1 : 0.8
+              }} />
+              <span>{isFetchingChapter ? "FETCHING" : "READY"}</span>
+           </div>
+
+           <div style={{ 
+              whiteSpace: "pre", 
+              overflow: "hidden", 
+              textOverflow: "ellipsis",
+              lineHeight: "28px",
+              cursor: "text"
+           }}>
+              {displayText}
+           </div>
+        </div>
+
+        {/* 右侧：信息与控制区 */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0, fontSize: "11px", opacity: 0.8, userSelect: "none" }}>
+           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+             <span style={{ maxWidth: "100px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{currentChapter?.title || "No Chapter"}</span>
+             <span style={{ opacity: 0.5 }}>|</span>
+             <span style={{ fontVariantNumeric: "tabular-nums" }}>{percent}%</span>
+             <span style={{ opacity: 0.5 }}>|</span>
+             <span style={{ fontVariantNumeric: "tabular-nums" }}>{currentChapterIndex + 1}/{chapters.length}</span>
+           </div>
+
+           {/* 极简翻页按钮 */}
+           <div style={{ display: "flex", alignItems: "center", gap: "2px", marginLeft: "4px" }}>
+              <button onClick={prev} title="上一页 (←)" style={{ 
+                width: "20px", height: "20px", 
+                display: "flex", alignItems: "center", justifyContent: "center",
+                background: "transparent", border: "none", color: "inherit", 
+                cursor: "pointer", borderRadius: "3px",
+                opacity: 0.6
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = "0.6"}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <button onClick={next} title="下一页 (→)" style={{ 
+                width: "20px", height: "20px", 
+                display: "flex", alignItems: "center", justifyContent: "center",
+                background: "transparent", border: "none", color: "inherit", 
+                cursor: "pointer", borderRadius: "3px",
+                opacity: 0.6
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = "0.6"}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+           </div>
+        </div>
+      </div>
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: .5; }
+        }
+      `}</style>
     </div>
   )
 }
