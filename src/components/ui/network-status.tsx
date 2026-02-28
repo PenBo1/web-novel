@@ -1,5 +1,5 @@
-import { trpc } from "../../lib/trpc"
-import { cn } from "../../lib/utils"
+import { trpc } from "../../lib/trpc";
+import { cn } from "../../lib/utils";
 
 const LightningIcon = ({ className }: { className?: string }) => (
   <svg
@@ -13,25 +13,23 @@ const LightningIcon = ({ className }: { className?: string }) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export function NetworkStatus() {
   const { data } = trpc.ollama.getStatus.useQuery(undefined, {
     refetchInterval: 30000,
-  })
+  });
 
-  const online = data?.internet.online ?? true
+  const online = data?.internet.online ?? true;
 
   if (online) {
-    return null // Don't show anything when online
+    return null; // Don't show anything when online
   }
 
   return (
     <div className="flex items-center gap-1.5">
       <LightningIcon className="w-3 h-3 text-orange-500" />
-      <span className="text-xs text-muted-foreground">
-        Offline
-      </span>
+      <span className="text-xs text-muted-foreground">Offline</span>
     </div>
-  )
+  );
 }

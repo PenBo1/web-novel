@@ -1,6 +1,5 @@
-import { getBuiltinThemeById } from "@/lib/themes/builtin-themes"
+import { getBuiltinThemeById } from "@/lib/themes/builtin-themes";
 
 export function isBuiltinTheme(themeId: string) {
-  return Boolean(getBuiltinThemeById(themeId))
+  return Boolean(getBuiltinThemeById(themeId));
 }
-

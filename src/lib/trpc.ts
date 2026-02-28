@@ -1,2 +1,1 @@
-export const trpc: any = {}
-
+export const trpc: any = {};

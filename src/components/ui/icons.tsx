@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { LucideProps } from "lucide-react"
-import * as React from "react"
+import { LucideProps } from "lucide-react";
+import * as React from "react";
 
-type IconProps = React.SVGProps<SVGSVGElement> & { className?: string }
+type IconProps = React.SVGProps<SVGSVGElement> & { className?: string };
 
 export function AnthropicLogoIcon({ className }: { className?: string }) {
   return (
@@ -18,7 +18,7 @@ export function AnthropicLogoIcon({ className }: { className?: string }) {
         xlinkHref="/anthropic-logo.svg#Layer_1"
       />
     </svg>
-  )
+  );
 }
 
 export function IconGap(props: IconProps) {
@@ -32,7 +32,7 @@ export function IconGap(props: IconProps) {
     >
       <path d="M2.5 4.75C1.80964 4.75 1.25 4.19036 1.25 3.5V1H2.75V3.25H13.25V1H14.75V3.5C14.75 4.19036 14.1904 4.75 13.5 4.75H2.5ZM3 7.25H13V8.75H3V7.25ZM13.25 15V12.75H2.75V15H1.25V12.5C1.25 11.8096 1.80964 11.25 2.5 11.25H13.5C14.1904 11.25 14.75 11.8096 14.75 12.5V15H13.25Z" />
     </svg>
-  )
+  );
 }
 
 export function IconDoubleChevronRight(props: IconProps) {
@@ -47,18 +47,12 @@ export function IconDoubleChevronRight(props: IconProps) {
       <path d="m5.492 4.158 5.4 5.4a.625.625 0 0 1 0 .884l-5.4 5.4a.625.625 0 1 1-.884-.884L9.566 10 4.608 5.042a.625.625 0 1 1 .884-.884" />
       <path d="m16.392 10.442-5.4 5.4a.625.625 0 0 1-.884-.884L15.066 10l-4.958-4.958a.625.625 0 0 1 .884-.884l5.4 5.4a.625.625 0 0 1 0 .884" />
     </svg>
-  )
+  );
 }
 
 export function IconArrowRight(props: IconProps) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      width="24"
-      height="24"
-      {...props}
-    >
+    <svg viewBox="0 0 24 24" fill="none" width="24" height="24" {...props}>
       <path
         d="M14 6L20 12L14 18"
         stroke="currentColor"
@@ -74,7 +68,7 @@ export function IconArrowRight(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 export function IconDoubleChevronLeft(props: IconProps) {
@@ -90,12 +84,12 @@ export function IconDoubleChevronLeft(props: IconProps) {
       <path d="m5.492 4.158 5.4 5.4a.625.625 0 0 1 0 .884l-5.4 5.4a.625.625 0 1 1-.884-.884L9.566 10 4.608 5.042a.625.625 0 1 1 .884-.884" />
       <path d="m16.392 10.442-5.4 5.4a.625.625 0 0 1-.884-.884L15.066 10l-4.958-4.958a.625.625 0 0 1 .884-.884l5.4 5.4a.625.625 0 0 1 0 .884" />
     </svg>
-  )
+  );
 }
 
 /** @deprecated Use IconDoubleChevronRight instead */
 export function IconCloseSidebarRight(props: IconProps) {
-  return <IconDoubleChevronRight {...props} />
+  return <IconDoubleChevronRight {...props} />;
 }
 
 export function IconOpenSidebarRight(props: IconProps) {
@@ -115,7 +109,7 @@ export function IconOpenSidebarRight(props: IconProps) {
         <path d="M11 7H17V17H11V7Z" fill="currentColor" />
       </g>
     </svg>
-  )
+  );
 }
 
 export function IconForcePush(props: IconProps) {
@@ -135,24 +129,42 @@ export function IconForcePush(props: IconProps) {
       <path d="M5 10L12 3L19 10" />
       <path d="M12 21V7" />
     </svg>
-  )
+  );
 }
 
 export function IconFetch(props: IconProps) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      width="24"
-      height="24"
-      {...props}
-    >
-      <path d="M19 4V8H15" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M4.98828 20V16H8.98828" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M20 12C20 16.4183 16.4183 20 12 20C9.36378 20 6.96969 18.7249 5.5 16.7578" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M4 12C4 7.58172 7.58172 4 12 4C14.6045 4 16.9726 5.24457 18.4465 7.17142" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    <svg viewBox="0 0 24 24" fill="none" width="24" height="24" {...props}>
+      <path
+        d="M19 4V8H15"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.98828 20V16H8.98828"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M20 12C20 16.4183 16.4183 20 12 20C9.36378 20 6.96969 18.7249 5.5 16.7578"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4 12C4 7.58172 7.58172 4 12 4C14.6045 4 16.9726 5.24457 18.4465 7.17142"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
-  )
+  );
 }
 
 export function DiffIcon(props: IconProps) {
@@ -174,7 +186,7 @@ export function DiffIcon(props: IconProps) {
         <path d="M9.5 16L14.5 16" />
       </g>
     </svg>
-  )
+  );
 }
 
 export function ClockIcon(props: IconProps) {
@@ -190,7 +202,7 @@ export function ClockIcon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function IconChatBubble(props: IconProps) {
@@ -206,7 +218,7 @@ export function IconChatBubble(props: IconProps) {
     >
       <path d="M15 10H9M12 14H9M3 20H16C18.7614 20 21 17.7614 21 15V9C21 6.23858 18.7614 4 16 4H8C5.23858 4 3 6.23858 3 9V20Z" />
     </svg>
-  )
+  );
 }
 
 export function CopyCodeIcon(props: IconProps) {
@@ -226,7 +238,7 @@ export function CopyCodeIcon(props: IconProps) {
       <path d="M16 5H18C19.1046 5 20 5.89543 20 7V11M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H12" />
       <path d="M16.0858 15L14.2929 16.7929C13.9024 17.1834 13.9024 17.8166 14.2929 18.2071L16.0858 20M20.0858 15L21.8787 16.7929C22.2692 17.1834 22.2692 17.8166 21.8787 18.2071L20.0858 20" />
     </svg>
-  )
+  );
 }
 
 export function GitApplyIcon(props: IconProps) {
@@ -246,7 +258,7 @@ export function GitApplyIcon(props: IconProps) {
       <path d="M16 5H18C19.1046 5 20 5.89543 20 7V11M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H12" />
       <path d="M15 18H23M23 18L19.6246 15M23 18L19.6246 21" />
     </svg>
-  )
+  );
 }
 
 export function CopyPatchIcon(props: IconProps) {
@@ -267,7 +279,7 @@ export function CopyPatchIcon(props: IconProps) {
       <path d="M20 13V15.5M20 15.5V18M20 15.5H17.5M20 15.5H22.5" />
       <path d="M17.5 21C17.5 21 20.5474 21 22.5 21" />
     </svg>
-  )
+  );
 }
 
 // Plan badges icons
@@ -288,7 +300,7 @@ export function PlanFreeIcon(props: IconProps) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 export function PlanNearingIcon(props: IconProps) {
@@ -308,7 +320,7 @@ export function PlanNearingIcon(props: IconProps) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 export function CaretRightIcon(props: IconProps) {
@@ -329,7 +341,7 @@ export function CaretRightIcon(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 export function IconTextAlignLeft(props: IconProps) {
@@ -343,7 +355,7 @@ export function IconTextAlignLeft(props: IconProps) {
     >
       <path d="M4.46967 9.09099L5 9.62132L6.06066 8.56066L5.53033 8.03033L3.56063 6.06063H10.125C11.989 6.06063 13.5 7.57167 13.5 9.43563C13.5 11.2996 11.989 12.8106 10.125 12.8106H4.5H3.75V14.3106H4.5H10.125C12.8174 14.3106 15 12.128 15 9.43563C15 6.74324 12.8174 4.56063 10.125 4.56063H3.56069L5.53033 2.59099L6.06066 2.06066L5 1L4.46967 1.53033L1.21967 4.78033C0.926777 5.07322 0.926777 5.5481 1.21967 5.84099L4.46967 9.09099Z" />
     </svg>
-  )
+  );
 }
 
 export function IconTextAlignCenter(props: IconProps) {
@@ -357,7 +369,7 @@ export function IconTextAlignCenter(props: IconProps) {
     >
       <path d="M1.75 2H1V3.5H1.75H14.25H15V2H14.25H1.75ZM1 7H1.75H9.25H10V8.5H9.25H1.75H1V7ZM1 12H1.75H11.25H12V13.5H11.25H1.75H1V12Z" />
     </svg>
-  )
+  );
 }
 
 export function IconTextAlignJustify(props: IconProps) {
@@ -371,7 +383,7 @@ export function IconTextAlignJustify(props: IconProps) {
     >
       <path d="M1.75 2H1V3.5H1.75H14.25H15V2H14.25H1.75ZM3.5 7.25H4.25H11.75H12.5V8.75H11.75H4.25H3.5V7.25ZM2.5 12.5H3.25H12.75H13.5V14H12.75H3.25H2.5V12.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconTextAlignRight(props: IconProps) {
@@ -385,7 +397,7 @@ export function IconTextAlignRight(props: IconProps) {
     >
       <path d="M1.75 2H1V3.5H1.75H14.25H15V2H14.25H1.75ZM6 7.25H6.75H14.25H15V8.75H14.25H6.75H6V7.25ZM4 12.5H4.75H14.25H15V14H14.25H4.75H4V12.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconItalic(props: IconProps) {
@@ -399,7 +411,7 @@ export function IconItalic(props: IconProps) {
     >
       <path d="M4.25 1H5H13.75H14.5V2.5H13.75H10.5475L7.02746 13.5H11H11.75V15H11H2.25H1.5V13.5H2.25H5.45254L8.97254 2.5H5H4.25V1Z" />
     </svg>
-  )
+  );
 }
 
 export function IconUnderline(props: IconProps) {
@@ -413,7 +425,7 @@ export function IconUnderline(props: IconProps) {
     >
       <path d="M13.75 14.7504H2.25V13.2504H13.75V14.7504ZM5.25 8.00037C5.25009 8.8024 5.54638 9.4272 6.00977 9.85583C6.47885 10.2896 7.16404 10.5629 8 10.5629C8.83596 10.5629 9.52115 10.2896 9.99023 9.85583C10.4536 9.4272 10.7499 8.8024 10.75 8.00037V1.00037H12.25V8.00037C12.2499 9.19792 11.7961 10.2299 11.0098 10.9574C10.2289 11.6796 9.16375 12.0629 8 12.0629C6.83625 12.0629 5.77113 11.6796 4.99023 10.9574C4.20387 10.2299 3.75009 9.19792 3.75 8.00037V1.00037H5.25V8.00037Z" />
     </svg>
-  )
+  );
 }
 
 export function IconStrikethrough(props: IconProps) {
@@ -427,7 +439,7 @@ export function IconStrikethrough(props: IconProps) {
     >
       <path d="M15 14.5H1V9.5H15V14.5ZM2.5 13H13.5V11H2.5V13ZM15 8.5H1V4.5H15V8.5ZM2.5 7H13.5V6H2.5V7ZM15 3.5H1V2H15V3.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconUppercase(props: IconProps) {
@@ -442,7 +454,7 @@ export function IconUppercase(props: IconProps) {
       <path d="M11.2002 9.25C11.2002 7.48269 9.76731 6.0498 8 6.0498C6.23269 6.0498 4.7998 7.48269 4.7998 9.25C4.7998 11.0173 6.23269 12.4502 8 12.4502V14.25C5.23858 14.25 3 12.0114 3 9.25C3 6.48858 5.23858 4.25 8 4.25C10.7614 4.25 13 6.48858 13 9.25C13 12.0114 10.7614 14.25 8 14.25V12.4502C9.76731 12.4502 11.2002 11.0173 11.2002 9.25Z" />
       <path d="M3 1.25H13V2.75H3V1.25Z" />
     </svg>
-  )
+  );
 }
 
 export function IconDirectionRow(props: IconProps) {
@@ -456,7 +468,7 @@ export function IconDirectionRow(props: IconProps) {
     >
       <path d="M3.46975 11.7803L4.00008 12.3106L5.06074 11.25L4.53041 10.7196L2.56076 8.75H13.4393L11.4697 10.7197L10.9393 11.25L12 12.3107L12.5303 11.7803L15.6036 8.70711C15.9941 8.31658 15.9941 7.68342 15.6036 7.29289L12.5303 4.21967L12 3.68934L10.9393 4.75L11.4697 5.28033L13.4393 7.25H2.56072L4.53042 5.28031L5.06075 4.74998L4.00009 3.68932L3.46975 4.21965L0.396531 7.29287C0.00600663 7.68339 0.00600657 8.31656 0.396531 8.70708L3.46975 11.7803Z" />
     </svg>
-  )
+  );
 }
 
 export function IconDirectionColumn(props: IconProps) {
@@ -470,7 +482,7 @@ export function IconDirectionColumn(props: IconProps) {
     >
       <path d="M4.21968 3.46975L3.68935 4.00008L4.75001 5.06074L5.28034 4.53041L7.24999 2.56076L7.24999 13.4393L5.28031 11.4697L4.74998 10.9393L3.68932 12L4.21965 12.5303L7.29288 15.6036C7.6834 15.9941 8.31657 15.9941 8.70709 15.6036L11.7803 12.5303L12.3106 12L11.25 10.9393L10.7197 11.4697L8.74999 13.4393L8.74999 2.56072L10.7197 4.53041L11.25 5.06075L12.3107 4.00009L11.7803 3.46975L8.70712 0.396531C8.31659 0.00600645 7.68343 0.00600637 7.2929 0.396531L4.21968 3.46975Z" />
     </svg>
-  )
+  );
 }
 
 export function IconMarginX(props: IconProps) {
@@ -484,7 +496,7 @@ export function IconMarginX(props: IconProps) {
     >
       <path d="M14 1V15H12.5V1H14ZM5.00488 5.89746C5.05621 5.39333 5.48232 5 6 5H10L10.1025 5.00488C10.573 5.05278 10.9472 5.42703 10.9951 5.89746L11 6V10L10.9951 10.1025C10.9472 10.573 10.573 10.9472 10.1025 10.9951L10 11H6C5.48232 11 5.05621 10.6067 5.00488 10.1025L5 10V6L5.00488 5.89746ZM9.5 9.5V6.5H6.5L6.5 9.5H9.5ZM3.5 1L3.5 15H2L2 1H3.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconMarginY(props: IconProps) {
@@ -498,7 +510,7 @@ export function IconMarginY(props: IconProps) {
     >
       <path d="M15 14H1V12.5H15V14ZM10.1025 5.00488C10.6067 5.05621 11 5.48232 11 6V10L10.9951 10.1025C10.9472 10.573 10.573 10.9472 10.1025 10.9951L10 11H6L5.89746 10.9951C5.42703 10.9472 5.05278 10.573 5.00488 10.1025L5 10V6C5 5.48232 5.39333 5.05621 5.89746 5.00488L6 5H10L10.1025 5.00488ZM6.5 9.5H9.5V6.5H6.5V9.5ZM15 3.5H1V2H15V3.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconPaddingX(props: IconProps) {
@@ -512,7 +524,7 @@ export function IconPaddingX(props: IconProps) {
     >
       <path d="M14.9951 14.1025C14.9438 14.6067 14.5177 15 14 15H2L1.89746 14.9951C1.42703 14.9472 1.05278 14.573 1.00488 14.1025L1 14V2L1.00488 1.89746C1.05278 1.42703 1.42703 1.05278 1.89746 1.00488L2 1H14C14.5177 1 14.9438 1.39333 14.9951 1.89746L15 2V14L14.9951 14.1025ZM2.5 2.5V13.5H13.5V2.5H2.5ZM4.2666 12.375V3.625H5.66699V12.375H4.2666ZM10.333 12.375V3.625H11.7334V12.375H10.333Z" />
     </svg>
-  )
+  );
 }
 
 export function IconPaddingY(props: IconProps) {
@@ -526,7 +538,7 @@ export function IconPaddingY(props: IconProps) {
     >
       <path d="M14.1025 1.00488C14.6067 1.05621 15 1.48232 15 2V14L14.9951 14.1025C14.9472 14.573 14.573 14.9472 14.1025 14.9951L14 15H2L1.89746 14.9951C1.42703 14.9472 1.05278 14.573 1.00488 14.1025L1 14V2C1 1.48232 1.39333 1.05621 1.89746 1.00488L2 1H14L14.1025 1.00488ZM2.5 13.5H13.5V2.5H2.5V13.5ZM12.375 11.7334H3.625V10.333H12.375V11.7334ZM12.375 5.66699H3.625V4.2666H12.375V5.66699Z" />
     </svg>
-  )
+  );
 }
 
 export function IconExpand(props: IconProps) {
@@ -540,7 +552,7 @@ export function IconExpand(props: IconProps) {
     >
       <path d="M1 5.25V6H2.5V5.25V2.5H5.25H6V1H5.25H2C1.44772 1 1 1.44772 1 2V5.25ZM5.25 14.9994H6V13.4994H5.25H2.5V10.7494V9.99939H1V10.7494V13.9994C1 14.5517 1.44772 14.9994 2 14.9994H5.25ZM15 10V10.75V14C15 14.5523 14.5523 15 14 15H10.75H10V13.5H10.75H13.5V10.75V10H15ZM10.75 1H10V2.5H10.75H13.5V5.25V6H15V5.25V2C15 1.44772 14.5523 1 14 1H10.75Z" />
     </svg>
-  )
+  );
 }
 
 export function IconLock(props: IconProps) {
@@ -554,7 +566,7 @@ export function IconLock(props: IconProps) {
     >
       <path d="M10 4.5V6H6V4.5C6 3.39543 6.89543 2.5 8 2.5C9.10457 2.5 10 3.39543 10 4.5ZM4.5 6V4.5C4.5 2.567 6.067 1 8 1C9.933 1 11.5 2.567 11.5 4.5V6H12.5H14V7.5V12.5C14 13.8807 12.8807 15 11.5 15H4.5C3.11929 15 2 13.8807 2 12.5V7.5V6H3.5H4.5ZM11.5 7.5H10H6H4.5H3.5V12.5C3.5 13.0523 3.94772 13.5 4.5 13.5H11.5C12.0523 13.5 12.5 13.0523 12.5 12.5V7.5H11.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconTextStrikethrough(props: IconProps) {
@@ -568,7 +580,7 @@ export function IconTextStrikethrough(props: IconProps) {
     >
       <path d="M8.00001 0.583374C6.15186 0.583374 4.89601 1.20742 4.10921 2.08165C3.34402 2.93186 3.08334 3.95168 3.08334 4.66671C3.08334 5.30246 3.25446 5.98764 3.73035 6.62516C3.82673 6.75427 3.934 6.8793 4.05254 7H1.75H1V8.5H1.75H14.25H15V7H14.25H7.01815L6.51769 6.8024C5.6688 6.46724 5.19511 6.07985 4.93239 5.72789C4.67477 5.38278 4.58334 5.0232 4.58334 4.66671C4.58334 4.27063 4.73934 3.62378 5.22415 3.0851C5.68734 2.57044 6.51483 2.08337 8.00001 2.08337C9.99003 2.08337 10.8295 2.95573 11.1785 3.6895L11.5006 4.36679L12.8552 3.72252L12.5331 3.04522C11.9243 1.76535 10.5425 0.583374 8.00001 0.583374ZM12.9167 11.25V10.5H11.4167V11.25C11.4167 11.6491 11.2587 12.3206 10.7686 12.8815C10.302 13.4155 9.47586 13.9167 8.00001 13.9167C6.13953 13.9167 5.27285 13.0402 4.87848 12.3L4.52584 11.638L3.20199 12.3433L3.55464 13.0053C4.18889 14.1958 5.54264 15.4167 8.00001 15.4167C9.85749 15.4167 11.1147 14.7652 11.8981 13.8685C12.658 12.9988 12.9167 11.9621 12.9167 11.25Z" />
     </svg>
-  )
+  );
 }
 
 export function IconTextOverline(props: IconProps) {
@@ -583,7 +595,7 @@ export function IconTextOverline(props: IconProps) {
       <path d="M11.2002 9.25C11.2002 7.48269 9.76731 6.0498 8 6.0498C6.23269 6.0498 4.7998 7.48269 4.7998 9.25C4.7998 11.0173 6.23269 12.4502 8 12.4502V14.25C5.23858 14.25 3 12.0114 3 9.25C3 6.48858 5.23858 4.25 8 4.25C10.7614 4.25 13 6.48858 13 9.25C13 12.0114 10.7614 14.25 8 14.25V12.4502C9.76731 12.4502 11.2002 11.0173 11.2002 9.25Z" />
       <path d="M3 1.25H13V2.75H3V1.25Z" />
     </svg>
-  )
+  );
 }
 
 export function IconTextStriked(props: IconProps) {
@@ -597,7 +609,7 @@ export function IconTextStriked(props: IconProps) {
     >
       <path d="M8.00371 14.804C5.07771 14.804 3.23471 12.068 3.23471 7.774C3.23471 3.442 5.07771 0.706 8.00371 0.706C10.9297 0.706 12.7727 3.442 12.7727 7.774C12.7727 12.068 10.9297 14.804 8.00371 14.804ZM4.88771 7.774C4.88771 9.047 5.05871 10.149 5.40071 11.023L9.80871 3.1C9.31471 2.568 8.70671 2.264 8.00371 2.264C6.10371 2.264 4.88771 4.392 4.88771 7.774ZM6.17971 12.41C6.67371 12.942 7.30071 13.246 8.00371 13.246C9.90371 13.246 11.1197 11.118 11.1197 7.774C11.1197 6.463 10.9297 5.323 10.5877 4.43L6.17971 12.41Z" />
     </svg>
-  )
+  );
 }
 
 export function IconTextJustifySpaced(props: IconProps) {
@@ -611,7 +623,7 @@ export function IconTextJustifySpaced(props: IconProps) {
     >
       <path d="M1 2H1.75H14.25H15V3.5H14.25H1.75H1V2ZM1 12.5H1.75H14.25H15V14H14.25H1.75H1V12.5ZM1.75 7.25H1V8.75H1.75H14.25H15V7.25H14.25H1.75Z" />
     </svg>
-  )
+  );
 }
 
 export function IconAlignStretch(props: IconProps) {
@@ -625,7 +637,7 @@ export function IconAlignStretch(props: IconProps) {
     >
       <path d="M1 1V15H2.5V1H1ZM11.9951 9.89746C11.9438 9.39333 11.5177 9 11 9H5C4.48232 9 4.05621 9.39333 4.00488 9.89746L4 10V13L4.00488 13.1025C4.05621 13.6067 4.48232 14 5 14H11C11.5177 14 11.9438 13.6067 11.9951 13.1025L12 13V10L11.9951 9.89746ZM11.9951 2.89746C11.9438 2.39333 11.5177 2 11 2H5C4.48232 2 4.05621 2.39333 4.00488 2.89746L4 3V6L4.00488 6.10254C4.05621 6.60667 4.48232 7 5 7L11 7C11.5177 7 11.9438 6.60667 11.9951 6.10254L12 6V3L11.9951 2.89746ZM5.5 12.5V10.5H10.5V12.5H5.5ZM5.5 5.5V3.5H10.5V5.5H5.5ZM13.5 1V15H15V1H13.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconAlignStart(props: IconProps) {
@@ -639,7 +651,7 @@ export function IconAlignStart(props: IconProps) {
     >
       <path d="M5.25488 2.89746C5.30621 2.39333 5.73232 2 6.25 2H13.25L13.3525 2.00488C13.823 2.05278 14.1972 2.42703 14.2451 2.89746L14.25 3V6L14.2451 6.10254C14.1972 6.57297 13.823 6.94722 13.3525 6.99512L13.25 7L6.25 7C5.73232 7 5.30621 6.60667 5.25488 6.10254L5.25 6L5.25 3L5.25488 2.89746ZM12.75 5.5V3.5H6.75V5.5H12.75ZM5.25488 9.89746C5.30621 9.39333 5.73232 9 6.25 9H9.25L9.35254 9.00488C9.82297 9.05278 10.1972 9.42703 10.2451 9.89746L10.25 10V13L10.2451 13.1025C10.1972 13.573 9.82297 13.9472 9.35254 13.9951L9.25 14H6.25C5.73232 14 5.30621 13.6067 5.25488 13.1025L5.25 13V10L5.25488 9.89746ZM8.75 12.5V10.5H6.75V12.5H8.75ZM3.75 1L3.75 15H2.25L2.25 1H3.75Z" />
     </svg>
-  )
+  );
 }
 
 export function IconAlignCenter(props: IconProps) {
@@ -653,7 +665,7 @@ export function IconAlignCenter(props: IconProps) {
     >
       <path d="M2.50488 2.89746C2.55621 2.39333 2.98232 2 3.5 2H7.75V0H9.25V2H13.5L13.6025 2.00488C14.073 2.05278 14.4472 2.42703 14.4951 2.89746L14.5 3V6L14.4951 6.10254C14.4472 6.57297 14.073 6.94722 13.6025 6.99512L13.5 7H9.25V9H11.5C12.0177 9 12.4438 9.39333 12.4951 9.89746L12.5 10V13L12.4951 13.1025C12.4438 13.6067 12.0177 14 11.5 14H9.25V16H7.75V14H5.5C4.98232 14 4.55621 13.6067 4.50488 13.1025L4.5 13V10L4.50488 9.89746C4.55621 9.39333 4.98232 9 5.5 9H7.75L7.75 7H3.5C2.98232 7 2.55621 6.60667 2.50488 6.10254L2.5 6L2.5 3L2.50488 2.89746ZM13 5.5V3.5H4V5.5H13ZM11 12.5V10.5H6V12.5H11Z" />
     </svg>
-  )
+  );
 }
 
 export function IconAlignEnd(props: IconProps) {
@@ -667,7 +679,7 @@ export function IconAlignEnd(props: IconProps) {
     >
       <path d="M11.7451 2.89746C11.6938 2.39333 11.2677 2 10.75 2H3.75L3.64746 2.00488C3.17703 2.05278 2.80278 2.42703 2.75488 2.89746L2.75 3V6L2.75488 6.10254C2.80278 6.57297 3.17703 6.94722 3.64746 6.99512L3.75 7L10.75 7C11.2677 7 11.6938 6.60667 11.7451 6.10254L11.75 6V3L11.7451 2.89746ZM4.25 5.5V3.5H10.25V5.5H4.25ZM11.7451 9.89746C11.6938 9.39333 11.2677 9 10.75 9H7.75L7.64746 9.00488C7.17703 9.05278 6.80278 9.42703 6.75488 9.89746L6.75 10V13L6.75488 13.1025C6.80278 13.573 7.17703 13.9472 7.64746 13.9951L7.75 14H10.75C11.2677 14 11.6938 13.6067 11.7451 13.1025L11.75 13V10L11.7451 9.89746ZM8.25 12.5V10.5H10.25V12.5H8.25ZM13.25 1V15H14.75V1H13.25Z" />
     </svg>
-  )
+  );
 }
 
 // Text alignment icons (5 options)
@@ -686,7 +698,7 @@ export function IconTextUndo(props: IconProps) {
         d="M4.46967 9.09099L5 9.62132L6.06066 8.56066L5.53033 8.03033L3.56063 6.06063H10.125C11.989 6.06063 13.5 7.57167 13.5 9.43563C13.5 11.2996 11.989 12.8106 10.125 12.8106H4.5H3.75V14.3106H4.5H10.125C12.8174 14.3106 15 12.128 15 9.43563C15 6.74324 12.8174 4.56063 10.125 4.56063H3.56069L5.53033 2.59099L6.06066 2.06066L5 1L4.46967 1.53033L1.21967 4.78033C0.926777 5.07322 0.926777 5.5481 1.21967 5.84099L4.46967 9.09099Z"
       />
     </svg>
-  )
+  );
 }
 
 export function IconTextAlignLeftNew(props: IconProps) {
@@ -704,7 +716,7 @@ export function IconTextAlignLeftNew(props: IconProps) {
         d="M1.75 2H1V3.5H1.75H14.25H15V2H14.25H1.75ZM1 7H1.75H9.25H10V8.5H9.25H1.75H1V7ZM1 12H1.75H11.25H12V13.5H11.25H1.75H1V12Z"
       />
     </svg>
-  )
+  );
 }
 
 export function IconTextAlignCenterNew(props: IconProps) {
@@ -722,7 +734,7 @@ export function IconTextAlignCenterNew(props: IconProps) {
         d="M1.75 2H1V3.5H1.75H14.25H15V2H14.25H1.75ZM3.5 7.25H4.25H11.75H12.5V8.75H11.75H4.25H3.5V7.25ZM2.5 12.5H3.25H12.75H13.5V14H12.75H3.25H2.5V12.5Z"
       />
     </svg>
-  )
+  );
 }
 
 export function IconTextAlignRightNew(props: IconProps) {
@@ -740,7 +752,7 @@ export function IconTextAlignRightNew(props: IconProps) {
         d="M1.75 2H1V3.5H1.75H14.25H15V2H14.25H1.75ZM6 7.25H6.75H14.25H15V8.75H14.25H6.75H6V7.25ZM4 12.5H4.75H14.25H15V14H14.25H4.75H4V12.5Z"
       />
     </svg>
-  )
+  );
 }
 
 export function IconTextJustifyNew(props: IconProps) {
@@ -758,7 +770,7 @@ export function IconTextJustifyNew(props: IconProps) {
         d="M1 2H1.75H14.25H15V3.5H14.25H1.75H1V2ZM1 12.5H1.75H14.25H15V14H14.25H1.75H1V12.5ZM1.75 7.25H1V8.75H1.75H14.25H15V7.25H14.25H1.75Z"
       />
     </svg>
-  )
+  );
 }
 
 // Decoration icons (5 options)
@@ -777,7 +789,7 @@ export function IconItalicNew(props: IconProps) {
         d="M4.25 1H5H13.75H14.5V2.5H13.75H10.5475L7.02746 13.5H11H11.75V15H11H2.25H1.5V13.5H2.25H5.45254L8.97254 2.5H5H4.25V1Z"
       />
     </svg>
-  )
+  );
 }
 
 export function IconStrikethroughNew(props: IconProps) {
@@ -795,7 +807,7 @@ export function IconStrikethroughNew(props: IconProps) {
         d="M8.00001 0.583374C6.15186 0.583374 4.89601 1.20742 4.10921 2.08165C3.34402 2.93186 3.08334 3.95168 3.08334 4.66671C3.08334 5.30246 3.25446 5.98764 3.73035 6.62516C3.82673 6.75427 3.934 6.8793 4.05254 7H1.75H1V8.5H1.75H14.25H15V7H14.25H7.01815L6.51769 6.8024C5.6688 6.46724 5.19511 6.07985 4.93239 5.72789C4.67477 5.38278 4.58334 5.0232 4.58334 4.66671C4.58334 4.27063 4.73934 3.62378 5.22415 3.0851C5.68734 2.57044 6.51483 2.08337 8.00001 2.08337C9.99003 2.08337 10.8295 2.95573 11.1785 3.6895L11.5006 4.36679L12.8552 3.72252L12.5331 3.04522C11.9243 1.76535 10.5425 0.583374 8.00001 0.583374ZM12.9167 11.25V10.5H11.4167V11.25C11.4167 11.6491 11.2587 12.3206 10.7686 12.8815C10.302 13.4155 9.47586 13.9167 8.00001 13.9167C6.13953 13.9167 5.27285 13.0402 4.87848 12.3L4.52584 11.638L3.20199 12.3433L3.55464 13.0053C4.18889 14.1958 5.54264 15.4167 8.00001 15.4167C9.85749 15.4167 11.1147 14.7652 11.8981 13.8685C12.658 12.9988 12.9167 11.9621 12.9167 11.25Z"
       />
     </svg>
-  )
+  );
 }
 
 export function IconUnderlineNew(props: IconProps) {
@@ -809,7 +821,7 @@ export function IconUnderlineNew(props: IconProps) {
     >
       <path d="M13.75 14.7504H2.25V13.2504H13.75V14.7504ZM5.25 8.00037C5.25009 8.8024 5.54638 9.4272 6.00977 9.85583C6.47885 10.2896 7.16404 10.5629 8 10.5629C8.83596 10.5629 9.52115 10.2896 9.99023 9.85583C10.4536 9.4272 10.7499 8.8024 10.75 8.00037V1.00037H12.25V8.00037C12.2499 9.19792 11.7961 10.2299 11.0098 10.9574C10.2289 11.6796 9.16375 12.0629 8 12.0629C6.83625 12.0629 5.77113 11.6796 4.99023 10.9574C4.20387 10.2299 3.75009 9.19792 3.75 8.00037V1.00037H5.25V8.00037Z" />
     </svg>
-  )
+  );
 }
 
 export function IconOverlineNew(props: IconProps) {
@@ -824,7 +836,7 @@ export function IconOverlineNew(props: IconProps) {
       <path d="M11.2002 9.25C11.2002 7.48269 9.76731 6.0498 8 6.0498C6.23269 6.0498 4.7998 7.48269 4.7998 9.25C4.7998 11.0173 6.23269 12.4502 8 12.4502V14.25C5.23858 14.25 3 12.0114 3 9.25C3 6.48858 5.23858 4.25 8 4.25C10.7614 4.25 13 6.48858 13 9.25C13 12.0114 10.7614 14.25 8 14.25V12.4502C9.76731 12.4502 11.2002 11.0173 11.2002 9.25Z" />
       <path d="M3 1.25H13V2.75H3V1.25Z" />
     </svg>
-  )
+  );
 }
 
 export function IconTextNone(props: IconProps) {
@@ -838,7 +850,7 @@ export function IconTextNone(props: IconProps) {
     >
       <path d="M8.00371 14.804C5.07771 14.804 3.23471 12.068 3.23471 7.774C3.23471 3.442 5.07771 0.706 8.00371 0.706C10.9297 0.706 12.7727 3.442 12.7727 7.774C12.7727 12.068 10.9297 14.804 8.00371 14.804ZM4.88771 7.774C4.88771 9.047 5.05871 10.149 5.40071 11.023L9.80871 3.1C9.31471 2.568 8.70671 2.264 8.00371 2.264C6.10371 2.264 4.88771 4.392 4.88771 7.774ZM6.17971 12.41C6.67371 12.942 7.30071 13.246 8.00371 13.246C9.90371 13.246 11.1197 11.118 11.1197 7.774C11.1197 6.463 10.9297 5.323 10.5877 4.43L6.17971 12.41Z" />
     </svg>
-  )
+  );
 }
 
 export function IconColorDefault(props: IconProps) {
@@ -866,7 +878,7 @@ export function IconColorDefault(props: IconProps) {
         </clipPath>
       </defs>
     </svg>
-  )
+  );
 }
 
 export function IconBorderWidth(props: IconProps) {
@@ -880,7 +892,7 @@ export function IconBorderWidth(props: IconProps) {
     >
       <path d="M15 14.5H1V9.5H15V14.5ZM2.5 13H13.5V11H2.5V13ZM15 8.5H1V4.5H15V8.5ZM2.5 7H13.5V6H2.5V7ZM15 3.5H1V2H15V3.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconExpandBorder(props: IconProps) {
@@ -898,7 +910,7 @@ export function IconExpandBorder(props: IconProps) {
         d="M1 5.25V6H2.5V5.25V2.5H5.25H6V1H5.25H2C1.44772 1 1 1.44772 1 2V5.25ZM5.25 14.9994H6V13.4994H5.25H2.5V10.7494V9.99939H1V10.7494V13.9994C1 14.5517 1.44772 14.9994 2 14.9994H5.25ZM15 10V10.75V14C15 14.5523 14.5523 15 14 15H10.75H10V13.5H10.75H13.5V10.75V10H15ZM10.75 1H10V2.5H10.75H13.5V5.25V6H15V5.25V2C15 1.44772 14.5523 1 14 1H10.75Z"
       />
     </svg>
-  )
+  );
 }
 
 // Margin icons for individual sides
@@ -913,7 +925,7 @@ export function IconMarginTop(props: IconProps) {
     >
       <path d="M10.1025 5.00488C10.6067 5.05621 11 5.48232 11 6V10L10.9951 10.1025C10.9472 10.573 10.573 10.9472 10.1025 10.9951L10 11H6L5.89746 10.9951C5.42703 10.9472 5.05278 10.573 5.00488 10.1025L5 10V6C5 5.48232 5.39333 5.05621 5.89746 5.00488L6 5H10L10.1025 5.00488ZM6.5 9.5H9.5V6.5H6.5V9.5ZM15 3.5H1V2H15V3.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconMarginBottom(props: IconProps) {
@@ -927,7 +939,7 @@ export function IconMarginBottom(props: IconProps) {
     >
       <path d="M15 14H1V12.5H15V14ZM10.1025 5.00488C10.6067 5.05621 11 5.48232 11 6V10L10.9951 10.1025C10.9472 10.573 10.573 10.9472 10.1025 10.9951L10 11H6L5.89746 10.9951C5.42703 10.9472 5.05278 10.573 5.00488 10.1025L5 10V6C5 5.48232 5.39333 5.05621 5.89746 5.00488L6 5H10L10.1025 5.00488ZM6.5 9.5H9.5V6.5H6.5V9.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconMarginLeft(props: IconProps) {
@@ -941,7 +953,7 @@ export function IconMarginLeft(props: IconProps) {
     >
       <path d="M5.00488 5.89746C5.05621 5.39333 5.48232 5 6 5H10L10.1025 5.00488C10.573 5.05278 10.9472 5.42703 10.9951 5.89746L11 6V10L10.9951 10.1025C10.9472 10.573 10.573 10.9472 10.1025 10.9951L10 11H6C5.48232 11 5.05621 10.6067 5.00488 10.1025L5 10V6L5.00488 5.89746ZM9.5 9.5V6.5H6.5L6.5 9.5H9.5ZM3.5 1L3.5 15H2L2 1H3.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconMarginRight(props: IconProps) {
@@ -955,7 +967,7 @@ export function IconMarginRight(props: IconProps) {
     >
       <path d="M14 1V15H12.5V1H14ZM5.00488 5.89746C5.05621 5.39333 5.48232 5 6 5H10L10.1025 5.00488C10.573 5.05278 10.9472 5.42703 10.9951 5.89746L11 6V10L10.9951 10.1025C10.9472 10.573 10.573 10.9472 10.1025 10.9951L10 11H6C5.48232 11 5.05621 10.6067 5.00488 10.1025L5 10L5 6L5.00488 5.89746ZM9.5 9.5V6.5H6.5V9.5H9.5Z" />
     </svg>
-  )
+  );
 }
 
 // Spacing X/Y icons for grouped controls
@@ -970,7 +982,7 @@ export function IconSpacingX(props: IconProps) {
     >
       <path d="M14.9951 14.1025C14.9438 14.6067 14.5177 15 14 15H2L1.89746 14.9951C1.42703 14.9472 1.05278 14.573 1.00488 14.1025L1 14V2L1.00488 1.89746C1.05278 1.42703 1.42703 1.05278 1.89746 1.00488L2 1H14C14.5177 1 14.9438 1.39333 14.9951 1.89746L15 2V14L14.9951 14.1025ZM2.5 2.5V13.5H13.5V2.5H2.5ZM4.2666 12.375V3.625H5.66699V12.375H4.2666ZM10.333 12.375V3.625H11.7334V12.375H10.333Z" />
     </svg>
-  )
+  );
 }
 
 export function IconSpacingY(props: IconProps) {
@@ -984,7 +996,7 @@ export function IconSpacingY(props: IconProps) {
     >
       <path d="M14.1025 1.00488C14.6067 1.05621 15 1.48232 15 2V14L14.9951 14.1025C14.9472 14.573 14.573 14.9472 14.1025 14.9951L14 15H2L1.89746 14.9951C1.42703 14.9472 1.05278 14.573 1.00488 14.1025L1 14V2C1 1.48232 1.39333 1.05621 1.89746 1.00488L2 1H14L14.1025 1.00488ZM2.5 13.5H13.5V2.5H2.5V13.5ZM12.375 11.7334H3.625V10.333H12.375V11.7334ZM12.375 5.66699H3.625V4.2666H12.375V5.66699Z" />
     </svg>
-  )
+  );
 }
 
 // Padding icons for individual sides
@@ -999,7 +1011,7 @@ export function IconPaddingTop(props: IconProps) {
     >
       <path d="M14.1025 1.00488C14.6067 1.05621 15 1.48232 15 2V14L14.9951 14.1025C14.9472 14.573 14.573 14.9472 14.1025 14.9951L14 15H2L1.89746 14.9951C1.42703 14.9472 1.05278 14.573 1.00488 14.1025L1 14V2C1 1.48232 1.39333 1.05621 1.89746 1.00488L2 1H14L14.1025 1.00488ZM2.5 13.5H13.5V2.5H2.5V13.5ZM12.375 5.66699H3.625V4.2666H12.375V5.66699Z" />
     </svg>
-  )
+  );
 }
 
 export function IconPaddingBottom(props: IconProps) {
@@ -1013,7 +1025,7 @@ export function IconPaddingBottom(props: IconProps) {
     >
       <path d="M14.1025 1.00488C14.6067 1.05621 15 1.48232 15 2V14L14.9951 14.1025C14.9472 14.573 14.573 14.9472 14.1025 14.9951L14 15H2L1.89746 14.9951C1.42703 14.9472 1.05278 14.573 1.00488 14.1025L1 14V2C1 1.48232 1.39333 1.05621 1.89746 1.00488L2 1H14L14.1025 1.00488ZM2.5 13.5H13.5V2.5H2.5V13.5ZM12.375 11.7334H3.625V10.333H12.375V11.7334Z" />
     </svg>
-  )
+  );
 }
 
 export function IconPaddingLeft(props: IconProps) {
@@ -1027,7 +1039,7 @@ export function IconPaddingLeft(props: IconProps) {
     >
       <path d="M14.9951 14.1025C14.9438 14.6067 14.5177 15 14 15H2L1.89746 14.9951C1.42703 14.9472 1.05278 14.573 1.00488 14.1025L1 14V2L1.00488 1.89746C1.05278 1.42703 1.42703 1.05278 1.89746 1.00488L2 1H14C14.5177 1 14.9438 1.39333 14.9951 1.89746L15 2V14L14.9951 14.1025ZM2.5 2.5V13.5H13.5V2.5H2.5ZM4.2666 12.375V3.625H5.66699V12.375H4.2666Z" />
     </svg>
-  )
+  );
 }
 
 export function IconPaddingRight(props: IconProps) {
@@ -1041,7 +1053,7 @@ export function IconPaddingRight(props: IconProps) {
     >
       <path d="M14.9951 14.1025C14.9438 14.6067 14.5177 15 14 15H2L1.89746 14.9951C1.42703 14.9472 1.05278 14.573 1.00488 14.1025L1 14V2L1.00488 1.89746C1.05278 1.42703 1.42703 1.05278 1.89746 1.00488L2 1H14C14.5177 1 14.9438 1.39333 14.9951 1.89746L15 2V14L14.9951 14.1025ZM2.5 2.5V13.5H13.5V2.5H2.5ZM10.333 12.375V3.625H11.7334V12.375H10.333Z" />
     </svg>
-  )
+  );
 }
 
 export function IconExpandAll(props: IconProps) {
@@ -1059,7 +1071,7 @@ export function IconExpandAll(props: IconProps) {
         d="M6 1V1.75V5C6 5.55229 5.55228 6 5 6H1.75H1V4.5H1.75H4.5V1.75V1H6ZM14.25 6H15V4.5H14.25H11.5V1.75V1H10V1.75V5C10 5.55228 10.4477 6 11 6H14.25ZM10 14.25V15H11.5V14.25V11.5H14.29H15.04V10H14.29H11C10.4477 10 10 10.4477 10 11V14.25ZM1.75 10H1V11.5H1.75H4.5V14.25V15H6V14.25V11C6 10.4477 5.55229 10 5 10H1.75Z"
       />
     </svg>
-  )
+  );
 }
 
 // Border width icons for individual sides
@@ -1074,7 +1086,7 @@ export function IconBorderWidthTop(props: IconProps) {
     >
       <path d="M3.60938 13.25H4.00977V14.75H2.10938V13H3.60938V13.25ZM7.46094 14.75H5.16016V13.25H7.46094V14.75ZM10.9121 14.75H8.61133V13.25H10.9121V14.75ZM13.9619 14.75H12.0615V13.25H12.4619V13H13.9619V14.75ZM3.60938 12H2.10938V10H3.60938V12ZM13.9629 12H12.4629V10H13.9629V12ZM3.60938 9H2.10938V7H3.60938V9ZM13.9629 9H12.4629V7H13.9629V9ZM15 6H1V2H15V6ZM2.5 4.5H13.5V3.5H2.5V4.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconBorderWidthBottom(props: IconProps) {
@@ -1088,7 +1100,7 @@ export function IconBorderWidthBottom(props: IconProps) {
     >
       <path d="M3.60938 3.5H4.00977V2H2.10938V3.75H3.60938V3.5ZM7.46094 2H5.16016V3.5H7.46094V2ZM10.9121 2H8.61133V3.5H10.9121V2ZM13.9619 2H12.0615V3.5H12.4619V3.75H13.9619V2ZM3.60938 4.75H2.10938V6.75H3.60938V4.75ZM13.9629 4.75H12.4629V6.75H13.9629V4.75ZM3.60938 7.75H2.10938V9.75H3.60938V7.75ZM13.9629 7.75H12.4629V9.75H13.9629V7.75ZM15 10.75H1V14.75H15V10.75ZM2.5 12.25H13.5V13.25H2.5V12.25Z" />
     </svg>
-  )
+  );
 }
 
 export function IconBorderWidthLeft(props: IconProps) {
@@ -1102,7 +1114,7 @@ export function IconBorderWidthLeft(props: IconProps) {
     >
       <path d="M13.25 3.60937V4.00977H14.75V2.10937H13V3.60937H13.25ZM14.75 7.46094V5.16016H13.25V7.46094H14.75ZM14.75 10.9121V8.61133H13.25V10.9121L14.75 10.9121ZM14.75 13.9619L14.75 12.0615L13.25 12.0615V12.4619H13L13 13.9619L14.75 13.9619ZM12 3.60937V2.10937L10 2.10937V3.60937L12 3.60937ZM12 13.9629L12 12.4629H10L10 13.9629H12ZM9 3.60937V2.10937L7 2.10937L7 3.60937L9 3.60937ZM9 13.9629V12.4629H7V13.9629H9ZM6 15L6 1L2 1L2 15H6ZM4.5 2.5L4.5 13.5H3.5L3.5 2.5H4.5Z" />
     </svg>
-  )
+  );
 }
 
 export function IconBorderWidthRight(props: IconProps) {
@@ -1116,7 +1128,7 @@ export function IconBorderWidthRight(props: IconProps) {
     >
       <path d="M3.5 3.60937V4.00977H2V2.10937H3.75V3.60937H3.5ZM2 7.46094V5.16016H3.5V7.46094H2ZM2 10.9121V8.61133H3.5V10.9121L2 10.9121ZM2 13.9619L2 12.0615L3.5 12.0615V12.4619H3.75L3.75 13.9619L2 13.9619ZM4.75 3.60937V2.10937L6.75 2.10937V3.60937L4.75 3.60937ZM4.75 13.9629L4.75 12.4629H6.75L6.75 13.9629H4.75ZM7.75 3.60937L7.75 2.10937L9.75 2.10937V3.60937L7.75 3.60937ZM7.75 13.9629V12.4629H9.75V13.9629H7.75ZM10.75 15L10.75 1L14.75 1L14.75 15H10.75ZM12.25 2.5L12.25 13.5H13.25L13.25 2.5H12.25Z" />
     </svg>
-  )
+  );
 }
 
 export function IconOpacity(props: IconProps) {
@@ -1146,7 +1158,7 @@ export function IconOpacity(props: IconProps) {
         fill="currentColor"
       ></path>
     </svg>
-  )
+  );
 }
 
 export function IconBorderRadius(props: IconProps) {
@@ -1163,7 +1175,7 @@ export function IconBorderRadius(props: IconProps) {
         fill="currentColor"
       ></path>
     </svg>
-  )
+  );
 }
 
 export function IconShadow(props: IconProps) {
@@ -1193,7 +1205,7 @@ export function IconShadow(props: IconProps) {
         </clipPath>
       </defs>
     </svg>
-  )
+  );
 }
 
 export function IconShare(props: IconProps) {
@@ -1230,7 +1242,7 @@ export function IconShare(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function IconDownload(props: IconProps) {
@@ -1253,7 +1265,7 @@ export function IconDownload(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function IconChevronDown(props: IconProps) {
@@ -1276,7 +1288,7 @@ export function IconChevronDown(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function IconChevronUp(props: IconProps) {
@@ -1299,12 +1311,14 @@ export function IconChevronUp(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
-export function IconSpinner(props: IconProps & { color?: string; size?: "default" | "nano" }) {
-  const { className, style, color, size = "default", ...rest } = props
-  const strokeWidth = size === "nano" ? 4 : 3
+export function IconSpinner(
+  props: IconProps & { color?: string; size?: "default" | "nano" },
+) {
+  const { className, style, color, size = "default", ...rest } = props;
+  const strokeWidth = size === "nano" ? 4 : 3;
   return (
     <>
       <style>{`
@@ -1347,7 +1361,7 @@ export function IconSpinner(props: IconProps & { color?: string; size?: "default
         />
       </svg>
     </>
-  )
+  );
 }
 
 // Loading indicator that transitions from spinner to dot
@@ -1355,11 +1369,11 @@ export function IconSpinner(props: IconProps & { color?: string; size?: "default
 export function LoadingDot({
   isLoading,
   className,
-  dotClassName = "bg-[#307BD0]"
+  dotClassName = "bg-[#307BD0]",
 }: {
-  isLoading: boolean
-  className?: string
-  dotClassName?: string
+  isLoading: boolean;
+  className?: string;
+  dotClassName?: string;
 }) {
   return (
     <div className={`relative ${className || ""}`}>
@@ -1377,7 +1391,7 @@ export function LoadingDot({
           isLoading ? "opacity-100 scale-100" : "opacity-0 scale-50"
         }`}
         style={{
-          animation: isLoading ? 'spin 1s linear infinite' : undefined,
+          animation: isLoading ? "spin 1s linear infinite" : undefined,
         }}
       >
         <circle
@@ -1405,7 +1419,7 @@ export function LoadingDot({
         }`}
       />
     </div>
-  )
+  );
 }
 
 export function IconEditFile(props: IconProps) {
@@ -1438,7 +1452,7 @@ export function IconEditFile(props: IconProps) {
         strokeLinecap="round"
       />
     </svg>
-  )
+  );
 }
 
 export function IconMoon(props: IconProps) {
@@ -1457,7 +1471,7 @@ export function IconMoon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function IconSun(props: IconProps) {
@@ -1482,11 +1496,11 @@ export function IconSun(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function IconCloseSidebar(props: IconProps) {
-  const { className, ...rest } = props
+  const { className, ...rest } = props;
   return (
     <svg
       width="18"
@@ -1503,7 +1517,7 @@ export function IconCloseSidebar(props: IconProps) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 export function IconOpenSidebar(props: IconProps) {
@@ -1522,7 +1536,7 @@ export function IconOpenSidebar(props: IconProps) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 export const DownloadIcon = (props: LucideProps) => (
@@ -1541,7 +1555,7 @@ export const DownloadIcon = (props: LucideProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const GlobeIcon = (props: LucideProps) => (
   <svg
@@ -1573,7 +1587,7 @@ export const GlobeIcon = (props: LucideProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const SparkleIcon = (props: IconProps) => {
   return (
@@ -1594,8 +1608,8 @@ export const SparkleIcon = (props: IconProps) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export const SparklesIcon = (props: IconProps) => {
   return (
@@ -1622,8 +1636,8 @@ export const SparklesIcon = (props: IconProps) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export const CreateNewIcon = (props: IconProps) => (
   <svg
@@ -1643,7 +1657,7 @@ export const CreateNewIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const CustomTerminalIcon = (props: LucideProps) => (
   <svg
@@ -1664,7 +1678,7 @@ export const CustomTerminalIcon = (props: LucideProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const WriteFileIcon = (props: LucideProps) => (
   <svg
@@ -1702,7 +1716,7 @@ export const WriteFileIcon = (props: LucideProps) => (
       strokeLinecap="round"
     />
   </svg>
-)
+);
 
 export const CloneSiteIcon = (props: LucideProps) => (
   <svg
@@ -1770,7 +1784,7 @@ export const CloneSiteIcon = (props: LucideProps) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const MarkdownIcon = (props: LucideProps) => (
   <svg
@@ -1789,7 +1803,7 @@ export const MarkdownIcon = (props: LucideProps) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const PlanningIcon = (props: LucideProps) => (
   <svg
@@ -1808,7 +1822,7 @@ export const PlanningIcon = (props: LucideProps) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const ComponentGenerationIcon = (props: LucideProps) => (
   <svg
@@ -1834,7 +1848,7 @@ export const ComponentGenerationIcon = (props: LucideProps) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const CheckIcon = (props: LucideProps) => (
   <svg
@@ -1851,7 +1865,7 @@ export const CheckIcon = (props: LucideProps) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const SelectIcon = (props: LucideProps) => (
   <svg
@@ -1867,7 +1881,7 @@ export const SelectIcon = (props: LucideProps) => (
     <circle cx="12" cy="12" r="9.25" />
     <path d="M7.75 12.9231L10.5625 15.75L15.25 8.75" />
   </svg>
-)
+);
 
 export const AttachIcon = (props: LucideProps) => (
   <svg
@@ -1885,7 +1899,7 @@ export const AttachIcon = (props: LucideProps) => (
       strokeLinecap="round"
     />
   </svg>
-)
+);
 
 export const NoCodeIcon = (props: LucideProps) => (
   <svg
@@ -1904,7 +1918,7 @@ export const NoCodeIcon = (props: LucideProps) => (
       <path d="M7 7V8C7 9.10457 7.89543 10 9 10H18C19.1046 10 20 9.10457 20 8V6C20 4.89543 19.1046 4 18 4H9C7.89543 4 7 4.89543 7 6V7ZM7 7H5C4.44772 7 4 7.44772 4 8V10C4 11.6569 5.34315 13 7 13H13V15.5M15 21V18C15 16.8954 14.1046 16 13 16C11.8954 16 11 16.8954 11 18V21" />
     </g>
   </svg>
-)
+);
 
 export const CodePasteIcon = (props: LucideProps) => (
   <svg
@@ -1923,7 +1937,7 @@ export const CodePasteIcon = (props: LucideProps) => (
       <path d="M12 5H6C4.34315 5 3 6.34315 3 8V16C3 17.6569 4.34315 19 6 19H12M16 5H18C19.6569 5 21 6.34315 21 8V16C21 17.6569 19.6569 19 18 19H16M16 5V2.5M16 5V19M16 19V21.5M8 9.5L10.5 12L8 14.5" />
     </g>
   </svg>
-)
+);
 
 export const CSSPasteIcon = (props: LucideProps) => (
   <svg
@@ -1942,7 +1956,7 @@ export const CSSPasteIcon = (props: LucideProps) => (
       <path d="M12 5H6C4.34315 5 3 6.34315 3 8V16C3 17.6569 4.34315 19 6 19H12M16 5H18C19.6569 5 21 6.34315 21 8V16C21 17.6569 19.6569 19 18 19H16M16 5V2.5M16 5V19M16 19V21.5M8 9.5L10.5 12L8 14.5" />
     </g>
   </svg>
-)
+);
 
 export const CodeIcon = (props: LucideProps) => (
   <svg
@@ -1961,7 +1975,7 @@ export const CodeIcon = (props: LucideProps) => (
       <path d="M10 20L14 4M18 8.00004L19.9775 9.75781C21.32 10.9512 21.32 13.0489 19.9775 14.2423L18 16M6 16L4.02251 14.2423C2.67996 13.0489 2.67996 10.9512 4.02251 9.75781L6 8.00004" />
     </g>
   </svg>
-)
+);
 
 export const FilePlusIcon = ({
   className,
@@ -1987,7 +2001,7 @@ export const FilePlusIcon = ({
       <path d="M9 11H11" />
     </g>
   </svg>
-)
+);
 
 export const FilePageIcon = ({
   className,
@@ -2010,7 +2024,7 @@ export const FilePageIcon = ({
       <path d="M9 7H15M9 11H15M9 15H11M7 21H17C18.1046 21 19 20.1046 19 19V5C19 3.89543 18.1046 3 17 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21Z" />
     </g>
   </svg>
-)
+);
 
 export const BlankProjectIcon = ({
   className,
@@ -2038,7 +2052,7 @@ export const BlankProjectIcon = ({
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const HomeIconCustom = ({
   className,
@@ -2062,7 +2076,7 @@ export const HomeIconCustom = ({
       <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
     </g>
   </svg>
-)
+);
 
 export const ProfileIcon = ({
   className,
@@ -2086,7 +2100,7 @@ export const ProfileIcon = ({
       <path d="M15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10Z" />
     </g>
   </svg>
-)
+);
 
 export const DocumentIcon = ({
   className,
@@ -2108,7 +2122,7 @@ export const DocumentIcon = ({
       <path d="M13 3.5V7C13 8.10457 13.8954 9 15 9H18.5M9 13H12M9 17H15.5M8 3H12.1716C12.702 3 13.2107 3.21071 13.5858 3.58579L18.4142 8.41421C18.7893 8.78929 19 9.29799 19 9.82843V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V6C5 4.34315 6.34315 3 8 3Z" />
     </g>
   </svg>
-)
+);
 
 export const FilesIcon = ({
   className,
@@ -2131,7 +2145,7 @@ export const FilesIcon = ({
       <path d="M17 18C17 19.6569 15.6569 21 14 21H8C6.34315 21 5 19.6569 5 18V9C5 7.34315 6.34315 6 8 6M17 18H11C9.34315 18 8 16.6569 8 15V6M17 18C18.6569 18 20 16.6569 20 15V8M8 6C8 4.34315 9.34315 3 11 3H15M15 3L20 8M15 3V6C15 7.10457 15.8954 8 17 8H20" />
     </g>
   </svg>
-)
+);
 
 export const SettingsIcon = ({
   className,
@@ -2154,7 +2168,7 @@ export const SettingsIcon = ({
       <path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z" />
     </g>
   </svg>
-)
+);
 
 export const EditIcon = ({
   className,
@@ -2177,7 +2191,7 @@ export const EditIcon = ({
       <path d="M13.5 5.99997L15.25 4.24997C16.4926 3.00733 18.5074 3.00733 19.75 4.24997C20.9926 5.49261 20.9926 7.50733 19.75 8.74997L18 10.5M13.5 5.99997L3.29289 16.2071C3.10536 16.3946 3 16.649 3 16.9142V21H7.08579C7.351 21 7.60536 20.8946 7.79289 20.7071L18 10.5M13.5 5.99997L18 10.5" />
     </g>
   </svg>
-)
+);
 
 export const TrashIcon = ({
   className,
@@ -2204,7 +2218,7 @@ export const TrashIcon = ({
       <path d="M8.07092 5.74621C8.42348 3.89745 10.0485 2.5 12 2.5C13.9515 2.5 15.5765 3.89745 15.9291 5.74621" />
     </g>
   </svg>
-)
+);
 
 export const ThemeIcon = ({
   className,
@@ -2227,7 +2241,7 @@ export const ThemeIcon = ({
       <path d="M6 17.5V20C6 20.5523 6.44772 21 7 21H17C17.5523 21 18 20.5523 18 20V17.5M14 15H16M8 6H16V12H8V6ZM5 15V6C5 4.34315 6.34315 3 8 3H16C17.6569 3 19 4.34315 19 6V15C19 16.6569 17.6569 18 16 18H8C6.34315 18 5 16.6569 5 15Z" />
     </g>
   </svg>
-)
+);
 
 export function ExternalLinkIcon({ className }: { className?: string }) {
   return (
@@ -2256,7 +2270,7 @@ export function ExternalLinkIcon({ className }: { className?: string }) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function PlayIcon({ className }: { className?: string }) {
@@ -2276,7 +2290,7 @@ export function PlayIcon({ className }: { className?: string }) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 export const PromptCopyIcon = (props: React.SVGProps<SVGSVGElement>) => {
@@ -2308,8 +2322,8 @@ export const PromptCopyIcon = (props: React.SVGProps<SVGSVGElement>) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const EyeIcon = (props: LucideProps) => (
   <svg
@@ -2339,7 +2353,7 @@ export const EyeIcon = (props: LucideProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const SavedBookmarkFilledIcon = (props: IconProps) => (
   <svg
@@ -2357,7 +2371,7 @@ export const SavedBookmarkFilledIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const LightbulbIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -2377,11 +2391,11 @@ export const LightbulbIcon = (props: React.SVGProps<SVGSVGElement>) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
 interface ScreenIconProps {
-  className?: string
+  className?: string;
 }
 
 export function ScreenIcon({ className }: ScreenIconProps) {
@@ -2404,11 +2418,11 @@ export function ScreenIcon({ className }: ScreenIconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 interface AgentCursorSparkIconProps {
-  className?: string
+  className?: string;
 }
 
 export function AgentCursorSparkIcon({ className }: AgentCursorSparkIconProps) {
@@ -2435,11 +2449,11 @@ export function AgentCursorSparkIcon({ className }: AgentCursorSparkIconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 interface CanvasFilesIconProps {
-  className?: string
+  className?: string;
 }
 
 export function CanvasFilesIcon({ className }: CanvasFilesIconProps) {
@@ -2462,11 +2476,11 @@ export function CanvasFilesIcon({ className }: CanvasFilesIconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 interface ComponentIconProps {
-  className?: string
+  className?: string;
 }
 
 export function ComponentIcon({ className }: ComponentIconProps) {
@@ -2489,7 +2503,7 @@ export function ComponentIcon({ className }: ComponentIconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function PauseIcon({ className }: { className?: string }) {
@@ -2513,7 +2527,7 @@ export function PauseIcon({ className }: { className?: string }) {
         strokeWidth="2"
       />
     </svg>
-  )
+  );
 }
 
 export function VolumeIcon({ className }: { className?: string }) {
@@ -2536,7 +2550,7 @@ export function VolumeIcon({ className }: { className?: string }) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export const PlusIcon = (props: IconProps) => {
@@ -2556,8 +2570,8 @@ export const PlusIcon = (props: IconProps) => {
         strokeLinecap="round"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const SearchIcon = (props: LucideProps) => (
   <svg
@@ -2583,7 +2597,7 @@ export const SearchIcon = (props: LucideProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const VariantIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -2639,8 +2653,8 @@ export const VariantIcon = (props: React.SVGProps<SVGSVGElement>) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export const VideoIcon = (props: IconProps) => {
   return (
@@ -2660,8 +2674,8 @@ export const VideoIcon = (props: IconProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const MixedIcon = (props: IconProps) => {
   return (
@@ -2681,8 +2695,8 @@ export const MixedIcon = (props: IconProps) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export const ClickIcon = (props: IconProps) => {
   return (
@@ -2739,8 +2753,8 @@ export const ClickIcon = (props: IconProps) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export const CopyIcon = (props: IconProps) => {
   return (
@@ -2769,8 +2783,8 @@ export const CopyIcon = (props: IconProps) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export const SaveIcon = (props: IconProps) => {
   return (
@@ -2790,8 +2804,8 @@ export const SaveIcon = (props: IconProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const UndoIcon = (props: IconProps) => {
   return (
@@ -2818,8 +2832,8 @@ export const UndoIcon = (props: IconProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const KeyboardIcon = (props: IconProps) => {
   return (
@@ -2843,8 +2857,8 @@ export const KeyboardIcon = (props: IconProps) => {
         fill="currentColor"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const BookIcon = (props: IconProps) => {
   return (
@@ -2864,8 +2878,8 @@ export const BookIcon = (props: IconProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const DesignModeIcon = (props: IconProps) => {
   return (
@@ -2898,8 +2912,8 @@ export const DesignModeIcon = (props: IconProps) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export const BackspaceIcon = (props: IconProps) => {
   return (
@@ -2933,8 +2947,8 @@ export const BackspaceIcon = (props: IconProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const OptionIcon = (props: IconProps) => {
   return (
@@ -2963,8 +2977,8 @@ export const OptionIcon = (props: IconProps) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export const CmdIcon = (props: IconProps) => {
   return (
@@ -2983,8 +2997,8 @@ export const CmdIcon = (props: IconProps) => {
         strokeLinecap="square"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const ShiftIcon = (props: IconProps) => {
   return (
@@ -3004,8 +3018,8 @@ export const ShiftIcon = (props: IconProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
 export const FocusIcon = (props: IconProps) => {
   return (
@@ -3027,8 +3041,8 @@ export const FocusIcon = (props: IconProps) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export const ClipboardIcon = (props: IconProps) => {
   return (
@@ -3055,8 +3069,8 @@ export const ClipboardIcon = (props: IconProps) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export const ImageIcon = (props: IconProps) => {
   return (
@@ -3086,8 +3100,8 @@ export const ImageIcon = (props: IconProps) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export const ClipboardCheckIcon = (props: IconProps) => {
   return (
@@ -3121,8 +3135,8 @@ export const ClipboardCheckIcon = (props: IconProps) => {
         />
       </g>
     </svg>
-  )
-}
+  );
+};
 
 export function MagnetIcon(props: IconProps) {
   return (
@@ -3163,7 +3177,7 @@ export function MagnetIcon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export const EnterIcon = (props: LucideProps) => (
@@ -3182,7 +3196,7 @@ export const EnterIcon = (props: LucideProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const DatabaseSearchIcon = (props: IconProps) => (
   <svg
@@ -3216,7 +3230,7 @@ export const DatabaseSearchIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const SaveForLaterIcon = (props: IconProps) => (
   <svg
@@ -3237,7 +3251,7 @@ export const SaveForLaterIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const SendBookmarkIcon = (props: IconProps) => (
   <svg
@@ -3261,7 +3275,7 @@ export const SendBookmarkIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const StrongMagicIcon = (props: IconProps) => (
   <svg
@@ -3321,7 +3335,7 @@ export const StrongMagicIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const LinkIcon = (props: IconProps) => (
   <svg
@@ -3356,7 +3370,7 @@ export const LinkIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const AddToTeamIcon = (props: IconProps) => (
   <svg
@@ -3377,7 +3391,7 @@ export const AddToTeamIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const AddToTeamSuccessIcon = (props: IconProps) => (
   <svg
@@ -3398,7 +3412,7 @@ export const AddToTeamSuccessIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const BillingIcon = (props: IconProps) => (
   <svg
@@ -3419,7 +3433,7 @@ export const BillingIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const PublisherStudioIcon = (props: IconProps) => (
   <svg
@@ -3437,7 +3451,7 @@ export const PublisherStudioIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const ClaudeCodeIcon = (props: IconProps) => (
   <svg
@@ -3453,7 +3467,7 @@ export const ClaudeCodeIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const CursorIcon = (props: IconProps) => (
   <svg
@@ -3483,7 +3497,7 @@ export const CursorIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const GitHubLogo = (props: IconProps) => (
   <svg
@@ -3494,7 +3508,7 @@ export const GitHubLogo = (props: IconProps) => (
   >
     <path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 6.838 9.488c.5.087.687-.213.687-.476 0-.237-.013-1.024-.013-1.862-2.512.463-3.162-.612-3.362-1.175-.113-.288-.6-1.175-1.025-1.413-.35-.187-.85-.65-.013-.662.788-.013 1.35.725 1.538 1.025.9 1.512 2.338 1.087 2.912.825.088-.65.35-1.087.638-1.337-2.225-.25-4.55-1.113-4.55-4.938 0-1.088.387-1.987 1.025-2.688-.1-.25-.45-1.275.1-2.65 0 0 .837-.262 2.75 1.026a9.28 9.28 0 0 1 2.5-.338c.85 0 1.7.112 2.5.337 1.912-1.3 2.75-1.025 2.75-1.025.55 1.375.2 2.4.1 2.65.637.7 1.025 1.587 1.025 2.687 0 3.838-2.337 4.688-4.562 4.938.362.312.675.912.675 1.85 0 1.337-.013 2.412-.013 2.75 0 .262.188.574.688.474A10.016 10.016 0 0 0 22 12 10 10 0 0 0 12 2Z" />
   </svg>
-)
+);
 
 export const WindsurfIcon = (props: IconProps) => (
   <svg
@@ -3510,7 +3524,7 @@ export const WindsurfIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const OriginalMCPIcon = (props: IconProps) => (
   <svg
@@ -3534,7 +3548,7 @@ export const OriginalMCPIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const ShadcnCLIIcon = (props: IconProps) => (
   <svg
@@ -3560,7 +3574,7 @@ export const ShadcnCLIIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const VSCodeIcon = (props: IconProps) => (
   <svg
@@ -3578,7 +3592,7 @@ export const VSCodeIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const ThreeSparklesIcon = (props: IconProps) => (
   <svg
@@ -3604,7 +3618,7 @@ export const ThreeSparklesIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 // Filled versions for settings dialog
 export const PromptCopyIconFilled = (props: IconProps) => (
@@ -3629,7 +3643,7 @@ export const PromptCopyIconFilled = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const ProfileIconFilled = (props: IconProps) => (
   <svg
@@ -3649,7 +3663,7 @@ export const ProfileIconFilled = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const SandboxIcon = (props: IconProps) => (
   <svg
@@ -3667,7 +3681,7 @@ export const SandboxIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const EyeOpenFilledIcon = (props: IconProps) => (
   <svg
@@ -3685,7 +3699,7 @@ export const EyeOpenFilledIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const BillingIconFilled = (props: IconProps) => (
   <svg
@@ -3709,7 +3723,7 @@ export const BillingIconFilled = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const RemixIcon = (props: IconProps) => (
   <svg
@@ -3730,7 +3744,7 @@ export const RemixIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 // Small circular info icon used in Code/Info tabs
 export const InfoCircleSmallIcon = (props: IconProps) => (
@@ -3756,7 +3770,7 @@ export const InfoCircleSmallIcon = (props: IconProps) => (
       strokeWidth="0.5"
     />
   </svg>
-)
+);
 
 export const MailIcon = (props: IconProps) => (
   <svg
@@ -3774,7 +3788,7 @@ export const MailIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const EmailNotificationIcon = (props: IconProps) => (
   <svg
@@ -3802,7 +3816,7 @@ export const EmailNotificationIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const AffiliateIcon = (props: IconProps) => (
   <svg
@@ -3823,7 +3837,7 @@ export const AffiliateIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const ReportIcon = (props: IconProps) => (
   <svg
@@ -3844,7 +3858,7 @@ export const ReportIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const ThinFolderIcon = (props: IconProps) => (
   <svg
@@ -3862,7 +3876,7 @@ export const ThinFolderIcon = (props: IconProps) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const ThresholdIcon = (props: IconProps) => (
   <svg
@@ -3883,7 +3897,7 @@ export const ThresholdIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const SlackIcon = (props: IconProps) => (
   <svg
@@ -3911,7 +3925,7 @@ export const SlackIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const CategoriesIcon = (props: IconProps) => (
   <svg
@@ -3951,7 +3965,7 @@ export const CategoriesIcon = (props: IconProps) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const ListSearchIcon = (props: IconProps) => (
   <svg
@@ -3983,7 +3997,7 @@ export const ListSearchIcon = (props: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const CloseCircleFilledIcon = (props: IconProps) => (
   <svg
@@ -4001,7 +4015,7 @@ export const CloseCircleFilledIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const LayerUpIcon = (props: IconProps) => (
   <svg
@@ -4020,7 +4034,7 @@ export const LayerUpIcon = (props: IconProps) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const LayerDownIcon = (props: IconProps) => (
   <svg
@@ -4039,7 +4053,7 @@ export const LayerDownIcon = (props: IconProps) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 export const ExploreIcon = (props: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -4054,7 +4068,7 @@ export const ExploreIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const LibraryIcon = (props: IconProps) => (
   <svg
@@ -4080,7 +4094,7 @@ export const LibraryIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const PageIcon = (props: IconProps) => (
   <svg
@@ -4099,7 +4113,7 @@ export const PageIcon = (props: IconProps) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const AtSignIcon = (props: IconProps) => (
   <svg
@@ -4115,7 +4129,7 @@ export const AtSignIcon = (props: IconProps) => (
       strokeLinecap="round"
     />
   </svg>
-)
+);
 
 export const IterateIcon = (props: IconProps) => (
   <svg
@@ -4149,7 +4163,7 @@ export const IterateIcon = (props: IconProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export function PlanIcon(props: IconProps) {
   return (
@@ -4188,7 +4202,7 @@ export function PlanIcon(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 export function QuestionIcon({ className }: { className?: string }) {
@@ -4216,7 +4230,7 @@ export function QuestionIcon({ className }: { className?: string }) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 // Small 12x12 icons for badge in shapes list
@@ -4239,7 +4253,7 @@ export function AgentIconSmall({ className }: { className?: string }) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 export function ExploreIconSmall({ className }: { className?: string }) {
@@ -4263,7 +4277,7 @@ export function ExploreIconSmall({ className }: { className?: string }) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function PlanIconSmall({ className }: { className?: string }) {
@@ -4284,7 +4298,7 @@ export function PlanIconSmall({ className }: { className?: string }) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 // Small 12x12 version of the new Prototype icon (matches ExploreIcon in mode-toggle-button)
@@ -4305,7 +4319,7 @@ export function PrototypeIconSmall({ className }: { className?: string }) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 export function QuestionsSkippedIcon({ className }: { className?: string }) {
@@ -4345,7 +4359,7 @@ export function QuestionsSkippedIcon({ className }: { className?: string }) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export const TeamIcon = ({
@@ -4366,7 +4380,7 @@ export const TeamIcon = ({
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const ChipIcon = ({
   className,
@@ -4387,7 +4401,7 @@ export const ChipIcon = ({
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const MembersIcon = ({
   className,
@@ -4417,7 +4431,7 @@ export const MembersIcon = ({
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const PullRequestIcon = (props: IconProps) => (
   <svg
@@ -4475,7 +4489,7 @@ export const PullRequestIcon = (props: IconProps) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const InviteUserIcon = ({ className }: { className?: string }) => (
   <svg
@@ -4494,7 +4508,7 @@ export const InviteUserIcon = ({ className }: { className?: string }) => (
       />
     </g>
   </svg>
-)
+);
 
 export const TicketIcon = ({ className }: { className?: string }) => (
   <svg
@@ -4514,7 +4528,7 @@ export const TicketIcon = ({ className }: { className?: string }) => (
     <path d="M15 17l0 2" />
     <path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-3a2 2 0 0 0 0 -4v-3a2 2 0 0 1 2 -2" />
   </svg>
-)
+);
 
 export const FollowingIcon = ({ className }: { className?: string }) => (
   <svg
@@ -4531,7 +4545,7 @@ export const FollowingIcon = ({ className }: { className?: string }) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 export const FollowPersonPlusIcon = ({ className }: { className?: string }) => (
   <svg
@@ -4564,7 +4578,7 @@ export const FollowPersonPlusIcon = ({ className }: { className?: string }) => (
       />
     </g>
   </svg>
-)
+);
 
 export const InviteTeamIcon = ({
   className,
@@ -4590,7 +4604,7 @@ export const InviteTeamIcon = ({
       fill="currentColor"
     />
   </svg>
-)
+);
 
 export const MoveToTeamIcon = ({
   className,
@@ -4644,7 +4658,7 @@ export const MoveToTeamIcon = ({
       />
     </g>
   </svg>
-)
+);
 
 export function QuestionCircleIcon(props: IconProps) {
   return (
@@ -4679,7 +4693,7 @@ export function QuestionCircleIcon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function AIResearchIcon(props: IconProps) {
@@ -4711,7 +4725,7 @@ export function AIResearchIcon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function MagicChatPlusIcon(props: IconProps) {
@@ -4738,7 +4752,7 @@ export function MagicChatPlusIcon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function ContributeIcon(props: IconProps) {
@@ -4800,7 +4814,7 @@ export function ContributeIcon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function SyncIcon(props: IconProps) {
@@ -4823,7 +4837,7 @@ export function SyncIcon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function BranchIcon(props: IconProps) {
@@ -4880,7 +4894,7 @@ export function BranchIcon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function CalendarDotsIcon(props: IconProps) {
@@ -4924,7 +4938,7 @@ export function CalendarDotsIcon(props: IconProps) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 export function AuthorIcon(props: IconProps) {
@@ -4952,7 +4966,7 @@ export function AuthorIcon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function LibraryOutlineIcon(props: IconProps) {
@@ -5003,7 +5017,7 @@ export function LibraryOutlineIcon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function ServerIcon(props: IconProps) {
@@ -5037,7 +5051,7 @@ export function ServerIcon(props: IconProps) {
         strokeWidth="0.5"
       />
     </svg>
-  )
+  );
 }
 
 export function KeyIcon(props: IconProps) {
@@ -5064,7 +5078,7 @@ export function KeyIcon(props: IconProps) {
         strokeLinecap="square"
       />
     </svg>
-  )
+  );
 }
 
 export function FolderIcon(props: IconProps) {
@@ -5084,7 +5098,7 @@ export function FolderIcon(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 export function FolderPlusIcon(props: IconProps) {
@@ -5119,7 +5133,7 @@ export function FolderPlusIcon(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 export function ArchiveIcon({ className }: { className?: string }) {
@@ -5154,7 +5168,7 @@ export function ArchiveIcon({ className }: { className?: string }) {
         />
       </g>
     </svg>
-  )
+  );
 }
 
 export function PinFilledIcon({ className }: { className?: string }) {
@@ -5170,7 +5184,7 @@ export function PinFilledIcon({ className }: { className?: string }) {
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M15.113 3.21l.094 .083l5.5 5.5a1 1 0 0 1 -1.175 1.59l-3.172 3.171l-1.424 3.797a1 1 0 0 1 -.158 .277l-.07 .08l-1.5 1.5a1 1 0 0 1 -1.32 .082l-.095 -.083l-2.793 -2.792l-3.793 3.792a1 1 0 0 1 -1.497 -1.32l.083 -.094l3.792 -3.793l-2.792 -2.793a1 1 0 0 1 -.083 -1.32l.083 -.094l1.5 -1.5a1 1 0 0 1 .258 -.187l.098 -.042l3.796 -1.425l3.171 -3.17a1 1 0 0 1 1.497 -1.26z" />
     </svg>
-  )
+  );
 }
 
 export function AgentIcon(props: IconProps) {
@@ -5188,7 +5202,7 @@ export function AgentIcon(props: IconProps) {
         strokeLinecap="square"
       />
     </svg>
-  )
+  );
 }
 
 // Circle filter icon - circle with horizontal filter lines
@@ -5229,7 +5243,7 @@ export function CircleFilterIcon(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 // Custom agent icon - robot outline
@@ -5249,7 +5263,7 @@ export function CustomAgentIcon(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 // Custom agent icon filled - robot filled
@@ -5268,7 +5282,7 @@ export function CustomAgentIconFilled(props: IconProps) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 // Expand icon (arrows pointing outward) - used for expandable tool outputs
@@ -5288,7 +5302,7 @@ export function ExpandIcon(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 // Collapse icon (arrows pointing inward) - used for collapsible tool outputs
@@ -5308,7 +5322,7 @@ export function CollapseIcon(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 // Roadmap icon - used for roadmap links
@@ -5328,7 +5342,7 @@ export function RoadmapIcon(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 // Claude Code Logo icon
@@ -5346,7 +5360,7 @@ export const ClaudeCodeLogoIcon = (props: LucideProps) => (
       fill="#D97757"
     />
   </svg>
-)
+);
 
 // GitHub icon
 export const GitHubIcon = (props: LucideProps) => (
@@ -5356,7 +5370,7 @@ export const GitHubIcon = (props: LucideProps) => (
       d="M409.132 114.573c-19.608-33.596-46.205-60.194-79.798-79.8-33.598-19.607-70.277-29.408-110.063-29.408-39.781 0-76.472 9.804-110.063 29.408-33.596 19.605-60.192 46.204-79.8 79.8C9.803 148.168 0 184.854 0 224.63c0 47.78 13.94 90.745 41.827 128.906 27.884 38.164 63.906 64.572 108.063 79.227 5.14.954 8.945.283 11.419-1.996 2.475-2.282 3.711-5.14 3.711-8.562 0-.571-.049-5.708-.144-15.417a2549.81 2549.81 0 01-.144-25.406l-6.567 1.136c-4.187.767-9.469 1.092-15.846 1-6.374-.089-12.991-.757-19.842-1.999-6.854-1.231-13.229-4.086-19.13-8.559-5.898-4.473-10.085-10.328-12.56-17.556l-2.855-6.57c-1.903-4.374-4.899-9.233-8.992-14.559-4.093-5.331-8.232-8.945-12.419-10.848l-1.999-1.431c-1.332-.951-2.568-2.098-3.711-3.429-1.142-1.331-1.997-2.663-2.568-3.997-.572-1.335-.098-2.43 1.427-3.289 1.525-.859 4.281-1.276 8.28-1.276l5.708.853c3.807.763 8.516 3.042 14.133 6.851 5.614 3.806 10.229 8.754 13.846 14.9 4.38 7.806 9.657 13.754 15.846 17.847 6.184 4.093 12.419 6.136 18.699 6.136 6.28 0 11.704-.476 16.274-1.423 4.565-.952 8.848-2.383 12.847-4.285 1.713-12.758 6.377-22.559 13.988-29.41-10.848-1.14-20.601-2.857-29.264-5.14-8.658-2.286-17.605-5.996-26.835-11.14-9.235-5.137-16.896-11.516-22.985-19.126-6.09-7.614-11.088-17.61-14.987-29.979-3.901-12.374-5.852-26.648-5.852-42.826 0-23.035 7.52-42.637 22.557-58.817-7.044-17.318-6.379-36.732 1.997-58.24 5.52-1.715 13.706-.428 24.554 3.853 10.85 4.283 18.794 7.952 23.84 10.994 5.046 3.041 9.089 5.618 12.135 7.708 17.705-4.947 35.976-7.421 54.818-7.421s37.117 2.474 54.823 7.421l10.849-6.849c7.419-4.57 16.18-8.758 26.262-12.565 10.088-3.805 17.802-4.853 23.134-3.138 8.562 21.509 9.325 40.922 2.279 58.24 15.036 16.18 22.559 35.787 22.559 58.817 0 16.178-1.958 30.497-5.853 42.966-3.9 12.471-8.941 22.457-15.125 29.979-6.191 7.521-13.901 13.85-23.131 18.986-9.232 5.14-18.182 8.85-26.84 11.136-8.662 2.286-18.415 4.004-29.263 5.146 9.894 8.562 14.842 22.077 14.842 40.539v60.237c0 3.422 1.19 6.279 3.572 8.562 2.379 2.279 6.136 2.95 11.276 1.995 44.163-14.653 80.185-41.062 108.068-79.226 27.88-38.161 41.825-81.126 41.825-128.906-.01-39.771-9.818-76.454-29.414-110.049z"
     />
   </svg>
-)
+);
 
 // Laptop icon for local mode
 export function LaptopIcon(props: IconProps) {
@@ -5384,7 +5398,7 @@ export function LaptopIcon(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 // Skill icon - toolbox with tools
@@ -5427,7 +5441,7 @@ export function SkillIcon(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 // Brain icon filled - for Models tab
@@ -5450,7 +5464,7 @@ export function BrainFilledIcon(props: IconProps) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 // Flask icon filled - for Beta tab
@@ -5479,7 +5493,7 @@ export function FlaskFilledIcon(props: IconProps) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 // Bug icon filled - for Debug tab
@@ -5500,7 +5514,7 @@ export function BugFilledIcon(props: IconProps) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 // Skill icon filled - toolbox with tools (filled version)
@@ -5521,7 +5535,7 @@ export function SkillIconFilled(props: IconProps) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }
 
 // Review icon - checklist with checkmarks and magnifying glass
@@ -5543,7 +5557,7 @@ export function IconReview(props: IconProps) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 export function KeyFilledIcon(props: IconProps) {
@@ -5562,7 +5576,7 @@ export function KeyFilledIcon(props: IconProps) {
         d="M22 8.5C22 12.0899 19.0899 15 15.5 15C14.7504 15 14.0304 14.8731 13.3604 14.6396L11.5858 16.4142C11.2107 16.7893 10.702 17 10.1716 17H9.5C9.22386 17 9 17.2239 9 17.5V18.1716C9 18.702 8.78929 19.2107 8.41421 19.5858L7.87868 20.1213C7.31607 20.6839 6.55301 21 5.75736 21H4C3.44772 21 3 20.5523 3 20V18.2426C3 17.447 3.31607 16.6839 3.87868 16.1213L9.36037 10.6396C9.12689 9.96959 9 9.24962 9 8.5C9 4.91015 11.9101 2 15.5 2C19.0899 2 22 4.91015 22 8.5ZM17 8.5C17 9.32843 16.3284 10 15.5 10C14.6716 10 14 9.32843 14 8.5C14 7.67157 14.6716 7 15.5 7C16.3284 7 17 7.67157 17 8.5Z"
       />
     </svg>
-  )
+  );
 }
 
 export function SettingsFilledIcon(props: IconProps) {
@@ -5581,38 +5595,68 @@ export function SettingsFilledIcon(props: IconProps) {
         d="M9.78522 3.18531C10.2789 2.44479 11.11 2 12 2C12.89 2 13.7211 2.44479 14.2148 3.18531L14.771 4.01958C14.9961 4.35724 15.4067 4.52029 15.8021 4.42904L16.4882 4.2707C17.3962 4.06117 18.348 4.33416 19.0069 4.99307C19.6658 5.65197 19.9388 6.60383 19.7293 7.5118L19.571 8.19791C19.4797 8.59333 19.6428 9.00394 19.9804 9.22904L20.8147 9.78522C21.5552 10.2789 22 11.11 22 12C22 12.89 21.5552 13.7211 20.8147 14.2148L19.9804 14.771C19.6428 14.9961 19.4797 15.4067 19.571 15.8021L19.7293 16.4882C19.9388 17.3962 19.6658 18.348 19.0069 19.0069C18.348 19.6658 17.3962 19.9388 16.4882 19.7293L15.8021 19.571C15.4067 19.4797 14.9961 19.6428 14.771 19.9804L14.2148 20.8147C13.7211 21.5552 12.89 22 12 22C11.11 22 10.2789 21.5552 9.78522 20.8147L9.22904 19.9804C9.00394 19.6428 8.59333 19.4797 8.19791 19.571L7.5118 19.7293C6.60383 19.9388 5.65197 19.6658 4.99307 19.0069C4.33416 18.348 4.06117 17.3962 4.2707 16.4882L4.42904 15.8021C4.52029 15.4067 4.35724 14.9961 4.01958 14.771L3.18531 14.2148C2.44479 13.7211 2 12.89 2 12C2 11.11 2.4448 10.2789 3.18531 9.78522L4.01958 9.22904C4.35724 9.00394 4.52029 8.59333 4.42904 8.19791L4.2707 7.5118C4.06117 6.60383 4.33416 5.65197 4.99307 4.99307C5.65197 4.33416 6.60383 4.06117 7.5118 4.2707L8.19791 4.42904C8.59333 4.52029 9.00394 4.35724 9.22904 4.01958L9.78522 3.18531ZM8.5 12C8.5 10.067 10.067 8.5 12 8.5C13.933 8.5 15.5 10.067 15.5 12C15.5 13.933 13.933 15.5 12 15.5C10.067 15.5 8.5 13.933 8.5 12Z"
       />
     </svg>
-  )
+  );
 }
 
 // Diff view display mode icons
 export function IconSidePeek(props: IconProps) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" {...props}>
-      <path fillRule="evenodd" clipRule="evenodd" d="M8.72505 3H14.2749C15.4129 2.99999 16.3307 2.99998 17.074 3.06071C17.8394 3.12324 18.5116 3.25534 19.1335 3.57222C20.1213 4.07555 20.9245 4.8787 21.4277 5.86655C21.7446 6.48846 21.8767 7.16066 21.9393 7.92595C22 8.66921 22 9.58706 22 10.7251V14.1749C22 15.3129 22 16.2308 21.9393 16.974C21.8767 17.7394 21.7446 18.4116 21.4277 19.0335C20.9245 20.0213 20.1213 20.8245 19.1335 21.3277C18.5116 21.6446 17.8394 21.7767 17.074 21.8393C16.3308 21.9 15.4129 21.9 14.2749 21.9H8.72503C7.58706 21.9 6.66921 21.9 5.92595 21.8393C5.16066 21.7767 4.48846 21.6446 3.86655 21.3277C2.8787 20.8245 2.07555 20.0213 1.57222 19.0335C1.25534 18.4116 1.12324 17.7394 1.06071 16.974C0.999979 16.2307 0.99999 15.3129 1 14.1749V10.7251C0.99999 9.58708 0.999979 8.66922 1.06071 7.92595C1.12324 7.16066 1.25534 6.48846 1.57222 5.86655C2.07555 4.8787 2.8787 4.07555 3.86655 3.57222C4.48846 3.25534 5.16066 3.12324 5.92595 3.06071C6.66922 2.99998 7.58708 2.99999 8.72505 3ZM6.09695 5.15374C5.46152 5.20565 5.09645 5.30243 4.81993 5.44333C4.22722 5.74533 3.74533 6.22722 3.44333 6.81993C3.30243 7.09645 3.20565 7.46152 3.15374 8.09695C3.10082 8.74463 3.1 9.57656 3.1 10.77V14.13C3.1 15.3234 3.10082 16.1553 3.15374 16.8031C3.20565 17.4384 3.30243 17.8035 3.44333 18.0801C3.74533 18.6728 4.22722 19.1547 4.81993 19.4566C5.09645 19.5976 5.46152 19.6944 6.09695 19.7462C6.74463 19.7992 7.57656 19.8 8.77 19.8H14.23C15.4234 19.8 16.2553 19.7992 16.9031 19.7462C17.5384 19.6944 17.9035 19.5976 18.1801 19.4566C18.7728 19.1547 19.2547 18.6728 19.5566 18.0801C19.6976 17.8035 19.7944 17.4384 19.8462 16.8031C19.8992 16.1553 19.9 15.3234 19.9 14.13V10.77C19.9 9.57656 19.8992 8.74463 19.8462 8.09695C19.7944 7.46152 19.6976 7.09645 19.5566 6.81993C19.2547 6.22722 18.7728 5.74533 18.1801 5.44333C17.9035 5.30243 17.5384 5.20565 16.9031 5.15374C16.2553 5.10082 15.4234 5.1 14.23 5.1H8.77C7.57656 5.1 6.74463 5.10082 6.09695 5.15374ZM10.45 7.2C11.0299 7.2 11.5 7.67011 11.5 8.25V16.65C11.5 17.2299 11.0299 17.7 10.45 17.7C9.87008 17.7 9.4 17.2299 9.4 16.65V8.25C9.4 7.67011 9.87008 7.2 10.45 7.2Z" />
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      width="24"
+      height="24"
+      {...props}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M8.72505 3H14.2749C15.4129 2.99999 16.3307 2.99998 17.074 3.06071C17.8394 3.12324 18.5116 3.25534 19.1335 3.57222C20.1213 4.07555 20.9245 4.8787 21.4277 5.86655C21.7446 6.48846 21.8767 7.16066 21.9393 7.92595C22 8.66921 22 9.58706 22 10.7251V14.1749C22 15.3129 22 16.2308 21.9393 16.974C21.8767 17.7394 21.7446 18.4116 21.4277 19.0335C20.9245 20.0213 20.1213 20.8245 19.1335 21.3277C18.5116 21.6446 17.8394 21.7767 17.074 21.8393C16.3308 21.9 15.4129 21.9 14.2749 21.9H8.72503C7.58706 21.9 6.66921 21.9 5.92595 21.8393C5.16066 21.7767 4.48846 21.6446 3.86655 21.3277C2.8787 20.8245 2.07555 20.0213 1.57222 19.0335C1.25534 18.4116 1.12324 17.7394 1.06071 16.974C0.999979 16.2307 0.99999 15.3129 1 14.1749V10.7251C0.99999 9.58708 0.999979 8.66922 1.06071 7.92595C1.12324 7.16066 1.25534 6.48846 1.57222 5.86655C2.07555 4.8787 2.8787 4.07555 3.86655 3.57222C4.48846 3.25534 5.16066 3.12324 5.92595 3.06071C6.66922 2.99998 7.58708 2.99999 8.72505 3ZM6.09695 5.15374C5.46152 5.20565 5.09645 5.30243 4.81993 5.44333C4.22722 5.74533 3.74533 6.22722 3.44333 6.81993C3.30243 7.09645 3.20565 7.46152 3.15374 8.09695C3.10082 8.74463 3.1 9.57656 3.1 10.77V14.13C3.1 15.3234 3.10082 16.1553 3.15374 16.8031C3.20565 17.4384 3.30243 17.8035 3.44333 18.0801C3.74533 18.6728 4.22722 19.1547 4.81993 19.4566C5.09645 19.5976 5.46152 19.6944 6.09695 19.7462C6.74463 19.7992 7.57656 19.8 8.77 19.8H14.23C15.4234 19.8 16.2553 19.7992 16.9031 19.7462C17.5384 19.6944 17.9035 19.5976 18.1801 19.4566C18.7728 19.1547 19.2547 18.6728 19.5566 18.0801C19.6976 17.8035 19.7944 17.4384 19.8462 16.8031C19.8992 16.1553 19.9 15.3234 19.9 14.13V10.77C19.9 9.57656 19.8992 8.74463 19.8462 8.09695C19.7944 7.46152 19.6976 7.09645 19.5566 6.81993C19.2547 6.22722 18.7728 5.74533 18.1801 5.44333C17.9035 5.30243 17.5384 5.20565 16.9031 5.15374C16.2553 5.10082 15.4234 5.1 14.23 5.1H8.77C7.57656 5.1 6.74463 5.10082 6.09695 5.15374ZM10.45 7.2C11.0299 7.2 11.5 7.67011 11.5 8.25V16.65C11.5 17.2299 11.0299 17.7 10.45 17.7C9.87008 17.7 9.4 17.2299 9.4 16.65V8.25C9.4 7.67011 9.87008 7.2 10.45 7.2Z"
+      />
       <path d="M17.7992 8.2502C17.7992 7.6703 17.3291 7.2002 16.7492 7.2002C16.1693 7.2002 15.6992 7.6703 15.6992 8.2502V16.6502C15.6992 17.2301 16.1693 17.7002 16.7492 17.7002C17.3291 17.7002 17.7992 17.2301 17.7992 16.6502V8.2502Z" />
       <path d="M10.4492 7.2002H16.7492V17.7002H10.4492V7.2002Z" />
     </svg>
-  )
+  );
 }
 
 export function IconCenterPeek(props: IconProps) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" {...props}>
-      <path fillRule="evenodd" clipRule="evenodd" d="M8.72505 3H14.2749C15.4129 2.99999 16.3307 2.99998 17.074 3.06071C17.8394 3.12324 18.5116 3.25534 19.1335 3.57222C20.1213 4.07555 20.9245 4.8787 21.4278 5.86655C21.7446 6.48846 21.8767 7.16066 21.9393 7.92595C22 8.66921 22 9.58706 22 10.7251V14.1749C22 15.3129 22 16.2308 21.9393 16.974C21.8767 17.7394 21.7446 18.4116 21.4278 19.0335C20.9245 20.0213 20.1213 20.8245 19.1335 21.3277C18.5116 21.6446 17.8394 21.7767 17.074 21.8393C16.3308 21.9 15.4129 21.9 14.2749 21.9H8.72503C7.58706 21.9 6.66921 21.9 5.92595 21.8393C5.16066 21.7767 4.48846 21.6446 3.86655 21.3277C2.8787 20.8245 2.07555 20.0213 1.57222 19.0335C1.25534 18.4116 1.12324 17.7394 1.06071 16.974C0.999979 16.2307 0.99999 15.3129 1 14.1749V10.7251C0.99999 9.58708 0.999979 8.66922 1.06071 7.92595C1.12324 7.16066 1.25534 6.48846 1.57222 5.86655C2.07555 4.8787 2.8787 4.07555 3.86655 3.57222C4.48846 3.25534 5.16066 3.12324 5.92595 3.06071C6.66922 2.99998 7.58708 2.99999 8.72505 3ZM6.09695 5.15374C5.46152 5.20565 5.09645 5.30243 4.81993 5.44333C4.22722 5.74533 3.74533 6.22722 3.44333 6.81993C3.30243 7.09645 3.20565 7.46152 3.15374 8.09695C3.10082 8.74463 3.1 9.57656 3.1 10.77V14.13C3.1 15.3234 3.10082 16.1553 3.15374 16.8031C3.20565 17.4384 3.30243 17.8035 3.44333 18.0801C3.74533 18.6728 4.22722 19.1547 4.81993 19.4566C5.09645 19.5976 5.46152 19.6944 6.09695 19.7462C6.74464 19.7992 7.57656 19.8 8.77 19.8H14.23C15.4234 19.8 16.2553 19.7992 16.9031 19.7462C17.5384 19.6944 17.9035 19.5976 18.1801 19.4566C18.7728 19.1547 19.2547 18.6728 19.5567 18.0801C19.6976 17.8035 19.7944 17.4384 19.8462 16.8031C19.8992 16.1553 19.9 15.3234 19.9 14.13V10.77C19.9 9.57656 19.8992 8.74463 19.8462 8.09695C19.7944 7.46152 19.6976 7.09645 19.5567 6.81993C19.2547 6.22722 18.7728 5.74533 18.1801 5.44333C17.9035 5.30243 17.5384 5.20565 16.9031 5.15374C16.2553 5.10082 15.4234 5.1 14.23 5.1H8.77C7.57656 5.1 6.74464 5.10082 6.09695 5.15374ZM10.45 7.2C11.0299 7.2 11.5 7.67011 11.5 8.25V16.65C11.5 17.2299 11.0299 17.7 10.45 17.7C9.87009 17.7 9.4 17.2299 9.4 16.65V8.25C9.4 7.67011 9.87009 7.2 10.45 7.2Z" />
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      width="24"
+      height="24"
+      {...props}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M8.72505 3H14.2749C15.4129 2.99999 16.3307 2.99998 17.074 3.06071C17.8394 3.12324 18.5116 3.25534 19.1335 3.57222C20.1213 4.07555 20.9245 4.8787 21.4278 5.86655C21.7446 6.48846 21.8767 7.16066 21.9393 7.92595C22 8.66921 22 9.58706 22 10.7251V14.1749C22 15.3129 22 16.2308 21.9393 16.974C21.8767 17.7394 21.7446 18.4116 21.4278 19.0335C20.9245 20.0213 20.1213 20.8245 19.1335 21.3277C18.5116 21.6446 17.8394 21.7767 17.074 21.8393C16.3308 21.9 15.4129 21.9 14.2749 21.9H8.72503C7.58706 21.9 6.66921 21.9 5.92595 21.8393C5.16066 21.7767 4.48846 21.6446 3.86655 21.3277C2.8787 20.8245 2.07555 20.0213 1.57222 19.0335C1.25534 18.4116 1.12324 17.7394 1.06071 16.974C0.999979 16.2307 0.99999 15.3129 1 14.1749V10.7251C0.99999 9.58708 0.999979 8.66922 1.06071 7.92595C1.12324 7.16066 1.25534 6.48846 1.57222 5.86655C2.07555 4.8787 2.8787 4.07555 3.86655 3.57222C4.48846 3.25534 5.16066 3.12324 5.92595 3.06071C6.66922 2.99998 7.58708 2.99999 8.72505 3ZM6.09695 5.15374C5.46152 5.20565 5.09645 5.30243 4.81993 5.44333C4.22722 5.74533 3.74533 6.22722 3.44333 6.81993C3.30243 7.09645 3.20565 7.46152 3.15374 8.09695C3.10082 8.74463 3.1 9.57656 3.1 10.77V14.13C3.1 15.3234 3.10082 16.1553 3.15374 16.8031C3.20565 17.4384 3.30243 17.8035 3.44333 18.0801C3.74533 18.6728 4.22722 19.1547 4.81993 19.4566C5.09645 19.5976 5.46152 19.6944 6.09695 19.7462C6.74464 19.7992 7.57656 19.8 8.77 19.8H14.23C15.4234 19.8 16.2553 19.7992 16.9031 19.7462C17.5384 19.6944 17.9035 19.5976 18.1801 19.4566C18.7728 19.1547 19.2547 18.6728 19.5567 18.0801C19.6976 17.8035 19.7944 17.4384 19.8462 16.8031C19.8992 16.1553 19.9 15.3234 19.9 14.13V10.77C19.9 9.57656 19.8992 8.74463 19.8462 8.09695C19.7944 7.46152 19.6976 7.09645 19.5567 6.81993C19.2547 6.22722 18.7728 5.74533 18.1801 5.44333C17.9035 5.30243 17.5384 5.20565 16.9031 5.15374C16.2553 5.10082 15.4234 5.1 14.23 5.1H8.77C7.57656 5.1 6.74464 5.10082 6.09695 5.15374ZM10.45 7.2C11.0299 7.2 11.5 7.67011 11.5 8.25V16.65C11.5 17.2299 11.0299 17.7 10.45 17.7C9.87009 17.7 9.4 17.2299 9.4 16.65V8.25C9.4 7.67011 9.87009 7.2 10.45 7.2Z"
+      />
       <path d="M17.7992 8.2502C17.7992 7.6703 17.3291 7.2002 16.7492 7.2002C16.1693 7.2002 15.6992 7.6703 15.6992 8.2502V16.6502C15.6992 17.2301 16.1693 17.7002 16.7492 17.7002C17.3291 17.7002 17.7992 17.2301 17.7992 16.6502V8.2502Z" />
       <path d="M7.57461 8.2502C7.57461 7.6703 7.10452 7.2002 6.52461 7.2002C5.94469 7.2002 5.47461 7.6703 5.47461 8.2502V16.6502C5.47461 17.2301 5.94469 17.7002 6.52461 17.7002C7.10452 17.7002 7.57461 17.2301 7.57461 16.6502V8.2502Z" />
       <path d="M6.47461 7.19881L16.7787 7.19896V17.6915H6.47461V7.19881Z" />
     </svg>
-  )
+  );
 }
 
 export function IconFullPage(props: IconProps) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" {...props}>
-      <path fillRule="evenodd" clipRule="evenodd" d="M8.72505 3H14.2749C15.4129 2.99999 16.3307 2.99998 17.074 3.06071C17.8394 3.12324 18.5116 3.25534 19.1335 3.57222C20.1213 4.07555 20.9245 4.8787 21.4278 5.86655C21.7446 6.48846 21.8767 7.16066 21.9393 7.92595C22 8.66921 22 9.58706 22 10.7251V14.1749C22 15.3129 22 16.2308 21.9393 16.974C21.8767 17.7394 21.7446 18.4116 21.4278 19.0335C20.9245 20.0213 20.1213 20.8245 19.1335 21.3277C18.5116 21.6446 17.8394 21.7767 17.074 21.8393C16.3308 21.9 15.4129 21.9 14.2749 21.9H8.72503C7.58706 21.9 6.66921 21.9 5.92595 21.8393C5.16066 21.7767 4.48846 21.6446 3.86655 21.3277C2.8787 20.8245 2.07555 20.0213 1.57222 19.0335C1.25534 18.4116 1.12324 17.7394 1.06071 16.974C0.999979 16.2307 0.99999 15.3129 1 14.1749V10.7251C0.99999 9.58708 0.999979 8.66922 1.06071 7.92595C1.12324 7.16066 1.25534 6.48846 1.57222 5.86655C2.07555 4.8787 2.8787 4.07555 3.86655 3.57222C4.48846 3.25534 5.16066 3.12324 5.92595 3.06071C6.66922 2.99998 7.58708 2.99999 8.72505 3ZM6.09695 5.15374C5.46152 5.20565 5.09645 5.30243 4.81993 5.44333C4.22722 5.74533 3.74533 6.22722 3.44333 6.81993C3.30243 7.09645 3.20565 7.46152 3.15374 8.09695C3.10082 8.74463 3.1 9.57656 3.1 10.77V14.13C3.1 15.3234 3.10082 16.1553 3.15374 16.8031C3.20565 17.4384 3.30243 17.8035 3.44333 18.0801C3.74533 18.6728 4.22722 19.1547 4.81993 19.4566C5.09645 19.5976 5.46152 19.6944 6.09695 19.7462C6.74464 19.7992 7.57656 19.8 8.77 19.8H14.23C15.4234 19.8 16.2553 19.7992 16.9031 19.7462C17.5384 19.6944 17.9035 19.5976 18.1801 19.4566C18.7728 19.1547 19.2547 18.6728 19.5567 18.0801C19.6976 17.8035 19.7944 17.4384 19.8462 16.8031C19.8992 16.1553 19.9 15.3234 19.9 14.13V10.77C19.9 9.57656 19.8992 8.74463 19.8462 8.09695C19.7944 7.46152 19.6976 7.09645 19.5567 6.81993C19.2547 6.22722 18.7728 5.74533 18.1801 5.44333C17.9035 5.30243 17.5384 5.20565 16.9031 5.15374C16.2553 5.10082 15.4234 5.1 14.23 5.1H8.77C7.57656 5.1 6.74464 5.10082 6.09695 5.15374ZM10.45 7.2C11.0299 7.2 11.5 7.67011 11.5 8.25V16.65C11.5 17.2299 11.0299 17.7 10.45 17.7C9.87009 17.7 9.4 17.2299 9.4 16.65V8.25C9.4 7.67011 9.87009 7.2 10.45 7.2Z" />
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      width="24"
+      height="24"
+      {...props}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M8.72505 3H14.2749C15.4129 2.99999 16.3307 2.99998 17.074 3.06071C17.8394 3.12324 18.5116 3.25534 19.1335 3.57222C20.1213 4.07555 20.9245 4.8787 21.4278 5.86655C21.7446 6.48846 21.8767 7.16066 21.9393 7.92595C22 8.66921 22 9.58706 22 10.7251V14.1749C22 15.3129 22 16.2308 21.9393 16.974C21.8767 17.7394 21.7446 18.4116 21.4278 19.0335C20.9245 20.0213 20.1213 20.8245 19.1335 21.3277C18.5116 21.6446 17.8394 21.7767 17.074 21.8393C16.3308 21.9 15.4129 21.9 14.2749 21.9H8.72503C7.58706 21.9 6.66921 21.9 5.92595 21.8393C5.16066 21.7767 4.48846 21.6446 3.86655 21.3277C2.8787 20.8245 2.07555 20.0213 1.57222 19.0335C1.25534 18.4116 1.12324 17.7394 1.06071 16.974C0.999979 16.2307 0.99999 15.3129 1 14.1749V10.7251C0.99999 9.58708 0.999979 8.66922 1.06071 7.92595C1.12324 7.16066 1.25534 6.48846 1.57222 5.86655C2.07555 4.8787 2.8787 4.07555 3.86655 3.57222C4.48846 3.25534 5.16066 3.12324 5.92595 3.06071C6.66922 2.99998 7.58708 2.99999 8.72505 3ZM6.09695 5.15374C5.46152 5.20565 5.09645 5.30243 4.81993 5.44333C4.22722 5.74533 3.74533 6.22722 3.44333 6.81993C3.30243 7.09645 3.20565 7.46152 3.15374 8.09695C3.10082 8.74463 3.1 9.57656 3.1 10.77V14.13C3.1 15.3234 3.10082 16.1553 3.15374 16.8031C3.20565 17.4384 3.30243 17.8035 3.44333 18.0801C3.74533 18.6728 4.22722 19.1547 4.81993 19.4566C5.09645 19.5976 5.46152 19.6944 6.09695 19.7462C6.74464 19.7992 7.57656 19.8 8.77 19.8H14.23C15.4234 19.8 16.2553 19.7992 16.9031 19.7462C17.5384 19.6944 17.9035 19.5976 18.1801 19.4566C18.7728 19.1547 19.2547 18.6728 19.5567 18.0801C19.6976 17.8035 19.7944 17.4384 19.8462 16.8031C19.8992 16.1553 19.9 15.3234 19.9 14.13V10.77C19.9 9.57656 19.8992 8.74463 19.8462 8.09695C19.7944 7.46152 19.6976 7.09645 19.5567 6.81993C19.2547 6.22722 18.7728 5.74533 18.1801 5.44333C17.9035 5.30243 17.5384 5.20565 16.9031 5.15374C16.2553 5.10082 15.4234 5.1 14.23 5.1H8.77C7.57656 5.1 6.74464 5.10082 6.09695 5.15374ZM10.45 7.2C11.0299 7.2 11.5 7.67011 11.5 8.25V16.65C11.5 17.2299 11.0299 17.7 10.45 17.7C9.87009 17.7 9.4 17.2299 9.4 16.65V8.25C9.4 7.67011 9.87009 7.2 10.45 7.2Z"
+      />
       <path d="M4 8.5C4 7.11929 5.11929 6 6.5 6H16.5C17.8807 6 19 7.11929 19 8.5V16.5C19 17.8807 17.8807 19 16.5 19H6.5C5.11929 19 4 17.8807 4 16.5V8.5Z" />
     </svg>
-  )
+  );
 }
 
 export function AIPenIcon(props: IconProps) {
@@ -5645,5 +5689,5 @@ export function AIPenIcon(props: IconProps) {
         />
       </g>
     </svg>
-  )
+  );
 }

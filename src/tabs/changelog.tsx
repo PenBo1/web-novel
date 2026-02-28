@@ -1,8 +1,8 @@
-import { History, Tag, Plus, Bug, Zap, Palette, Info } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ThemeProvider } from "@/components/theme-provider"
-import "~styles/globals.css"
+import { History, Tag, Plus, Bug, Zap, Palette, Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ThemeProvider } from "@/components/theme-provider";
+import "~styles/globals.css";
 
 /**
  * 更新日志页面
@@ -22,8 +22,8 @@ export default function ChangelogPage() {
         { type: "feature", text: "支持键盘快捷键导航（左右方向键翻页）" },
         { type: "feature", text: "内置多个网络小说爬虫规则" },
         { type: "feature", text: "支持 HTML 格式导出下载" },
-        { type: "feature", text: "浅色/深色主题切换" }
-      ]
+        { type: "feature", text: "浅色/深色主题切换" },
+      ],
     },
     {
       version: "0.0.2",
@@ -35,8 +35,8 @@ export default function ChangelogPage() {
         { type: "improvement", text: "优化阅读条的响应式布局" },
         { type: "improvement", text: "改进章节加载性能" },
         { type: "bug", text: "修复某些网站上阅读条显示位置错误的问题" },
-        { type: "bug", text: "修复进度保存偶发丢失的问题" }
-      ]
+        { type: "bug", text: "修复进度保存偶发丢失的问题" },
+      ],
     },
     {
       version: "0.0.3",
@@ -49,49 +49,49 @@ export default function ChangelogPage() {
         { type: "feature", text: "新增书籍搜索与筛选功能" },
         { type: "improvement", text: "优化 UI 设计，提升视觉层次感" },
         { type: "improvement", text: "增强键盘快捷键的自定义能力" },
-        { type: "bug", text: "修复某些特殊字符导致的显示问题" }
-      ]
-    }
-  ]
+        { type: "bug", text: "修复某些特殊字符导致的显示问题" },
+      ],
+    },
+  ];
 
   const getTypeColor = (type: string) => {
     switch (type) {
       case "feature":
-        return "bg-green-500/10 text-green-700 border-green-200"
+        return "bg-green-500/10 text-green-700 border-green-200";
       case "improvement":
-        return "bg-blue-500/10 text-blue-700 border-blue-200"
+        return "bg-blue-500/10 text-blue-700 border-blue-200";
       case "bug":
-        return "bg-red-500/10 text-red-700 border-red-200"
+        return "bg-red-500/10 text-red-700 border-red-200";
       default:
-        return "bg-gray-500/10 text-gray-700 border-gray-200"
+        return "bg-gray-500/10 text-gray-700 border-gray-200";
     }
-  }
+  };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
       case "feature":
-        return <Plus className="w-3.5 h-3.5" />
+        return <Plus className="w-3.5 h-3.5" />;
       case "improvement":
-        return <Zap className="w-3.5 h-3.5" />
+        return <Zap className="w-3.5 h-3.5" />;
       case "bug":
-        return <Bug className="w-3.5 h-3.5" />
+        return <Bug className="w-3.5 h-3.5" />;
       default:
-        return <Info className="w-3.5 h-3.5" />
+        return <Info className="w-3.5 h-3.5" />;
     }
-  }
+  };
 
   const getVersionBadgeColor = (type: string) => {
     switch (type) {
       case "initial":
-        return "bg-purple-500/10 text-purple-700 border-purple-200"
+        return "bg-purple-500/10 text-purple-700 border-purple-200";
       case "improvement":
-        return "bg-blue-500/10 text-blue-700 border-blue-200"
+        return "bg-blue-500/10 text-blue-700 border-blue-200";
       case "feature":
-        return "bg-green-500/10 text-green-700 border-green-200"
+        return "bg-green-500/10 text-green-700 border-green-200";
       default:
-        return "bg-gray-500/10 text-gray-700 border-gray-200"
+        return "bg-gray-500/10 text-gray-700 border-gray-200";
     }
-  }
+  };
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -104,10 +104,14 @@ export default function ChangelogPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">更新日志</h1>
-              <p className="text-sm text-muted-foreground mt-1">Web-novel 版本更新历史与功能变更记录</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Web-novel 版本更新历史与功能变更记录
+              </p>
             </div>
           </div>
-          <Button variant="outline" onClick={() => window.close()}>关闭页面</Button>
+          <Button variant="outline" onClick={() => window.close()}>
+            关闭页面
+          </Button>
         </header>
 
         <main className="space-y-8">
@@ -131,15 +135,27 @@ export default function ChangelogPage() {
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h2 className="text-xl font-bold">v{release.version}</h2>
-                          <Badge className={`text-xs border ${getVersionBadgeColor(release.type)}`}>
-                            {release.type === "initial" ? "初始版本" : release.type === "feature" ? "新功能" : "优化更新"}
+                          <h2 className="text-xl font-bold">
+                            v{release.version}
+                          </h2>
+                          <Badge
+                            className={`text-xs border ${getVersionBadgeColor(release.type)}`}
+                          >
+                            {release.type === "initial"
+                              ? "初始版本"
+                              : release.type === "feature"
+                                ? "新功能"
+                                : "优化更新"}
                           </Badge>
                         </div>
-                        <p className="text-sm text-muted-foreground">{release.title}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {release.title}
+                        </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-medium text-muted-foreground">{release.date}</p>
+                        <p className="text-sm font-medium text-muted-foreground">
+                          {release.date}
+                        </p>
                       </div>
                     </div>
 
@@ -147,11 +163,15 @@ export default function ChangelogPage() {
                     <div className="space-y-2 mt-4 pt-4 border-t">
                       {release.changes.map((change, changeIdx) => (
                         <div key={changeIdx} className="flex items-start gap-3">
-                          <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center border ${getTypeColor(change.type)}`}>
+                          <div
+                            className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center border ${getTypeColor(change.type)}`}
+                          >
                             {getTypeIcon(change.type)}
                           </div>
                           <div className="flex-1 pt-0.5">
-                            <p className="text-sm text-foreground">{change.text}</p>
+                            <p className="text-sm text-foreground">
+                              {change.text}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -167,11 +187,22 @@ export default function ChangelogPage() {
             <div className="flex gap-3">
               <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
               <div className="text-sm text-muted-foreground">
-                <p className="font-semibold text-foreground mb-2">📝 更新说明</p>
+                <p className="font-semibold text-foreground mb-2">
+                  📝 更新说明
+                </p>
                 <ul className="space-y-1 text-xs">
-                  <li>• <span className="font-medium">新功能</span> - 新增的功能特性</li>
-                  <li>• <span className="font-medium">优化更新</span> - 性能优化与体验改进</li>
-                  <li>• <span className="font-medium">问题修复</span> - 已修复的 Bug 与问题</li>
+                  <li>
+                    • <span className="font-medium">新功能</span> -
+                    新增的功能特性
+                  </li>
+                  <li>
+                    • <span className="font-medium">优化更新</span> -
+                    性能优化与体验改进
+                  </li>
+                  <li>
+                    • <span className="font-medium">问题修复</span> - 已修复的
+                    Bug 与问题
+                  </li>
                   <li>• 所有更新均向下兼容，无需担心数据丢失</li>
                 </ul>
               </div>
@@ -180,9 +211,10 @@ export default function ChangelogPage() {
         </main>
 
         <footer className="mt-12 pt-8 border-t text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Web-novel Team. Built with ❤️ for reading.
+          © {new Date().getFullYear()} Web-novel Team. Built with ❤️ for
+          reading.
         </footer>
       </div>
     </ThemeProvider>
-  )
+  );
 }

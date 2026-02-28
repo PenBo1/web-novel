@@ -23,7 +23,11 @@
   position: relative;
 
   /* Use Geist font (inherited from root layout) */
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-family:
+    var(--font-geist-sans),
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-weight: 400;
 }
 
@@ -33,7 +37,11 @@ body:has([data-agents-page]) [data-radix-popper-content-wrapper],
 body:has([data-agents-page]) [role="dialog"],
 body:has([data-agents-page]) [data-sonner-toaster],
 body:has([data-agents-page]) [data-sonner-toast] {
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-family:
+    var(--font-geist-sans),
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-weight: 400;
 
   /* Custom text selection colors - uses theme's editor.selectionBackground */
@@ -178,7 +186,7 @@ body:has([data-agents-page]) [data-sonner-toast] {
     /* Reset hover/focus background - use inherit to match parent or selected state */
     transition: none !important;
   }
-  
+
   /* Override Tailwind hover utilities specifically */
   [data-agents-page] .hover\:bg-foreground\/5:hover,
   [data-agents-page] .hover\:text-foreground:hover,
@@ -188,7 +196,7 @@ body:has([data-agents-page]) [data-sonner-toast] {
     background-color: unset !important;
     color: unset !important;
   }
-  
+
   /* Ensure active state provides immediate feedback */
   [data-agents-page] button:active,
   [data-agents-page] [role="button"]:active,

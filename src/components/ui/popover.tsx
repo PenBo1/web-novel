@@ -1,24 +1,24 @@
-import * as React from "react"
-import * as PopoverPrimitive from "@radix-ui/react-popover"
+import * as React from "react";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib/utils";
 import {
   overlayContentBase,
   overlayMaxHeight,
   overlayAnimation,
   overlaySlideIn,
-} from "../../lib/overlay-styles"
+} from "../../lib/overlay-styles";
 
-const Popover = PopoverPrimitive.Root
+const Popover = PopoverPrimitive.Root;
 
-const PopoverTrigger = PopoverPrimitive.Trigger
+const PopoverTrigger = PopoverPrimitive.Trigger;
 
-const PopoverAnchor = PopoverPrimitive.Anchor
+const PopoverAnchor = PopoverPrimitive.Anchor;
 
 const PopoverContent = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content> & {
-    forceDark?: boolean
+    forceDark?: boolean;
   }
 >(
   (
@@ -44,9 +44,9 @@ const PopoverContent = React.forwardRef<
       />
     </PopoverPrimitive.Portal>
   ),
-)
-PopoverContent.displayName = PopoverPrimitive.Content.displayName
+);
+PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
-const PopoverClose = PopoverPrimitive.Close
+const PopoverClose = PopoverPrimitive.Close;
 
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverClose }
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverClose };

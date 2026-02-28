@@ -1,123 +1,202 @@
-import { useState, useEffect } from "react"
-import { Download, Trash2, RotateCcw, BookOpen, Info, Loader2, ExternalLink } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ThemeProvider } from "@/components/theme-provider"
-import type { Book, BookChapter } from "@/lib/types"
-import { StorageManager } from "@/lib/storage"
-import { toast, Toaster } from "sonner"
-import "~styles/globals.css"
+import { useState, useEffect } from "react";
+import {
+  Download,
+  Trash2,
+  RotateCcw,
+  BookOpen,
+  Info,
+  Loader2,
+  ExternalLink,
+  Trash,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ThemeProvider } from "@/components/theme-provider";
+import type { Book, BookChapter, DownloadRecord } from "@/lib/types";
+import { StorageManager } from "@/lib/storage";
+import { DownloadRecordManager } from "@/lib/idb-storage";
+import { toast, Toaster } from "sonner";
+import "~styles/globals.css";
 
 /**
  * 下载管理页面组件
  * 显示存储的小说下载记录，支持再次下载、删除等操作
  */
 export default function DownloadPage() {
-  const [books, setBooks] = useState<Book[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [downloadingId, setDownloadingId] = useState<string | null>(null)
-  const [storageUsed, setStorageUsed] = useState<string>("计算中...")
+  const [books, setBooks] = useState<Book[]>([]);
+  const [downloadRecords, setDownloadRecords] = useState<DownloadRecord[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [storageUsed, setStorageUsed] = useState<string>("计算中...");
+  const [downloadStats, setDownloadStats] = useState<{
+    totalRecords: number;
+    totalSize: number;
+    formatBreakdown: { html: number; epub: number; txt: number };
+    recentCount: number;
+  }>({
+    totalRecords: 0,
+    totalSize: 0,
+    formatBreakdown: { html: 0, epub: 0, txt: 0 },
+    recentCount: 0,
+  });
 
-  // 初始化加载书架数据
+  // 初始化加载数据
   useEffect(() => {
-    loadBooks()
-    calculateStorageUsage()
-  }, [])
+    loadData();
+  }, []);
 
-  const loadBooks = async () => {
+  const loadData = async () => {
     try {
-      setIsLoading(true)
-      const bookshelf = await StorageManager.getBookshelf()
-      setBooks(bookshelf)
+      setIsLoading(true);
+      const [bookshelf, records, stats] = await Promise.all([
+        StorageManager.getBookshelf(),
+        DownloadRecordManager.getAllRecords(),
+        DownloadRecordManager.getDownloadStats(),
+      ]);
+
+      setBooks(bookshelf);
+      setDownloadRecords(records);
+      setDownloadStats(stats);
+
+      const info = await StorageManager.getStorageInfo();
+      setStorageUsed(info.estimatedSize);
     } catch (error) {
-      console.error("Load books error:", error)
-      toast.error("加载书籍列表失败")
+      console.error("Load data error:", error);
+      toast.error("加载数据失败");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
-
-  /**
-   * 计算存储空间使用情况
-   */
-  const calculateStorageUsage = async () => {
-    try {
-      const info = await StorageManager.getStorageInfo()
-      setStorageUsed(info.estimatedSize)
-    } catch (error) {
-      console.error("Calculate storage error:", error)
-      setStorageUsed("计算失败")
-    }
-  }
+  };
 
   /**
    * 下载书籍为 HTML 格式
    */
   const handleDownloadBook = async (book: Book) => {
-    setDownloadingId(book.id)
+    setDownloadingId(book.id);
     try {
-      const chapters = await StorageManager.getBookChapters(book.id)
-      
+      const chapters = await StorageManager.getBookChapters(book.id);
+
       if (!chapters || chapters.length === 0) {
-        toast.error("书籍内容为空，无法下载")
-        return
+        toast.error("书籍内容为空，无法下载");
+        return;
       }
 
       // 生成 HTML 内容
-      const htmlContent = generateHTML(book, chapters)
-      
-      // 创建 Blob 并下载
-      const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement("a")
-      a.href = url
-      a.download = `${book.title}_${book.author || "未知作者"}.html`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
+      const htmlContent = generateHTML(book, chapters);
 
-      toast.success(`《${book.title}》下载成功`)
+      // 创建 Blob 并下载
+      const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${book.title}_${book.author || "未知作者"}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      // 记录下载
+      await DownloadRecordManager.createRecord(book.id, book, chapters, "html");
+
+      // 刷新下载记录
+      const records = await DownloadRecordManager.getAllRecords();
+      const stats = await DownloadRecordManager.getDownloadStats();
+      setDownloadRecords(records);
+      setDownloadStats(stats);
+
+      toast.success(`《${book.title}》下载成功`);
     } catch (error) {
-      console.error("Download error:", error)
-      toast.error("下载失败，请稍后重试")
+      console.error("Download error:", error);
+      toast.error("下载失败，请稍后重试");
     } finally {
-      setDownloadingId(null)
+      setDownloadingId(null);
     }
-  }
+  };
 
   /**
    * 删除书籍
    */
   const handleDeleteBook = async (book: Book) => {
     if (!confirm(`确定要删除《${book.title}》吗？此操作不可撤销。`)) {
-      return
+      return;
     }
 
     try {
-      await StorageManager.deleteBook(book.id)
-      setBooks(books.filter(b => b.id !== book.id))
-      toast.success(`《${book.title}》已删除`)
-      // 重新计算存储空间
-      calculateStorageUsage()
+      await StorageManager.deleteBook(book.id);
+      await DownloadRecordManager.deleteRecordsByBookId(book.id);
+
+      setBooks(books.filter((b) => b.id !== book.id));
+      const records = await DownloadRecordManager.getAllRecords();
+      const stats = await DownloadRecordManager.getDownloadStats();
+      setDownloadRecords(records);
+      setDownloadStats(stats);
+
+      toast.success(`《${book.title}》已删除`);
     } catch (error) {
-      console.error("Delete error:", error)
-      toast.error("删除失败")
+      console.error("Delete error:", error);
+      toast.error("删除失败");
     }
-  }
+  };
+
+  /**
+   * 删除单条下载记录
+   */
+  const handleDeleteRecord = async (recordId: string, recordTitle: string) => {
+    if (!confirm(`确定要删除下载记录《${recordTitle}》吗？`)) {
+      return;
+    }
+
+    try {
+      await DownloadRecordManager.deleteRecord(recordId);
+      const records = await DownloadRecordManager.getAllRecords();
+      const stats = await DownloadRecordManager.getDownloadStats();
+      setDownloadRecords(records);
+      setDownloadStats(stats);
+
+      toast.success("下载记录已删除");
+    } catch (error) {
+      console.error("Delete record error:", error);
+      toast.error("删除失败");
+    }
+  };
+
+  /**
+   * 清空所有下载记录
+   */
+  const handleClearAllRecords = async () => {
+    if (!confirm("确定要清空所有下载记录吗？此操作不可撤销。")) {
+      return;
+    }
+
+    try {
+      await DownloadRecordManager.clearAllRecords();
+      setDownloadRecords([]);
+      setDownloadStats({
+        totalRecords: 0,
+        totalSize: 0,
+        formatBreakdown: { html: 0, epub: 0, txt: 0 },
+        recentCount: 0,
+      });
+
+      toast.success("所有下载记录已清空");
+    } catch (error) {
+      console.error("Clear records error:", error);
+      toast.error("清空失败");
+    }
+  };
 
   /**
    * 激活书籍为当前阅读
    */
   const handleActivateBook = async (book: Book) => {
     try {
-      await StorageManager.switchBook(book.id)
-      toast.success(`已切换到《${book.title}》`)
+      await StorageManager.switchBook(book.id);
+      toast.success(`已切换到《${book.title}》`);
     } catch (error) {
-      console.error("Activate error:", error)
-      toast.error("激活失败")
+      console.error("Activate error:", error);
+      toast.error("激活失败");
     }
-  }
+  };
 
   /**
    * 生成 HTML 文件内容
@@ -125,19 +204,26 @@ export default function DownloadPage() {
   const generateHTML = (book: Book, chapters: BookChapter[]): string => {
     // 生成章节内容
     const chaptersContent = chapters
-      .map((ch, idx) => `
+      .map(
+        (ch, idx) => `
     <div class="chapter" id="ch${idx}">
       <h2>${escapeHtml(ch.title)}</h2>
       <div class="content">
-        ${escapeHtml(ch.content).split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('')}
+        ${escapeHtml(ch.content)
+          .split("\n")
+          .map((p) => (p.trim() ? `<p>${p}</p>` : ""))
+          .join("")}
       </div>
-    </div>`)
-      .join("")
+    </div>`,
+      )
+      .join("");
 
     // 生成目录
     const toc = chapters
-      .map((ch, idx) => `<li><a href="#ch${idx}">${escapeHtml(ch.title)}</a></li>`)
-      .join("")
+      .map(
+        (ch, idx) => `<li><a href="#ch${idx}">${escapeHtml(ch.title)}</a></li>`,
+      )
+      .join("");
 
     return `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -238,7 +324,7 @@ export default function DownloadPage() {
       <div class="metadata">
         <p><strong>作者：</strong>${escapeHtml(book.author || "未知")}</p>
         <p><strong>章节数：</strong>${chapters.length}</p>
-        <p><strong>导出时间：</strong>${new Date().toLocaleString('zh-CN')}</p>
+        <p><strong>导出时间：</strong>${new Date().toLocaleString("zh-CN")}</p>
       </div>
       
       <div class="toc">
@@ -251,22 +337,22 @@ export default function DownloadPage() {
       ${chaptersContent}
     </div>
   </body>
-</html>`
-  }
+</html>`;
+  };
 
   /**
    * 转义 HTML 特殊字符
    */
   const escapeHtml = (text: string): string => {
     const map: { [key: string]: string } = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;'
-    }
-    return text.replace(/[&<>"']/g, m => map[m])
-  }
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;",
+    };
+    return text.replace(/[&<>"']/g, (m) => map[m]);
+  };
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -280,21 +366,33 @@ export default function DownloadPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">下载管理</h1>
-              <p className="text-sm text-muted-foreground mt-1">管理您的小说下载记录与本地存储</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                管理您的小说下载记录与本地存储
+              </p>
             </div>
           </div>
-          <Button variant="outline" onClick={() => window.close()}>关闭页面</Button>
+          <Button variant="outline" onClick={() => window.close()}>
+            关闭页面
+          </Button>
         </header>
 
         {/* 统计信息 */}
-        <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="mb-8 grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="p-4 rounded-2xl border bg-card">
             <div className="text-sm text-muted-foreground mb-1">已下载书籍</div>
             <div className="text-3xl font-bold">{books.length}</div>
           </div>
           <div className="p-4 rounded-2xl border bg-card">
-            <div className="text-sm text-muted-foreground mb-1">总章节数</div>
-            <div className="text-3xl font-bold">{books.reduce((sum, b) => sum + b.totalChapters, 0)}</div>
+            <div className="text-sm text-muted-foreground mb-1">下载记录</div>
+            <div className="text-3xl font-bold">
+              {downloadStats.totalRecords}
+            </div>
+          </div>
+          <div className="p-4 rounded-2xl border bg-card">
+            <div className="text-sm text-muted-foreground mb-1">最近7天</div>
+            <div className="text-3xl font-bold">
+              {downloadStats.recentCount}
+            </div>
           </div>
           <div className="p-4 rounded-2xl border bg-card">
             <div className="text-sm text-muted-foreground mb-1">存储空间</div>
@@ -302,113 +400,99 @@ export default function DownloadPage() {
           </div>
         </div>
 
-        {/* 书籍列表 */}
-        <section className="space-y-6">
+        {/* 下载记录列表 */}
+        <section className="space-y-6 mt-12">
           <div className="flex items-center justify-between border-b pb-4">
-            <h2 className="text-xl font-bold">我的书库 ({books.length})</h2>
-            {books.length > 0 && (
-              <Button variant="outline" size="sm" onClick={loadBooks} className="gap-2">
-                <RotateCcw className="w-4 h-4" />
-                刷新
+            <h2 className="text-xl font-bold">
+              下载记录 ({downloadStats.totalRecords})
+            </h2>
+            {downloadStats.totalRecords > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleClearAllRecords}
+                className="gap-2 hover:bg-destructive/10 hover:text-destructive"
+              >
+                <Trash className="w-4 h-4" />
+                清空记录
               </Button>
             )}
           </div>
 
-          {isLoading ? (
-            <div className="py-20 text-center space-y-4">
-              <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
-              <p className="text-muted-foreground">加载中...</p>
-            </div>
-          ) : books.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {books.map((book) => (
-                <div key={book.id} className="p-5 rounded-2xl border bg-card hover:border-primary/30 transition-all flex flex-col gap-4 group">
-                  {/* 书籍信息 */}
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex-1">
-                        <h3 className="font-bold text-lg line-clamp-2 group-hover:text-primary transition-colors">{book.title}</h3>
-                        <p className="text-sm text-muted-foreground">{book.author || "未知作者"}</p>
-                      </div>
-                      {book.isScraped && (
-                        <Badge variant="outline" className="text-[10px] opacity-70 shrink-0">
-                          在线源
+          {downloadRecords.length > 0 ? (
+            <div className="space-y-3">
+              {/* 格式统计 */}
+              <div className="flex gap-2 mb-4">
+                {downloadStats.formatBreakdown.html > 0 && (
+                  <Badge variant="secondary">
+                    HTML: {downloadStats.formatBreakdown.html}
+                  </Badge>
+                )}
+                {downloadStats.formatBreakdown.epub > 0 && (
+                  <Badge variant="secondary">
+                    EPUB: {downloadStats.formatBreakdown.epub}
+                  </Badge>
+                )}
+                {downloadStats.formatBreakdown.txt > 0 && (
+                  <Badge variant="secondary">
+                    TXT: {downloadStats.formatBreakdown.txt}
+                  </Badge>
+                )}
+              </div>
+
+              {/* 记录列表 */}
+              <div className="space-y-2">
+                {downloadRecords.map((record) => (
+                  <div
+                    key={record.id}
+                    className="p-4 rounded-xl border bg-card hover:border-primary/30 transition-all flex items-center justify-between group"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-semibold truncate">
+                          {record.title}
+                        </h3>
+                        <Badge
+                          variant="outline"
+                          className="text-[10px] shrink-0"
+                        >
+                          {record.format.toUpperCase()}
                         </Badge>
-                      )}
+                        <Badge
+                          variant="secondary"
+                          className="text-[10px] shrink-0"
+                        >
+                          {(record.fileSize / 1024).toFixed(1)} KB
+                        </Badge>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {record.author && <span>{record.author} • </span>}
+                        {record.chapterCount} 章 •{" "}
+                        {new Date(record.downloadedAt).toLocaleString("zh-CN")}
+                      </div>
                     </div>
-
-                    {/* 书籍统计 */}
-                    <div className="text-[11px] text-muted-foreground space-y-1 mt-3">
-                      <p>总章节：{book.totalChapters}</p>
-                      <p>阅读进度：第 {(book.progress?.chapterIndex ?? 0) + 1} 章</p>
-                      <p>添加时间：{new Date(book.addedAt).toLocaleDateString("zh-CN")}</p>
-                    </div>
-                  </div>
-
-                  {/* 操作按钮 */}
-                  <div className="flex gap-2 pt-2 border-t">
-                    <Button 
-                      size="sm" 
-                      className="flex-1 gap-1.5 h-9 rounded-xl"
-                      onClick={() => handleActivateBook(book)}
-                    >
-                      <BookOpen className="w-4 h-4" />
-                      阅读
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      className="flex-1 gap-1.5 h-9 rounded-xl"
-                      onClick={() => handleDownloadBook(book)}
-                      disabled={downloadingId === book.id}
-                    >
-                      {downloadingId === book.id ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          下载中
-                        </>
-                      ) : (
-                        <>
-                          <Download className="w-4 h-4" />
-                          导出HTML
-                        </>
-                      )}
-                    </Button>
-                    <Button 
-                      size="icon" 
-                      variant="outline" 
-                      className="w-9 h-9 rounded-xl shrink-0 hover:bg-destructive/10 hover:text-destructive"
-                      onClick={() => handleDeleteBook(book)}
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() =>
+                        handleDeleteRecord(record.id, record.title)
+                      }
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
-
-                  {/* 在线源链接 */}
-                  {book.isScraped && book.bookUrl && (
-                    <Button 
-                      size="sm" 
-                      variant="ghost" 
-                      className="w-full gap-2 text-xs h-8 rounded-lg"
-                      asChild
-                    >
-                      <a href={book.bookUrl} target="_blank" rel="noreferrer">
-                        <ExternalLink className="w-3 h-3" />
-                        查看原始链接
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           ) : (
-            <div className="py-20 text-center space-y-4">
+            <div className="py-12 text-center space-y-4">
               <div className="inline-flex p-4 rounded-full bg-muted/50">
                 <Info className="w-8 h-8 text-muted-foreground" />
               </div>
-              <p className="text-muted-foreground">还没有下载任何书籍</p>
+              <p className="text-muted-foreground">还没有下载记录</p>
               <p className="text-sm text-muted-foreground">
-                前往<span className="text-primary font-semibold">搜索</span>页面或<span className="text-primary font-semibold">导入</span>本地文件开始阅读
+                点击书籍的"导出HTML"按钮即可创建下载记录
               </p>
             </div>
           )}
@@ -420,11 +504,18 @@ export default function DownloadPage() {
             <div className="flex gap-3">
               <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
               <div className="text-sm text-muted-foreground">
-                <p className="font-semibold text-foreground mb-2">💡 使用提示</p>
+                <p className="font-semibold text-foreground mb-2">
+                  💡 使用提示
+                </p>
                 <ul className="space-y-1 text-xs">
                   <li>• 所有书籍数据存储在浏览器本地，不会上传到服务器</li>
-                  <li>• 点击"阅读"可将书籍设为当前活动，在任何网页上显示阅读条</li>
-                  <li>• 点击"导出HTML"可将书籍导出为 HTML 格式，方便在浏览器或其他设备阅读</li>
+                  <li>
+                    • 点击"阅读"可将书籍设为当前活动，在任何网页上显示阅读条
+                  </li>
+                  <li>
+                    • 点击"导出HTML"可将书籍导出为 HTML
+                    格式，方便在浏览器或其他设备阅读
+                  </li>
                   <li>• 删除书籍后无法恢复，请谨慎操作</li>
                 </ul>
               </div>
@@ -433,5 +524,5 @@ export default function DownloadPage() {
         )}
       </div>
     </ThemeProvider>
-  )
+  );
 }

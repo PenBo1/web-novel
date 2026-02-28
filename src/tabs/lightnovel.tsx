@@ -1,22 +1,37 @@
-import { useState } from "react"
-import { Download, Loader2, Search, AlertCircle, Copy, Check } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "sonner"
-import { useNovelParser, useNovelDownloader, useVolumeSelection } from "@/lib/lightnovel/hooks"
-import type { NovelInfo, DownloadProgress } from "@/lib/lightnovel/types"
-import "~styles/globals.css"
+import { useState } from "react";
+import {
+  Download,
+  Loader2,
+  Search,
+  AlertCircle,
+  Copy,
+  Check,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster, toast } from "sonner";
+import { EpubGenerator } from "@/lib/epub-generator";
+import { DownloadRecordManager } from "@/lib/idb-storage";
+import { StorageManager } from "@/lib/storage";
+import type { Book, BookChapter } from "@/lib/types";
+import type { NovelInfo, DownloadProgress } from "@/lib/lightnovel/types";
+import {
+  useNovelParser,
+  useNovelDownloader,
+  useVolumeSelection,
+} from "@/lib/lightnovel/hooks";
+import "~styles/globals.css";
 
 /**
  * 来源选择器
  */
 const SourceSelector = ({
   source,
-  onSourceChange
+  onSourceChange,
 }: {
-  source: "bili" | "wenku"
-  onSourceChange: (source: "bili" | "wenku") => void
+  source: "bili" | "wenku";
+  onSourceChange: (source: "bili" | "wenku") => void;
 }) => (
   <div className="flex gap-2">
     <Button
@@ -34,7 +49,7 @@ const SourceSelector = ({
       轻小说文库
     </Button>
   </div>
-)
+);
 
 /**
  * 输入框和搜索按钮
@@ -44,24 +59,32 @@ const SearchInput = ({
   onInputChange,
   onSearch,
   isLoading,
-  source
+  source,
 }: {
-  input: string
-  onInputChange: (value: string) => void
-  onSearch: () => void
-  isLoading: boolean
-  source: "bili" | "wenku"
+  input: string;
+  onInputChange: (value: string) => void;
+  onSearch: () => void;
+  isLoading: boolean;
+  source: "bili" | "wenku";
 }) => (
   <div className="flex gap-2">
     <Input
-      placeholder={source === "bili" ? "输入小说 ID 或链接（如：123456）" : "输入小说 ID 或链接"}
+      placeholder={
+        source === "bili"
+          ? "输入小说 ID 或链接（如：123456）"
+          : "输入小说 ID 或链接"
+      }
       value={input}
       onChange={(e) => onInputChange(e.target.value)}
       onKeyPress={(e) => e.key === "Enter" && onSearch()}
       disabled={isLoading}
       className="flex-1"
     />
-    <Button onClick={onSearch} disabled={isLoading || !input.trim()} className="gap-2">
+    <Button
+      onClick={onSearch}
+      disabled={isLoading || !input.trim()}
+      className="gap-2"
+    >
       {isLoading ? (
         <>
           <Loader2 className="w-4 h-4 animate-spin" />
@@ -75,12 +98,18 @@ const SearchInput = ({
       )}
     </Button>
   </div>
-)
+);
 
 /**
  * 使用示例提示
  */
-const UsageExample = ({ copied, onCopy }: { copied: boolean; onCopy: () => void }) => (
+const UsageExample = ({
+  copied,
+  onCopy,
+}: {
+  copied: boolean;
+  onCopy: () => void;
+}) => (
   <div className="rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-6">
     <div className="flex gap-3">
       <AlertCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
@@ -90,19 +119,30 @@ const UsageExample = ({ copied, onCopy }: { copied: boolean; onCopy: () => void 
           <p>方式一：直接输入小说 ID</p>
           <div className="mt-2 flex items-center gap-2 bg-background/50 p-2 rounded border">
             <code className="text-xs flex-1">123456</code>
-            <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={onCopy}>
-              {copied ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-6 w-6 p-0"
+              onClick={onCopy}
+            >
+              {copied ? (
+                <Check className="w-3 h-3 text-green-500" />
+              ) : (
+                <Copy className="w-3 h-3" />
+              )}
             </Button>
           </div>
           <p className="mt-3">方式二：粘贴完整链接</p>
           <div className="mt-2 flex items-center gap-2 bg-background/50 p-2 rounded border">
-            <code className="text-xs flex-1 truncate">https://www.bilinovel.com/novel/123456</code>
+            <code className="text-xs flex-1 truncate">
+              https://www.bilinovel.com/novel/123456
+            </code>
           </div>
         </div>
       </div>
     </div>
   </div>
-)
+);
 
 /**
  * 小说信息卡片
@@ -112,7 +152,11 @@ const NovelInfoCard = ({ novelInfo }: { novelInfo: NovelInfo }) => (
     {/* 封面 */}
     {novelInfo.cover && (
       <div className="w-32 h-48 shrink-0 rounded-lg overflow-hidden border bg-muted">
-        <img src={novelInfo.cover} alt={novelInfo.title} className="w-full h-full object-cover" />
+        <img
+          src={novelInfo.cover}
+          alt={novelInfo.title}
+          className="w-full h-full object-cover"
+        />
       </div>
     )}
 
@@ -141,7 +185,7 @@ const NovelInfoCard = ({ novelInfo }: { novelInfo: NovelInfo }) => (
       </div>
     </div>
   </div>
-)
+);
 
 /**
  * 卷选择器
@@ -150,12 +194,12 @@ const VolumeSelector = ({
   volumes,
   selectedVolumes,
   onToggleVolume,
-  onToggleAll
+  onToggleAll,
 }: {
-  volumes: NovelInfo["volumes"]
-  selectedVolumes: Set<number>
-  onToggleVolume: (index: number) => void
-  onToggleAll: () => void
+  volumes: NovelInfo["volumes"];
+  selectedVolumes: Set<number>;
+  onToggleVolume: (index: number) => void;
+  onToggleAll: () => void;
 }) => (
   <div className="space-y-2">
     <div className="flex items-center justify-between">
@@ -183,7 +227,7 @@ const VolumeSelector = ({
       ))}
     </div>
   </div>
-)
+);
 
 /**
  * 章节范围输入
@@ -193,13 +237,13 @@ const ChapterRangeInput = ({
   endChapter,
   onStartChange,
   onEndChange,
-  disabled
+  disabled,
 }: {
-  startChapter: string
-  endChapter: string
-  onStartChange: (value: string) => void
-  onEndChange: (value: string) => void
-  disabled: boolean
+  startChapter: string;
+  endChapter: string;
+  onStartChange: (value: string) => void;
+  onEndChange: (value: string) => void;
+  disabled: boolean;
 }) => (
   <div className="grid grid-cols-2 gap-4">
     <div>
@@ -223,7 +267,7 @@ const ChapterRangeInput = ({
       />
     </div>
   </div>
-)
+);
 
 /**
  * 下载进度显示
@@ -240,13 +284,13 @@ const DownloadProgressBar = ({ progress }: { progress: DownloadProgress }) => (
       <div
         className="h-full bg-primary transition-all"
         style={{
-          width: `${progress.total > 0 ? (progress.current / progress.total) * 100 : 0}%`
+          width: `${progress.total > 0 ? (progress.current / progress.total) * 100 : 0}%`,
         }}
       />
     </div>
     <p className="text-xs text-muted-foreground truncate">{progress.status}</p>
   </div>
-)
+);
 
 /**
  * 重要提示
@@ -268,7 +312,7 @@ const ImportantNotice = () => (
       </div>
     </div>
   </div>
-)
+);
 
 /**
  * 轻小说下载页面
@@ -276,55 +320,121 @@ const ImportantNotice = () => (
  */
 export default function LightNovelPage() {
   // 状态管理
-  const [input, setInput] = useState("")
-  const [source, setSource] = useState<"bili" | "wenku">("bili")
-  const [novelInfo, setNovelInfo] = useState<NovelInfo | null>(null)
-  const [startChapter, setStartChapter] = useState("1")
-  const [endChapter, setEndChapter] = useState("")
-  const [addVolumeTitle, setAddVolumeTitle] = useState(true)
-  const [copied, setCopied] = useState(false)
+  const [input, setInput] = useState("");
+  const [source, setSource] = useState<"bili" | "wenku">("bili");
+  const [novelInfo, setNovelInfo] = useState<NovelInfo | null>(null);
+  const [startChapter, setStartChapter] = useState("1");
+  const [endChapter, setEndChapter] = useState("");
+  const [addVolumeTitle, setAddVolumeTitle] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   // 自定义 hooks
-  const { parseNovel, isLoading } = useNovelParser()
-  const { downloadNovel, downloadProgress } = useNovelDownloader()
-  const { selectedVolumes, setSelectedVolumes, toggleVolume, toggleAllVolumes } = useVolumeSelection()
+  const { parseNovel, isLoading } = useNovelParser();
+  const { downloadNovel, downloadProgress } = useNovelDownloader();
+  const {
+    selectedVolumes,
+    setSelectedVolumes,
+    toggleVolume,
+    toggleAllVolumes,
+  } = useVolumeSelection();
 
   // 处理解析
   const handleParseUrl = async () => {
     if (!input.trim()) {
-      return
+      return;
     }
 
     try {
-      const info = await parseNovel(input, source)
-      setNovelInfo(info)
-      setSelectedVolumes(new Set([0]))
-      setEndChapter(info.volumes[0]?.chapters.length.toString() || "")
+      const info = await parseNovel(input, source);
+      setNovelInfo(info);
+      setSelectedVolumes(new Set([0]));
+      setEndChapter(info.volumes[0]?.chapters.length.toString() || "");
     } catch {
       // 错误已由 hook 处理
     }
-  }
+  };
 
   // 处理下载
   const handleDownloadChapters = async () => {
-    if (!novelInfo) return
+    if (!novelInfo) return;
 
-    const start = Math.max(1, parseInt(startChapter) || 1)
-    const end = parseInt(endChapter) || 999999
+    const start = Math.max(1, parseInt(startChapter) || 1);
+    const end = parseInt(endChapter) || 999999;
 
-    await downloadNovel(novelInfo, selectedVolumes, start, end, addVolumeTitle)
+    await downloadNovel(novelInfo, selectedVolumes, start, end, addVolumeTitle);
 
     // 重置状态
-    setNovelInfo(null)
-    setInput("")
-  }
+    setNovelInfo(null);
+    setInput("");
+  };
+
+  // 处理直接下载 EPUB
+  const handleExportEpub = async () => {
+    if (!novelInfo) return;
+    setIsExporting(true);
+
+    try {
+      const start = Math.max(1, parseInt(startChapter) || 1);
+      const end = parseInt(endChapter) || 999999;
+
+      // 1. 先下载到本地存储
+      await downloadNovel(
+        novelInfo,
+        selectedVolumes,
+        start,
+        end,
+        addVolumeTitle,
+      );
+
+      // 2. 从存储中读取并打包
+      const bookId = `ln-${novelInfo.id}`;
+      const chapters = await StorageManager.getBookChapters(bookId);
+
+      if (!chapters || chapters.length === 0) {
+        throw new Error("下载失败，无法生成文件");
+      }
+
+      const book: Book = {
+        id: bookId,
+        title: novelInfo.title,
+        author: novelInfo.author,
+        cover: novelInfo.cover,
+        totalChapters: chapters.length,
+        addedAt: Date.now(),
+        progress: { chapterIndex: 0, scroll: 0 },
+      };
+
+      const generator = new EpubGenerator(book, chapters);
+      const blob = await generator.generate();
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${novelInfo.title}.epub`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      // 记录
+      await DownloadRecordManager.createRecord(book.id, book, chapters, "epub");
+
+      toast.success("导出成功");
+    } catch (e: any) {
+      console.error("Export error:", e);
+      toast.error(`导出失败：${e.message}`);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   // 复制到剪贴板
   const copyToClipboard = () => {
-    navigator.clipboard.writeText("https://www.bilinovel.com/novel/123456")
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    navigator.clipboard.writeText("https://www.bilinovel.com/novel/123456");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -338,7 +448,9 @@ export default function LightNovelPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold">轻小说下载</h1>
-              <p className="text-sm text-muted-foreground mt-1">从网络来源下载轻小说到本地书架</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                从网络来源下载轻小说到本地书架
+              </p>
             </div>
           </div>
           <Button variant="outline" onClick={() => window.close()}>
@@ -389,7 +501,9 @@ export default function LightNovelPage() {
                     volumes={novelInfo.volumes}
                     selectedVolumes={selectedVolumes}
                     onToggleVolume={toggleVolume}
-                    onToggleAll={() => toggleAllVolumes(novelInfo.volumes.length)}
+                    onToggleAll={() =>
+                      toggleAllVolumes(novelInfo.volumes.length)
+                    }
                   />
 
                   {/* 章节范围 */}
@@ -411,19 +525,28 @@ export default function LightNovelPage() {
                       disabled={downloadProgress !== null}
                       className="w-4 h-4"
                     />
-                    <label htmlFor="addVolumeTitle" className="text-sm cursor-pointer">
+                    <label
+                      htmlFor="addVolumeTitle"
+                      className="text-sm cursor-pointer"
+                    >
                       为每卷添加标题
                     </label>
                   </div>
 
                   {/* 下载进度 */}
-                  {downloadProgress && <DownloadProgressBar progress={downloadProgress} />}
+                  {downloadProgress && (
+                    <DownloadProgressBar progress={downloadProgress} />
+                  )}
 
                   {/* 操作按钮 */}
                   <div className="flex gap-2 pt-2">
                     <Button
                       onClick={handleDownloadChapters}
-                      disabled={downloadProgress !== null || selectedVolumes.size === 0}
+                      disabled={
+                        downloadProgress !== null ||
+                        selectedVolumes.size === 0 ||
+                        isExporting
+                      }
                       className="flex-1 gap-2"
                     >
                       {downloadProgress ? (
@@ -434,17 +557,39 @@ export default function LightNovelPage() {
                       ) : (
                         <>
                           <Download className="w-4 h-4" />
-                          开始下载
+                          保存到书架
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      onClick={handleExportEpub}
+                      disabled={
+                        downloadProgress !== null ||
+                        selectedVolumes.size === 0 ||
+                        isExporting
+                      }
+                      variant="secondary"
+                      className="flex-1 gap-2"
+                    >
+                      {isExporting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          打包中...
+                        </>
+                      ) : (
+                        <>
+                          <Download className="w-4 h-4" />
+                          直接导出 EPUB
                         </>
                       )}
                     </Button>
                     <Button
                       variant="outline"
                       onClick={() => {
-                        setNovelInfo(null)
-                        setInput("")
+                        setNovelInfo(null);
+                        setInput("");
                       }}
-                      disabled={downloadProgress !== null}
+                      disabled={downloadProgress !== null || isExporting}
                     >
                       取消
                     </Button>
@@ -459,5 +604,5 @@ export default function LightNovelPage() {
         </main>
       </div>
     </ThemeProvider>
-  )
+  );
 }

@@ -39,7 +39,7 @@
   }
 
   .dark,
-  [data-theme='21st-dark'] {
+  [data-theme="21st-dark"] {
     --background: 240 10% 3.9%;
     --foreground: 240 4.8% 95.9%;
     --card: 240 10% 3.9%;
@@ -284,7 +284,9 @@
   border: 1px solid hsl(var(--border)) !important;
   border-radius: 6px;
   margin: 0 !important;
-  transition: background-color 150ms ease-out, transform 150ms ease-out;
+  transition:
+    background-color 150ms ease-out,
+    transform 150ms ease-out;
 }
 
 [data-sonner-toast][data-styled="true"] [data-button]:hover {

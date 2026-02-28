@@ -1,13 +1,13 @@
-import * as shiki from "shiki"
-import { isBuiltinTheme } from "../vscode-themes"
-import { getBuiltinThemeById } from "./builtin-themes"
-import type { VSCodeFullTheme } from "../atoms"
+import * as shiki from "shiki";
+import { isBuiltinTheme } from "../vscode-themes";
+import { getBuiltinThemeById } from "./builtin-themes";
+import type { VSCodeFullTheme } from "../atoms";
 
 /**
  * Shared Shiki highlighter instance
  * Initialized with default themes, can load additional themes dynamically
  */
-let highlighterPromise: Promise<shiki.Highlighter> | null = null
+let highlighterPromise: Promise<shiki.Highlighter> | null = null;
 
 // ============================================================================
 // LRU CACHE FOR HIGHLIGHT RESULTS
@@ -15,46 +15,46 @@ let highlighterPromise: Promise<shiki.Highlighter> | null = null
 // Prevents re-highlighting the same code when switching tabs.
 // Key: `${themeId}:${language}:${code}` -> Value: highlighted HTML
 // Max 500 entries (~5MB assuming 10KB average per entry)
-const HIGHLIGHT_CACHE_MAX_SIZE = 500
+const HIGHLIGHT_CACHE_MAX_SIZE = 500;
 
 class LRUCache<K, V> {
-  private cache = new Map<K, V>()
-  private maxSize: number
+  private cache = new Map<K, V>();
+  private maxSize: number;
 
   constructor(maxSize: number) {
-    this.maxSize = maxSize
+    this.maxSize = maxSize;
   }
 
   get(key: K): V | undefined {
-    const value = this.cache.get(key)
+    const value = this.cache.get(key);
     if (value !== undefined) {
       // Move to end (most recently used)
-      this.cache.delete(key)
-      this.cache.set(key, value)
+      this.cache.delete(key);
+      this.cache.set(key, value);
     }
-    return value
+    return value;
   }
 
   set(key: K, value: V): void {
     // Delete first to ensure it's at the end
-    this.cache.delete(key)
-    this.cache.set(key, value)
+    this.cache.delete(key);
+    this.cache.set(key, value);
 
     // Evict oldest entries if over capacity
     if (this.cache.size > this.maxSize) {
-      const firstKey = this.cache.keys().next().value
+      const firstKey = this.cache.keys().next().value;
       if (firstKey !== undefined) {
-        this.cache.delete(firstKey)
+        this.cache.delete(firstKey);
       }
     }
   }
 
   has(key: K): boolean {
-    return this.cache.has(key)
+    return this.cache.has(key);
   }
 }
 
-const highlightCache = new LRUCache<string, string>(HIGHLIGHT_CACHE_MAX_SIZE)
+const highlightCache = new LRUCache<string, string>(HIGHLIGHT_CACHE_MAX_SIZE);
 
 /**
  * Languages supported by the highlighter
@@ -72,7 +72,7 @@ const SUPPORTED_LANGUAGES: shiki.BundledLanguage[] = [
   "rust",
   "bash",
   "markdown",
-]
+];
 
 /**
  * Default themes to load initially - include all shiki bundled themes we might need
@@ -85,7 +85,7 @@ const DEFAULT_THEMES: shiki.BundledTheme[] = [
   "min-dark",
   "min-light",
   "vesper",
-]
+];
 
 /**
  * Map our custom theme IDs to Shiki bundled themes for syntax highlighting
@@ -108,7 +108,7 @@ const THEME_TO_SHIKI_MAP: Record<string, shiki.BundledTheme> = {
   "min-light": "min-light",
   // Cursor themes have their own tokenColors - use them directly via loadFullTheme
   // (not in this map, so they'll use their own tokenColors)
-}
+};
 
 /**
  * Get or create the Shiki highlighter instance
@@ -118,13 +118,13 @@ export async function getHighlighter(): Promise<shiki.Highlighter> {
     highlighterPromise = shiki.createHighlighter({
       themes: DEFAULT_THEMES,
       langs: SUPPORTED_LANGUAGES,
-    })
+    });
   }
-  return highlighterPromise
+  return highlighterPromise;
 }
 
 // Cache for full themes (from the new full theme system)
-const fullThemesCache = new Map<string, any>()
+const fullThemesCache = new Map<string, any>();
 
 /**
  * Load a full VS Code theme into Shiki
@@ -133,10 +133,10 @@ const fullThemesCache = new Map<string, any>()
 export async function loadFullTheme(theme: VSCodeFullTheme): Promise<void> {
   // Skip if already loaded
   if (fullThemesCache.has(theme.id)) {
-    return
+    return;
   }
 
-  const highlighter = await getHighlighter()
+  const highlighter = await getHighlighter();
 
   try {
     // Create a Shiki-compatible theme object
@@ -145,12 +145,12 @@ export async function loadFullTheme(theme: VSCodeFullTheme): Promise<void> {
       type: theme.type,
       colors: theme.colors,
       tokenColors: theme.tokenColors || [],
-    }
+    };
 
-    await highlighter.loadTheme(shikiTheme)
-    fullThemesCache.set(theme.id, shikiTheme)
+    await highlighter.loadTheme(shikiTheme);
+    fullThemesCache.set(theme.id, shikiTheme);
   } catch (error) {
-    console.error(`Failed to load full theme ${theme.id}:`, error)
+    console.error(`Failed to load full theme ${theme.id}:`, error);
     // Don't throw - allow fallback to default theme
   }
 }
@@ -160,7 +160,7 @@ export async function loadFullTheme(theme: VSCodeFullTheme): Promise<void> {
  */
 function isShikiBundledTheme(themeId: string): boolean {
   // These are the Shiki bundled themes that we load
-  return DEFAULT_THEMES.includes(themeId as shiki.BundledTheme)
+  return DEFAULT_THEMES.includes(themeId as shiki.BundledTheme);
 }
 
 /**
@@ -170,31 +170,31 @@ function isShikiBundledTheme(themeId: string): boolean {
 function getShikiThemeForHighlighting(themeId: string): string {
   // If there's a direct mapping to a bundled theme, use it
   if (themeId in THEME_TO_SHIKI_MAP) {
-    return THEME_TO_SHIKI_MAP[themeId]
+    return THEME_TO_SHIKI_MAP[themeId];
   }
-  
+
   // If it's already a shiki bundled theme, use it directly
   if (isShikiBundledTheme(themeId)) {
-    return themeId
+    return themeId;
   }
-  
+
   // If the theme is loaded in our cache (has tokenColors), use it directly
   if (fullThemesCache.has(themeId)) {
-    return themeId
+    return themeId;
   }
-  
+
   // Check the theme type and use appropriate default
-  const builtinTheme = getBuiltinThemeById(themeId)
+  const builtinTheme = getBuiltinThemeById(themeId);
   if (builtinTheme) {
     // If the theme has tokenColors, load it and use it
     if (builtinTheme.tokenColors && builtinTheme.tokenColors.length > 0) {
-      return themeId // Will be loaded by ensureThemeLoaded
+      return themeId; // Will be loaded by ensureThemeLoaded
     }
-    return builtinTheme.type === "light" ? "github-light" : "github-dark"
+    return builtinTheme.type === "light" ? "github-light" : "github-dark";
   }
-  
+
   // Default to github-dark
-  return "github-dark"
+  return "github-dark";
 }
 
 /**
@@ -204,29 +204,29 @@ function getShikiThemeForHighlighting(themeId: string): string {
 export async function ensureThemeLoaded(themeId: string): Promise<void> {
   // Check if it's a Shiki bundled theme (always available)
   if (isShikiBundledTheme(themeId)) {
-    return
+    return;
   }
 
   // Check if already loaded in our cache
   if (fullThemesCache.has(themeId)) {
-    return
+    return;
   }
 
   // Check if it's one of our builtin full themes
-  const builtinFullTheme = getBuiltinThemeById(themeId)
+  const builtinFullTheme = getBuiltinThemeById(themeId);
   if (builtinFullTheme) {
-    await loadFullTheme(builtinFullTheme)
-    return
+    await loadFullTheme(builtinFullTheme);
+    return;
   }
 
   // Check if it's a legacy builtin theme (from vscode-themes.ts)
   if (isBuiltinTheme(themeId)) {
     // These should also be Shiki bundled, but just in case
-    return
+    return;
   }
 
   // Theme not found - this is an error case
-  console.warn(`Theme ${themeId} not found, falling back to github-dark`)
+  console.warn(`Theme ${themeId} not found, falling back to github-dark`);
 }
 
 /**
@@ -238,7 +238,7 @@ function isThemeAvailable(themeId: string): boolean {
     fullThemesCache.has(themeId) ||
     !!getBuiltinThemeById(themeId) ||
     isBuiltinTheme(themeId)
-  )
+  );
 }
 
 /**
@@ -252,44 +252,44 @@ export async function highlightCode(
   themeId: string,
 ): Promise<string> {
   // Check cache first - O(1) lookup
-  const cacheKey = `${themeId}:${language}:${code}`
-  const cached = highlightCache.get(cacheKey)
+  const cacheKey = `${themeId}:${language}:${code}`;
+  const cached = highlightCache.get(cacheKey);
   if (cached !== undefined) {
-    return cached
+    return cached;
   }
 
-  const highlighter = await getHighlighter()
+  const highlighter = await getHighlighter();
 
   // Ensure the theme is loaded (if it's a custom theme with tokenColors)
-  await ensureThemeLoaded(themeId)
+  await ensureThemeLoaded(themeId);
 
   // Get the theme to use for highlighting
-  const shikiTheme = getShikiThemeForHighlighting(themeId)
+  const shikiTheme = getShikiThemeForHighlighting(themeId);
 
-  const loadedLangs = highlighter.getLoadedLanguages()
+  const loadedLangs = highlighter.getLoadedLanguages();
   const lang = loadedLangs.includes(language as shiki.BundledLanguage)
     ? (language as shiki.BundledLanguage)
-    : "plaintext"
+    : "plaintext";
 
   const html = highlighter.codeToHtml(code, {
     lang,
     theme: shikiTheme,
-  })
+  });
 
   // Extract just the code content from shiki's output (remove wrapper)
-  const match = html.match(/<code[^>]*>([\s\S]*?)<\/code>/)
-  const result = match ? match[1] : code
+  const match = html.match(/<code[^>]*>([\s\S]*?)<\/code>/);
+  const result = match ? match[1] : code;
 
   // Cache the result
-  highlightCache.set(cacheKey, result)
+  highlightCache.set(cacheKey, result);
 
-  return result
+  return result;
 }
 
 /**
  * Get all loaded theme IDs
  */
 export async function getLoadedThemes(): Promise<string[]> {
-  const highlighter = await getHighlighter()
-  return highlighter.getLoadedThemes()
+  const highlighter = await getHighlighter();
+  return highlighter.getLoadedThemes();
 }
