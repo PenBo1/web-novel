@@ -24,8 +24,8 @@ export async function initializeIDB(): Promise<void> {
     const integrity = await IDBMigrationManager.verifyDataIntegrity();
     console.log("[IDB] Data integrity check:", integrity);
 
-    if (!integrity.settings || !integrity.shortcuts || !integrity.rules) {
-      console.warn("[IDB] Some data is missing, reinitializing...");
+    if (!integrity.rules) {
+      console.warn("[IDB] Rules data is missing, reinitializing...");
       await IDBMigrationManager.initializeDefaults();
     }
 

@@ -49,14 +49,16 @@ interface WebNovelDB extends DBSchema {
 }
 
 const DB_NAME = "web-novel-db";
-const DB_VERSION = 2; // 升级版本以触发数据库迁移
+const DB_VERSION = 3; // v3: 移除 settings 和 shortcuts 表，迁移到 localStorage
 
 /**
  * 初始化 IndexedDB 数据库
  */
-async function initDB(): Promise<IDBPDatabase<WebNovelDB>> {
+export async function initDB(): Promise<IDBPDatabase<WebNovelDB>> {
   return openDB<WebNovelDB>(DB_NAME, DB_VERSION, {
-    upgrade(db) {
+    upgrade(db, oldVersion, newVersion, tx) {
+      console.log(`[IDB] Upgrading from v${oldVersion} to v${newVersion}`);
+
       // 书籍存储
       if (!db.objectStoreNames.contains("books")) {
         const bookStore = db.createObjectStore("books", { keyPath: "id" });
@@ -71,14 +73,19 @@ async function initDB(): Promise<IDBPDatabase<WebNovelDB>> {
         chapterStore.createIndex("by-bookId", "bookId");
       }
 
-      // 设置存储
-      if (!db.objectStoreNames.contains("settings")) {
-        db.createObjectStore("settings", { keyPath: "key" });
-      }
-
-      // 快捷键存储
-      if (!db.objectStoreNames.contains("shortcuts")) {
-        db.createObjectStore("shortcuts", { keyPath: "id" });
+      // v2 -> v3: 删除 settings 和 shortcuts 表（已迁移到 localStorage）
+      if (oldVersion < 3) {
+        console.log("[IDB] Migrating from v2 to v3: removing settings and shortcuts tables");
+        
+        // 删除旧表
+        if (db.objectStoreNames.contains("settings")) {
+          db.deleteObjectStore("settings");
+          console.log("[IDB] Deleted settings table");
+        }
+        if (db.objectStoreNames.contains("shortcuts")) {
+          db.deleteObjectStore("shortcuts");
+          console.log("[IDB] Deleted shortcuts table");
+        }
       }
 
       // 书源规则存储
@@ -99,6 +106,8 @@ async function initDB(): Promise<IDBPDatabase<WebNovelDB>> {
         downloadStore.createIndex("by-bookId", "bookId");
         downloadStore.createIndex("by-downloadedAt", "downloadedAt");
       }
+
+      console.log("[IDB] Database upgrade completed");
     },
   });
 }
@@ -127,11 +136,15 @@ export const IDBStorageManager = {
    */
   async getBookChapters(bookId: string): Promise<BookChapter[]> {
     try {
+      console.log(`[IDB] Loading chapters for book: ${bookId}`);
       const db = await initDB();
       const tx = db.transaction("chapters", "readonly");
       const index = tx.store.index("by-bookId");
       const chapters = await index.getAll(bookId);
       await tx.done;
+      
+      console.log(`[IDB] Loaded ${chapters.length} chapters for book ${bookId}`);
+      
       return chapters.map(
         ({ bookId: _, ...chapter }) => chapter as BookChapter,
       );
@@ -146,30 +159,51 @@ export const IDBStorageManager = {
    */
   async saveBook(book: Book, chapters: BookChapter[]): Promise<void> {
     try {
+      console.log(`[IDB] Saving book: ${book.title} with ${chapters.length} chapters`);
       const db = await initDB();
-      const tx = db.transaction(["books", "chapters"], "readwrite");
-
-      // 保存书籍
-      await tx.objectStore("books").put(book);
-
-      // 删除旧章节
-      const chapterIndex = tx.objectStore("chapters").index("by-bookId");
-      const oldChapters = await chapterIndex.getAll(book.id);
-      for (const chapter of oldChapters) {
-        await tx
-          .objectStore("chapters")
-          .delete([chapter.bookId, chapter.title] as any);
+      
+      // 第一步：删除旧章节（单独的事务）
+      const oldChaptersToDelete: string[] = [];
+      {
+        const tx = db.transaction("chapters", "readonly");
+        const index = tx.store.index("by-bookId");
+        const oldChapters = await index.getAll(book.id);
+        console.log(`[IDB] Found ${oldChapters.length} old chapters to delete`);
+        for (const chapter of oldChapters) {
+          oldChaptersToDelete.push(chapter.title);
+        }
+        await tx.done;
       }
 
+      // 第二步：删除旧章节（单独的写事务）
+      if (oldChaptersToDelete.length > 0) {
+        const deleteTx = db.transaction("chapters", "readwrite");
+        for (const title of oldChaptersToDelete) {
+          await deleteTx.store.delete([book.id, title] as any);
+        }
+        await deleteTx.done;
+        console.log(`[IDB] Deleted ${oldChaptersToDelete.length} old chapters`);
+      }
+
+      // 第三步：保存书籍和新章节（单独的写事务）
+      const saveTx = db.transaction(["books", "chapters"], "readwrite");
+      
+      // 保存书籍
+      await saveTx.objectStore("books").put(book);
+      console.log(`[IDB] Book metadata saved: ${book.id}`);
+
       // 保存新章节
+      const chapterStore = saveTx.objectStore("chapters");
       for (const chapter of chapters) {
-        await tx.objectStore("chapters").put({
+        await chapterStore.put({
           ...chapter,
           bookId: book.id,
         });
       }
-
-      await tx.done;
+      console.log(`[IDB] Saved ${chapters.length} new chapters`);
+      
+      await saveTx.done;
+      console.log(`[IDB] Book save completed successfully`);
     } catch (error) {
       console.error("Failed to save book to IDB:", error);
       throw error;
@@ -186,11 +220,14 @@ export const IDBStorageManager = {
   ): Promise<void> {
     try {
       const db = await initDB();
-      const tx = db.transaction(["books", "metadata"], "readwrite");
-
-      const book = await tx.objectStore("books").get(bookId);
+      
+      // 先读取书籍
+      const book = await db.get("books", bookId);
       if (!book) throw new Error(`Book ${bookId} not found`);
 
+      // 然后在单独的写事务中更新
+      const tx = db.transaction(["books", "metadata"], "readwrite");
+      
       const updatedBook = {
         ...book,
         progress: { chapterIndex, scroll },
@@ -204,6 +241,19 @@ export const IDBStorageManager = {
       });
 
       await tx.done;
+
+      // 同步到 chrome.storage.local（用于 Content Script 访问）
+      if (typeof chrome !== "undefined" && chrome.storage) {
+        try {
+          await chrome.storage.local.set({
+            activeCurrentIndex: chapterIndex,
+            activeCurrentScroll: scroll,
+          });
+          console.log(`[IDB] Synced progress to chrome.storage.local: chapter ${chapterIndex}, scroll ${scroll}`);
+        } catch (storageError) {
+          console.warn("[IDB] Failed to sync to chrome.storage.local:", storageError);
+        }
+      }
     } catch (error) {
       console.error("Failed to update book progress:", error);
       throw error;
@@ -217,19 +267,25 @@ export const IDBStorageManager = {
     try {
       const db = await initDB();
 
-      // 先获取书籍和章节数据
+      // 先获取书籍数据
       const book = await db.get("books", bookId);
       if (!book) throw new Error(`Book ${bookId} not found`);
 
-      const index = db.transaction("chapters").store.index("by-bookId");
+      // 检查章节是否存在
+      const tx = db.transaction("chapters", "readonly");
+      const index = tx.store.index("by-bookId");
       const chapters = await index.getAll(bookId);
+      await tx.done;
+      
+      console.log(`[IDB] Switching to book ${bookId}, found ${chapters.length} chapters`);
+      
       if (!chapters || chapters.length === 0) {
-        throw new Error(`No chapters found for book ${bookId}`);
+        console.warn(`[IDB] Warning: No chapters found for book ${bookId}, but proceeding anyway`);
       }
 
-      // 然后在单独的事务中更新元数据
-      const tx = db.transaction("metadata", "readwrite");
-      await tx.store.put({
+      // 在单独的事务中更新元数据
+      const metaTx = db.transaction("metadata", "readwrite");
+      await metaTx.store.put({
         key: "activeBook",
         bookId,
         title: book.title,
@@ -238,7 +294,27 @@ export const IDBStorageManager = {
         chapterIndex: book.progress.chapterIndex,
         scroll: book.progress.scroll,
       });
-      await tx.done;
+      await metaTx.done;
+      
+      console.log(`[IDB] Book switched successfully`);
+
+      // 同步到 chrome.storage.local（用于 Content Script 访问）
+      if (typeof chrome !== "undefined" && chrome.storage) {
+        try {
+          await chrome.storage.local.set({
+            activeBookId: bookId,
+            activeCurrentIndex: book.progress.chapterIndex,
+            activeCurrentScroll: book.progress.scroll,
+            activeChapters: chapters.map(c => ({
+              title: c.title,
+              content: c.content,
+            })),
+          });
+          console.log(`[IDB] Synced book switch to chrome.storage.local: ${bookId}`);
+        } catch (storageError) {
+          console.warn("[IDB] Failed to sync to chrome.storage.local:", storageError);
+        }
+      }
     } catch (error) {
       console.error("Failed to switch book:", error);
       throw error;
@@ -265,21 +341,34 @@ export const IDBStorageManager = {
   async deleteBook(bookId: string): Promise<void> {
     try {
       const db = await initDB();
+      
+      // 第一步：获取要删除的章节列表
+      const chaptersToDelete: string[] = [];
+      {
+        const tx = db.transaction("chapters", "readonly");
+        const index = tx.store.index("by-bookId");
+        const chapters = await index.getAll(bookId);
+        for (const chapter of chapters) {
+          chaptersToDelete.push(chapter.title);
+        }
+        await tx.done;
+      }
+
+      // 第二步：删除书籍、章节和元数据
       const tx = db.transaction(["books", "chapters", "metadata"], "readwrite");
 
       await tx.objectStore("books").delete(bookId);
+      console.log(`[IDB] Deleted book: ${bookId}`);
 
-      const chapterIndex = tx.objectStore("chapters").index("by-bookId");
-      const chapters = await chapterIndex.getAll(bookId);
-      for (const chapter of chapters) {
-        await tx
-          .objectStore("chapters")
-          .delete([chapter.bookId, chapter.title] as any);
+      for (const title of chaptersToDelete) {
+        await tx.objectStore("chapters").delete([bookId, title] as any);
       }
+      console.log(`[IDB] Deleted ${chaptersToDelete.length} chapters`);
 
       const activeBook = await tx.objectStore("metadata").get("activeBook");
       if (activeBook?.bookId === bookId) {
         await tx.objectStore("metadata").delete("activeBook");
+        console.log(`[IDB] Cleared active book metadata`);
       }
 
       await tx.done;
@@ -291,27 +380,23 @@ export const IDBStorageManager = {
 
   /**
    * 获取设置
+   * 注意：v3 版本后，设置已迁移到 localStorage
    */
   async getSettings(): Promise<UserSettings> {
     try {
-      const db = await initDB();
-      const data = await db.get("settings", "user");
-      if (data) {
-        const { key, ...settings } = data;
-        return settings as UserSettings;
-      }
+      // 从 localStorage 读取（新位置）
+      const { ThemeManager } = await import("./theme-manager");
+      const { UISettingsManager } = await import("./ui-settings-manager");
+      
+      const themeConfig = ThemeManager.getThemeConfig();
+      const uiSettings = UISettingsManager.getUISettings();
 
-      const defaultSettings: UserSettings = {
-        pluginTheme: "21st-dark",
-        readerTheme: "21st-dark",
-        defaultShow: true,
-        position: "bottom",
+      return {
+        pluginTheme: themeConfig.plugin === "dark" ? "21st-dark" : "21st-light",
+        readerTheme: themeConfig.reader === "dark" ? "21st-dark" : "21st-light",
+        defaultShow: uiSettings.defaultShow,
+        position: uiSettings.readerPosition,
       };
-
-      // 保存默认设置，确保数据库中有数据
-      await this.saveSettings(defaultSettings);
-
-      return defaultSettings;
     } catch (error) {
       console.error("Failed to get settings:", error);
       return {
@@ -325,11 +410,21 @@ export const IDBStorageManager = {
 
   /**
    * 保存设置
+   * 注意：v3 版本后，设置已迁移到 localStorage
    */
   async saveSettings(settings: UserSettings): Promise<void> {
     try {
-      const db = await initDB();
-      await db.put("settings", { ...settings, key: "user" });
+      const { ThemeManager } = await import("./theme-manager");
+      const { UISettingsManager } = await import("./ui-settings-manager");
+
+      // 将主题名称映射为 dark/light
+      const pluginTheme = settings.pluginTheme?.includes("dark") ? "dark" : "light";
+      const readerTheme = settings.readerTheme?.includes("dark") ? "dark" : "light";
+      
+      ThemeManager.setPluginTheme(pluginTheme as any);
+      ThemeManager.setReaderTheme(readerTheme as any);
+      UISettingsManager.setDefaultShow(settings.defaultShow ?? true);
+      UISettingsManager.setReaderPosition(settings.position ?? "bottom");
     } catch (error) {
       console.error("Failed to save settings:", error);
       throw error;
@@ -386,58 +481,26 @@ export const IDBStorageManager = {
 
   /**
    * 获取快捷键设置
+   * 注意：v3 版本后，快捷键已迁移到 localStorage
    */
   async getShortcuts(): Promise<Shortcut[]> {
     try {
-      const db = await initDB();
-      const shortcuts = await db.getAll("shortcuts");
-      const defaultShortcuts = this.getDefaultShortcuts();
-
-      if (!shortcuts || shortcuts.length === 0) {
-        const tx = db.transaction("shortcuts", "readwrite");
-        for (const shortcut of defaultShortcuts) {
-          await tx.store.put(shortcut);
-        }
-        await tx.done;
-        return defaultShortcuts;
-      }
-
-      // 检查缺失的快捷键
-      const existingIds = new Set(shortcuts.map((s) => s.id));
-      const missingShortcuts = defaultShortcuts.filter(
-        (s) => !existingIds.has(s.id),
-      );
-
-      if (missingShortcuts.length > 0) {
-        const tx = db.transaction("shortcuts", "readwrite");
-        for (const shortcut of missingShortcuts) {
-          await tx.store.put(shortcut);
-        }
-        await tx.done;
-        return [...shortcuts, ...missingShortcuts];
-      }
-
-      return shortcuts;
+      const { ShortcutsManager } = await import("./shortcuts-manager");
+      return ShortcutsManager.getShortcuts();
     } catch (error) {
       console.error("Failed to get shortcuts:", error);
-      return [];
+      return this.getDefaultShortcuts();
     }
   },
 
   /**
    * 保存快捷键设置
+   * 注意：v3 版本后，快捷键已迁移到 localStorage
    */
   async saveShortcuts(shortcuts: Shortcut[]): Promise<void> {
     try {
-      const db = await initDB();
-      const tx = db.transaction("shortcuts", "readwrite");
-
-      await tx.store.clear();
-      for (const shortcut of shortcuts) {
-        await tx.store.put(shortcut);
-      }
-
-      await tx.done;
+      const { ShortcutsManager } = await import("./shortcuts-manager");
+      ShortcutsManager.setShortcuts(shortcuts);
     } catch (error) {
       console.error("Failed to save shortcuts:", error);
       throw error;
@@ -465,16 +528,15 @@ export const IDBStorageManager = {
     try {
       const db = await initDB();
       const tx = db.transaction(
-        ["books", "chapters", "settings", "shortcuts", "rules", "metadata"],
+        ["books", "chapters", "rules", "metadata", "downloads"],
         "readwrite",
       );
 
       await tx.objectStore("books").clear();
       await tx.objectStore("chapters").clear();
-      await tx.objectStore("settings").clear();
-      await tx.objectStore("shortcuts").clear();
       await tx.objectStore("rules").clear();
       await tx.objectStore("metadata").clear();
+      await tx.objectStore("downloads").clear();
 
       await tx.done;
     } catch (error) {
@@ -742,8 +804,6 @@ export const IDBMigrationManager = {
    * 验证数据完整性
    */
   async verifyDataIntegrity(): Promise<{
-    settings: boolean;
-    shortcuts: boolean;
     rules: boolean;
     books: boolean;
     chapters: boolean;
@@ -751,15 +811,11 @@ export const IDBMigrationManager = {
     try {
       const db = await initDB();
 
-      const settings = await db.get("settings", "user");
-      const shortcuts = await db.getAll("shortcuts");
       const rules = await db.getAll("rules");
       const books = await db.getAll("books");
       const chapters = await db.getAll("chapters");
 
       return {
-        settings: !!settings,
-        shortcuts: shortcuts.length > 0,
         rules: rules.length > 0,
         books: books.length > 0,
         chapters: chapters.length > 0,
@@ -767,8 +823,6 @@ export const IDBMigrationManager = {
     } catch (error) {
       console.error("[IDB] Failed to verify data integrity:", error);
       return {
-        settings: false,
-        shortcuts: false,
         rules: false,
         books: false,
         chapters: false,
@@ -805,8 +859,21 @@ export const IDBMigrationManager = {
     try {
       const db = await initDB();
 
-      const settings = await db.get("settings", "user");
-      const shortcuts = await db.getAll("shortcuts");
+      // 从 localStorage 读取设置和快捷键
+      const { ThemeManager } = await import("./theme-manager");
+      const { ShortcutsManager } = await import("./shortcuts-manager");
+      const { UISettingsManager } = await import("./ui-settings-manager");
+
+      const themeConfig = ThemeManager.getThemeConfig();
+      const uiSettings = UISettingsManager.getUISettings();
+      const settings = {
+        theme: themeConfig,
+        ui: uiSettings,
+      };
+
+      const shortcuts = ShortcutsManager.getShortcuts();
+
+      // 从 IDB 读取其他数据
       const rules = await db.getAll("rules");
       const books = await db.getAll("books");
       const chapters = await db.getAll("chapters");

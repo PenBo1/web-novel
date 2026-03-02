@@ -21,9 +21,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { STORAGE_KEYS, StorageManager } from "@/lib/storage";
+import { StorageManager, STORAGE_KEYS } from "@/lib/storage";
 import { DownloadRecordManager } from "@/lib/idb-storage";
 import { EpubGenerator } from "@/lib/epub-generator";
+import { bootstrapStorage } from "@/lib/storage-bootstrap";
 import type { Book } from "@/lib/types";
 import { toast, Toaster } from "sonner";
 import "~styles/globals.css";
@@ -57,22 +58,27 @@ function PopupBody() {
 
   const initData = async () => {
     try {
-      // 0. 确保默认数据已初始化
+      // 1. 启动存储系统
+      await bootstrapStorage();
+      
+      // 2. 确保默认数据已初始化
       await StorageManager.initializeDefaults();
+      
+      // 3. 初始化主题
+      const { ThemeManager } = await import("@/lib/theme-manager");
+      ThemeManager.initializeTheme();
+      
+      // 4. 初始化应用状态
+      const { AppStateManager } = await import("@/lib/app-state-manager");
+      AppStateManager.initializeAppState();
+      
+      // 5. 加载书架
+      await loadBookshelf();
     } catch (e) {
-      console.error("Failed to initialize defaults:", e);
+      console.error("Failed to initialize:", e);
+      // 即使初始化失败，也尝试加载书架
+      await loadBookshelf();
     }
-
-    // 1. 加载设置
-    const currentSettings = await StorageManager.getSettings();
-    // 适配 next-themes：将主题 ID 映射为 dark/light
-    const themeMode = currentSettings.pluginTheme.includes("light")
-      ? "light"
-      : "dark";
-    setTheme(themeMode);
-
-    // 2. 加载书架
-    await loadBookshelf();
   };
 
   const loadBookshelf = async () => {

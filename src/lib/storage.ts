@@ -7,21 +7,30 @@ import { IDBStorageManager, IDBMigrationManager } from "./idb-storage";
  * 存储键名常量，避免硬编码字符串散落在各处
  * 统一管理所有存储键，便于维护和迁移
  *
- * 注意：大数据（书籍、章节）现在存储在 IndexedDB 中
- * chrome.storage.local 仅用于小数据（设置、快捷键等）
+ * 存储策略：
+ * - localStorage: 用户配置（主题、快捷键、UI设置）
+ * - chrome.storage.local: 活跃状态（当前书籍、进度）
+ * - IndexedDB: 大数据（书籍、章节、规则）
  */
 export const STORAGE_KEYS = {
-  // 用户设置（存储在 chrome.storage.local）
-  SETTINGS: "settings",
-  SHORTCUTS: "shortcuts",
-  IS_VISIBLE: "isVisible",
+  // localStorage 键（web-novel: 前缀）
+  THEME_PLUGIN: "web-novel:theme:plugin",
+  THEME_READER: "web-novel:theme:reader",
+  SHORTCUTS_CONFIG: "web-novel:shortcuts:config",
+  UI_READER_VISIBLE: "web-novel:ui:reader-visible",
+  UI_READER_POSITION: "web-novel:ui:reader-position",
+  UI_READER_FONT_SIZE: "web-novel:ui:reader-font-size",
+  UI_READER_LINE_HEIGHT: "web-novel:ui:reader-line-height",
+  READER_DEFAULT_SHOW: "web-novel:reader:default-show",
+  READER_PAGE_SIZE: "web-novel:reader:page-size",
+  APP_LAST_VISIT: "web-novel:app:last-visit",
+  APP_VERSION: "web-novel:app:version",
   
-  // 活跃状态（存储在 chrome.storage.local 用于快速访问）
+  // chrome.storage.local 键（无前缀）
   ACTIVE_BOOK_ID: "activeBookId",
-  ACTIVE_CHAPTERS: "activeChapters",
   ACTIVE_CURRENT_INDEX: "activeCurrentIndex",
   ACTIVE_CURRENT_SCROLL: "activeCurrentScroll",
-  BOOKSHELF: "bookshelf" // 兼容旧代码，虽然现在主要用 IDB
+  ACTIVE_CHAPTERS: "activeChapters",
 } as const;
 
 /**
@@ -78,7 +87,14 @@ export const StorageManager = {
   async switchBook(bookId: string): Promise<void> {
     await IDBStorageManager.switchBook(bookId);
     // 同步更新 chrome.storage.local 以通知 Content Script
-    await chrome.storage.local.set({ [STORAGE_KEYS.ACTIVE_BOOK_ID]: bookId });
+    if (typeof chrome !== "undefined" && chrome.storage) {
+      try {
+        await chrome.storage.local.set({ activeBookId: bookId });
+        console.log(`[StorageManager] Synced activeBookId to chrome.storage.local: ${bookId}`);
+      } catch (error) {
+        console.warn("[StorageManager] Failed to sync to chrome.storage.local:", error);
+      }
+    }
   },
 
   /**

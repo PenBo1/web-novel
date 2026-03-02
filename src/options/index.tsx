@@ -5,7 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Kbd } from "@/components/ui/kbd";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { STORAGE_KEYS, StorageManager } from "@/lib/storage";
+import { ThemeManager } from "@/lib/theme-manager";
+import { UISettingsManager } from "@/lib/ui-settings-manager";
+import { ShortcutsManager } from "@/lib/shortcuts-manager";
+import { bootstrapStorage } from "@/lib/storage-bootstrap";
 import type { Shortcut } from "@/lib/types";
 import "~styles/globals.css";
 
@@ -83,32 +86,62 @@ function OptionsBody() {
   }, [recordingId, shortcuts]);
 
   const initData = async () => {
-    const currentSettings = await StorageManager.getSettings();
-    setSettings(currentSettings);
-    // 适配 next-themes
-    const themeMode = currentSettings.pluginTheme.includes("light")
-      ? "light"
-      : "dark";
-    setTheme(themeMode);
+    try {
+      // 1. 启动存储系统
+      await bootstrapStorage();
+      
+      // 2. 初始化应用状态
+      const { AppStateManager } = await import("@/lib/app-state-manager");
+      AppStateManager.initializeAppState();
+      
+      // 3. 初始化主题
+      const themeConfig = ThemeManager.getThemeConfig();
+      
+      // 4. 初始化 UI 设置
+      const uiSettings = UISettingsManager.getUISettings();
+      
+      setSettings({
+        pluginTheme: themeConfig.plugin === "dark" ? "21st-dark" : "21st-light",
+        readerTheme: themeConfig.reader === "dark" ? "21st-dark" : "21st-light",
+        defaultShow: uiSettings.defaultShow,
+        position: uiSettings.readerPosition,
+      });
+      
+      // 5. 适配 next-themes
+      setTheme(themeConfig.plugin === "dark" ? "dark" : "light");
 
-    const shortcuts = await StorageManager.getShortcuts();
-    setShortcuts(shortcuts);
+      // 6. 加载快捷键
+      const shortcuts = ShortcutsManager.getShortcuts();
+      setShortcuts(shortcuts);
+    } catch (e) {
+      console.error("Failed to initialize options:", e);
+    }
   };
 
   const saveSettings = async (newSettings: any) => {
     setSettings(newSettings);
-    await chrome.storage.local.set({ [STORAGE_KEYS.SETTINGS]: newSettings });
+    
+    // 保存主题
+    const pluginTheme = newSettings.pluginTheme.includes("dark") ? "dark" : "light";
+    const readerTheme = newSettings.readerTheme.includes("dark") ? "dark" : "light";
+    ThemeManager.setPluginTheme(pluginTheme as any);
+    ThemeManager.setReaderTheme(readerTheme as any);
+    
+    // 保存 UI 设置
+    UISettingsManager.setDefaultShow(newSettings.defaultShow);
+    UISettingsManager.setReaderPosition(newSettings.position);
   };
 
   const saveShortcuts = async (newShortcuts: Shortcut[]) => {
     setShortcuts(newShortcuts);
-    await chrome.storage.local.set({ [STORAGE_KEYS.SHORTCUTS]: newShortcuts });
+    ShortcutsManager.setShortcuts(newShortcuts);
   };
 
   const resetShortcuts = async () => {
     if (!confirm("确定要恢复所有快捷键为默认设置吗？")) return;
-    const defaultShortcuts = StorageManager.getDefaultShortcuts();
-    await saveShortcuts(defaultShortcuts);
+    ShortcutsManager.resetToDefaults();
+    const defaultShortcuts = ShortcutsManager.getShortcuts();
+    setShortcuts(defaultShortcuts);
   };
 
   return (

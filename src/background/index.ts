@@ -1,40 +1,69 @@
 import axios from "axios";
-import { STORAGE_KEYS } from "@/lib/storage";
+import { IDBStorageManager } from "@/lib/idb-storage";
 
 /**
  * Web-novel 后台 Service Worker
- * 重点：使用 Axios 进行网络请求代理
+ * 重点：使用 Axios 进行网络请求代理 + IndexedDB 数据提供
  */
-console.log("[Background] Web-novel service worker initialized with Axios.");
+console.log("[Background] Web-novel service worker initialized with Axios and IndexedDB support.");
 
-chrome.runtime.onInstalled.addListener((details) => {
-  if (details.reason === "install") {
-    chrome.storage.local.set({
-      [STORAGE_KEYS.SETTINGS]: {
-        pluginTheme: "21st-dark",
-        readerTheme: "21st-dark",
-        defaultShow: true,
-        position: "bottom",
-      },
-      [STORAGE_KEYS.SHORTCUTS]: [
-        { id: "toggleReader", label: "显示/隐藏阅读条", keys: ["Alt", "C"] },
-        { id: "nextPage", label: "下一页", keys: ["ArrowRight"] },
-        { id: "prevPage", label: "上一页", keys: ["ArrowLeft"] },
-        { id: "nextChapter", label: "下一章", keys: ["Alt", "ArrowDown"] },
-        { id: "prevChapter", label: "上一章", keys: ["Alt", "ArrowUp"] },
-        { id: "selectNovel", label: "选择小说", keys: ["Alt", "S"] },
-        { id: "switchTheme", label: "切换主题", keys: ["Alt", "T"] },
-      ],
-      [STORAGE_KEYS.BOOKSHELF]: [],
-      [STORAGE_KEYS.IS_VISIBLE]: true,
-    });
-  }
-});
+// 不再在 onInstalled 时初始化存储，改为在应用启动时由各个页面初始化
 
 /**
  * 跨域请求代理监听
  */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  // ============ IndexedDB 数据请求 ============
+  if (message.action === "GET_BOOK_CHAPTERS") {
+    const { bookId } = message.payload;
+    console.log(`[Background] GET_BOOK_CHAPTERS request for book: ${bookId}`);
+    
+    IDBStorageManager.getBookChapters(bookId)
+      .then((chapters) => {
+        console.log(`[Background] Returning ${chapters.length} chapters for book ${bookId}`);
+        sendResponse({ success: true, data: chapters });
+      })
+      .catch((error) => {
+        console.error(`[Background] Failed to get chapters:`, error);
+        sendResponse({ success: false, error: error.message });
+      });
+    
+    return true; // 支持异步 sendResponse
+  }
+
+  if (message.action === "GET_BOOKSHELF") {
+    console.log(`[Background] GET_BOOKSHELF request`);
+    
+    IDBStorageManager.getBookshelf()
+      .then((books) => {
+        console.log(`[Background] Returning ${books.length} books`);
+        sendResponse({ success: true, data: books });
+      })
+      .catch((error) => {
+        console.error(`[Background] Failed to get bookshelf:`, error);
+        sendResponse({ success: false, error: error.message });
+      });
+    
+    return true;
+  }
+
+  if (message.action === "GET_ACTIVE_BOOK_ID") {
+    console.log(`[Background] GET_ACTIVE_BOOK_ID request`);
+    
+    IDBStorageManager.getActiveBookId()
+      .then((bookId) => {
+        console.log(`[Background] Active book ID: ${bookId}`);
+        sendResponse({ success: true, data: bookId });
+      })
+      .catch((error) => {
+        console.error(`[Background] Failed to get active book ID:`, error);
+        sendResponse({ success: false, error: error.message });
+      });
+    
+    return true;
+  }
+
+  // ============ 网络请求代理 ============
   if (message.action === "SCRAPER_FETCH") {
     const { url, method, data, headers } = message.payload;
 

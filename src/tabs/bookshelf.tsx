@@ -82,7 +82,10 @@ export default function BookshelfPage() {
     setIsBusy(true);
     setStatus("处理中...");
     try {
+      console.log("[Bookshelf] Starting EPUB import:", file.name);
       const { info, chapters } = await importEpubFile(file);
+      console.log("[Bookshelf] EPUB parsed, chapters extracted:", chapters.length);
+      console.log("[Bookshelf] First chapter sample:", chapters[0]?.title, chapters[0]?.content?.substring(0, 100));
 
       const newBook: Book = {
         id: crypto.randomUUID(),
@@ -92,14 +95,24 @@ export default function BookshelfPage() {
         totalChapters: chapters.length,
         addedAt: Date.now(),
         progress: { chapterIndex: 0, scroll: 0 },
+        isScraped: false, // 本地导入的书籍标记为非爬虫源
       };
 
+      console.log("[Bookshelf] Saving imported book:", newBook);
+      console.log("[Bookshelf] Chapters to save:", chapters.length);
       await StorageManager.saveBook(newBook, chapters);
+      console.log("[Bookshelf] Book saved successfully");
+      
+      // 验证保存
+      const savedChapters = await StorageManager.getBookChapters(newBook.id);
+      console.log("[Bookshelf] Verification - chapters in IDB:", savedChapters.length);
+      
       await StorageManager.switchBook(newBook.id);
       await loadBookshelf();
       toast.success("导入成功");
       setStatus("");
     } catch (e: any) {
+      console.error("[Bookshelf] Import error:", e);
       toast.error(`导入失败：${e?.message ?? String(e)}`);
     } finally {
       setIsBusy(false);
