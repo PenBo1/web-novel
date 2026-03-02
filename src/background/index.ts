@@ -2,10 +2,10 @@ import axios from "axios";
 import { IDBStorageManager } from "@/lib/idb-storage";
 
 /**
- * Web-novel 后台 Service Worker
+ * Web-Novel 后台 Service Worker
  * 重点：使用 Axios 进行网络请求代理 + IndexedDB 数据提供
  */
-console.log("[Background] Web-novel service worker initialized with Axios and IndexedDB support.");
+console.log("[Background] Web-Novel service worker initialized with Axios and IndexedDB support.");
 
 // 不再在 onInstalled 时初始化存储，改为在应用启动时由各个页面初始化
 
