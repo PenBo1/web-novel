@@ -128,17 +128,17 @@ await ActiveStorage.clear();
 ### localStorage 键
 
 ```typescript
-STORAGE_KEYS_LOCAL.THEME.PLUGIN              // "web-novel:theme:plugin"
-STORAGE_KEYS_LOCAL.THEME.READER              // "web-novel:theme:reader"
-STORAGE_KEYS_LOCAL.SHORTCUTS.CONFIG          // "web-novel:shortcuts:config"
-STORAGE_KEYS_LOCAL.UI.READER_VISIBLE         // "web-novel:ui:reader-visible"
-STORAGE_KEYS_LOCAL.UI.READER_POSITION        // "web-novel:ui:reader-position"
-STORAGE_KEYS_LOCAL.UI.READER_FONT_SIZE       // "web-novel:ui:reader-font-size"
-STORAGE_KEYS_LOCAL.UI.READER_LINE_HEIGHT     // "web-novel:ui:reader-line-height"
-STORAGE_KEYS_LOCAL.UI.DEFAULT_SHOW           // "web-novel:ui:default-show"
-STORAGE_KEYS_LOCAL.UI.PAGE_SIZE              // "web-novel:ui:page-size"
-STORAGE_KEYS_LOCAL.APP.LAST_VISIT            // "web-novel:app:last-visit"
-STORAGE_KEYS_LOCAL.APP.VERSION               // "web-novel:app:version"
+STORAGE_KEYS_LOCAL.THEME.PLUGIN              // "Web-Novel:theme:plugin"
+STORAGE_KEYS_LOCAL.THEME.READER              // "Web-Novel:theme:reader"
+STORAGE_KEYS_LOCAL.SHORTCUTS.CONFIG          // "Web-Novel:shortcuts:config"
+STORAGE_KEYS_LOCAL.UI.READER_VISIBLE         // "Web-Novel:ui:reader-visible"
+STORAGE_KEYS_LOCAL.UI.READER_POSITION        // "Web-Novel:ui:reader-position"
+STORAGE_KEYS_LOCAL.UI.READER_FONT_SIZE       // "Web-Novel:ui:reader-font-size"
+STORAGE_KEYS_LOCAL.UI.READER_LINE_HEIGHT     // "Web-Novel:ui:reader-line-height"
+STORAGE_KEYS_LOCAL.UI.DEFAULT_SHOW           // "Web-Novel:ui:default-show"
+STORAGE_KEYS_LOCAL.UI.PAGE_SIZE              // "Web-Novel:ui:page-size"
+STORAGE_KEYS_LOCAL.APP.LAST_VISIT            // "Web-Novel:app:last-visit"
+STORAGE_KEYS_LOCAL.APP.VERSION               // "Web-Novel:app:version"
 ```
 
 ### chrome.storage.local 键
@@ -265,7 +265,7 @@ const fontSize = UIStorage.getReaderFontSize();  // 总是返回数字，不会�
 const theme = localStorage.getItem(STORAGE_KEYS_LOCAL.THEME.PLUGIN);
 
 // ❌ 错误
-const theme = localStorage.getItem("web-novel:theme:plugin");
+const theme = localStorage.getItem("Web-Novel:theme:plugin");
 ```
 
 ## 文件结构

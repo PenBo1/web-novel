@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import {
   BookOpen,
   Download,
-  HelpCircle,
   Library,
   Search,
   Settings,
-  History,
   BookMarked,
   Cloud,
   Loader2,
@@ -27,6 +25,7 @@ import { EpubGenerator } from "@/lib/epub-generator";
 import { bootstrapStorage } from "@/lib/storage-bootstrap";
 import type { Book } from "@/lib/types";
 import { toast, Toaster } from "sonner";
+import iconUrl from "data-url:~assets/icon.png";
 import "~styles/globals.css";
 
 /**
@@ -141,7 +140,7 @@ function PopupBody() {
   };
 
   return (
-    <div className="w-[520px] h-[600px] bg-background text-foreground font-sans flex flex-col">
+    <div className="w-[420px] h-[600px] bg-background text-foreground font-sans flex flex-col">
       {/* 固定头部导航 */}
       <div className="shrink-0 px-5 pt-5 pb-3 flex items-center justify-between">
         <div>
@@ -230,32 +229,6 @@ function PopupBody() {
               </TooltipTrigger>
               <TooltipContent>设置</TooltipContent>
             </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-lg"
-                  onClick={() => openTab("help")}
-                >
-                  <HelpCircle className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>帮助中心</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-lg"
-                  onClick={() => openTab("changelog")}
-                >
-                  <History className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>更新日志</TooltipContent>
-            </Tooltip>
           </TooltipProvider>
         </div>
       </div>
@@ -284,9 +257,9 @@ function PopupBody() {
             发现
           </button>
           <button
-            onClick={() => setActiveTab("help")}
+            onClick={() => setActiveTab("about")}
             className={`text-[13px] h-8 rounded transition-all ${
-              activeTab === "help"
+              activeTab === "about"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
             }`}
@@ -475,30 +448,33 @@ function PopupBody() {
           </div>
         )}
 
-        {activeTab === "help" && (
-          <div className="p-6 space-y-6 overflow-y-auto">
-            <div className="text-center space-y-3">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                <BookOpen className="w-8 h-8 text-primary" />
+        {activeTab === "about" && (
+          <div className="p-4 space-y-4 overflow-y-auto">
+            {/* 应用信息 */}
+            <div className="text-center space-y-2 pb-3 border-b">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto overflow-hidden">
+                <img 
+                  src={iconUrl}
+                  alt="Web-novel"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
-                <h3 className="font-bold text-lg">Web-novel</h3>
-                <p className="text-xs text-muted-foreground mt-1">v0.0.1</p>
+                <h3 className="font-bold text-base">Web-novel</h3>
+                <p className="text-xs text-muted-foreground">v0.0.1</p>
               </div>
             </div>
 
-            <div className="space-y-3 text-sm">
-              <div>
-                <p className="font-semibold mb-1">关于</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Web-novel 是一款沉浸式网页阅读扩展。支持导入 EPUB
-                  文件，在任意网页底部显示阅读条，提供章节/进度保存与快捷键导航功能。
-                </p>
-              </div>
+            {/* 简介 */}
+            <div className="space-y-2 text-xs">
+              <p className="text-muted-foreground leading-relaxed">
+                Web-novel 是一款沉浸式网页阅读扩展。支持导入 EPUB 文件，在任意网页底部显示阅读条，提供章节/进度保存与快捷键导航功能。
+              </p>
 
+              {/* 主要功能 */}
               <div>
-                <p className="font-semibold mb-1">主要功能</p>
-                <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside">
+                <p className="font-semibold mb-1.5 text-foreground">主要功能</p>
+                <ul className="text-muted-foreground space-y-0.5 list-disc list-inside">
                   <li>导入本地 EPUB 文件到书架</li>
                   <li>全网小说搜索与聚合</li>
                   <li>网页阅读条快速阅读</li>
@@ -508,24 +484,36 @@ function PopupBody() {
                 </ul>
               </div>
 
+              {/* 开发者 */}
               <div>
-                <p className="font-semibold mb-1">开发者</p>
-                <p className="text-xs text-muted-foreground">PenBo</p>
+                <p className="font-semibold text-foreground">开发者</p>
+                <p className="text-muted-foreground">PenBo</p>
               </div>
             </div>
 
-            <div className="flex gap-2 justify-center pt-2">
+            {/* 操作按钮 */}
+            <div className="flex gap-2 justify-center pt-2 border-t">
               <Button
                 onClick={() => openTab("help")}
                 size="sm"
                 variant="outline"
+                className="text-xs h-8"
               >
                 使用手册
+              </Button>
+              <Button
+                onClick={() => openTab("changelog")}
+                size="sm"
+                variant="outline"
+                className="text-xs h-8"
+              >
+                更新日志
               </Button>
               <Button
                 onClick={() => openTab("options")}
                 size="sm"
                 variant="outline"
+                className="text-xs h-8"
               >
                 设置
               </Button>

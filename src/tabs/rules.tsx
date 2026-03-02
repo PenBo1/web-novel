@@ -156,7 +156,7 @@ function RulesPage() {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <div className="min-h-screen bg-background text-foreground font-sans p-8 max-w-5xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="sticky top-0 z-50 bg-background/95 backdrop-blur flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold">书源规则中心</h1>
             <p className="text-muted-foreground mt-1">

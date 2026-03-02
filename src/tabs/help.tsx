@@ -22,21 +22,18 @@ export default function HelpPage() {
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <div className="min-h-screen bg-background text-foreground font-sans p-8 max-w-4xl mx-auto">
         {/* 页眉部分 */}
-        <header className="flex items-center justify-between mb-8 border-b pb-6">
+        <header className="sticky top-0 z-50 bg-background/95 backdrop-blur flex items-center justify-between mb-8 border-b pb-6">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-primary/10">
               <Layout className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">Web-novel 帮助中心</h1>
+              <h1 className="text-2xl font-bold">Web-Novel 帮助中心</h1>
               <p className="text-sm text-muted-foreground mt-1">
                 沉浸式网页阅读与管理指南
               </p>
             </div>
           </div>
-          <Button variant="outline" onClick={() => window.close()}>
-            关闭页面
-          </Button>
         </header>
 
         <main className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -47,10 +44,10 @@ export default function HelpPage() {
                 <div className="p-1.5 rounded-lg bg-primary/5">
                   <Info className="w-4 h-4 text-primary" />
                 </div>
-                <h2 className="text-xl font-semibold">什么是 Web-novel？</h2>
+                <h2 className="text-xl font-semibold">什么是 Web-Novel？</h2>
               </div>
               <p className="text-muted-foreground leading-relaxed text-sm">
-                Web-novel
+                Web-Novel
                 是一款为您量身定制的沉浸式网页阅读工具。它可以让您在浏览任何网页时，都能无缝切换到纯净的小说阅读模式。通过简单的
                 EPUB
                 文件导入或全网搜索功能，它会在网页边缘（如底部或顶部）生成一个极简的阅读条，让您利用零碎时间享受阅读的乐趣。
@@ -143,7 +140,7 @@ export default function HelpPage() {
               </div>
               <h3 className="font-bold mb-2 text-sm">喜欢这个扩展吗？</h3>
               <p className="text-xs text-muted-foreground mb-4">
-                如果您觉得 Web-novel
+                如果您觉得 Web-Novel
                 帮助到了您，请前往我们的仓库为我们点亮一颗星，您的反馈是对我们最大的支持！
               </p>
               <Button className="w-full gap-2 text-xs" variant="default">
@@ -184,7 +181,7 @@ export default function HelpPage() {
         </main>
 
         <footer className="mt-12 pt-8 border-t text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Web-novel Team. Built with ❤️ for
+          © {new Date().getFullYear()} Web-Novel Team. Built with ❤️ for
           reading.
         </footer>
       </div>

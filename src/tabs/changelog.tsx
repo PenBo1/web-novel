@@ -97,7 +97,7 @@ export default function ChangelogPage() {
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <div className="min-h-screen bg-background text-foreground font-sans p-8 max-w-4xl mx-auto">
         {/* 页眉部分 */}
-        <header className="flex items-center justify-between mb-8 border-b pb-6">
+        <header className="sticky top-0 z-50 bg-background/95 backdrop-blur flex items-center justify-between mb-8 border-b pb-6">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-primary/10">
               <History className="w-6 h-6 text-primary" />
@@ -105,13 +105,10 @@ export default function ChangelogPage() {
             <div>
               <h1 className="text-2xl font-bold">更新日志</h1>
               <p className="text-sm text-muted-foreground mt-1">
-                Web-novel 版本更新历史与功能变更记录
+                Web-Novel 版本更新历史与功能变更记录
               </p>
             </div>
           </div>
-          <Button variant="outline" onClick={() => window.close()}>
-            关闭页面
-          </Button>
         </header>
 
         <main className="space-y-8">
@@ -211,7 +208,7 @@ export default function ChangelogPage() {
         </main>
 
         <footer className="mt-12 pt-8 border-t text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Web-novel Team. Built with ❤️ for
+          © {new Date().getFullYear()} Web-Novel Team. Built with ❤️ for
           reading.
         </footer>
       </div>

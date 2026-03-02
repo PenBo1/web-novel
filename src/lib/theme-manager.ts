@@ -80,7 +80,7 @@ export const ThemeManager = {
    * 应用阅读条主题到 DOM
    */
   applyReaderTheme(theme: ThemeMode): void {
-    const readerElement = document.getElementById("web-novel-host");
+    const readerElement = document.getElementById("Web-Novel-host");
     if (!readerElement) return;
 
     if (theme === "system") {

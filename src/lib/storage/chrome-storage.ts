@@ -46,7 +46,7 @@ export async function removeChromeStorageValue(key: string): Promise<void> {
 }
 
 /**
- * 清除所有 web-novel 数据
+ * 清除所有 Web-Novel 数据
  */
 export async function clearAllChromeStorage(): Promise<void> {
   try {
@@ -54,7 +54,7 @@ export async function clearAllChromeStorage(): Promise<void> {
       Object.values(category)
     );
     await chrome.storage.local.remove(keys);
-    console.log("[ChromeStorage] Cleared all web-novel data");
+    console.log("[ChromeStorage] Cleared all Web-Novel data");
   } catch (error) {
     console.error("[ChromeStorage] Failed to clear all data:", error);
   }

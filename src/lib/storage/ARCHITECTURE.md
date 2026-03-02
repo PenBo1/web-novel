@@ -147,7 +147,7 @@ ThemeStorage.setPluginTheme("dark")
    ↓
 setLocalStorageValue(STORAGE_KEYS_LOCAL.THEME.PLUGIN, "dark")
    ↓
-localStorage.setItem("web-novel:theme:plugin", '"dark"')
+localStorage.setItem("Web-Novel:theme:plugin", '"dark"')
    ↓
 数据持久化
 ```
@@ -178,21 +178,21 @@ chrome.storage.local.get("wn:active:book-id")
 
 ### localStorage 键名规范
 
-**格式**: `web-novel:<category>:<key>`
+**格式**: `Web-Novel:<category>:<key>`
 
 **示例**:
 ```
-web-novel:theme:plugin          // 主题 - 插件
-web-novel:theme:reader          // 主题 - 阅读条
-web-novel:shortcuts:config      // 快捷键 - 配置
-web-novel:ui:reader-visible     // UI - 阅读条可见性
-web-novel:ui:reader-position    // UI - 阅读条位置
-web-novel:ui:reader-font-size   // UI - 字体大小
-web-novel:ui:reader-line-height // UI - 行高
-web-novel:ui:default-show       // UI - 默认显示
-web-novel:ui:page-size          // UI - 每屏字符数
-web-novel:app:last-visit        // 应用 - 最后访问
-web-novel:app:version           // 应用 - 版本
+Web-Novel:theme:plugin          // 主题 - 插件
+Web-Novel:theme:reader          // 主题 - 阅读条
+Web-Novel:shortcuts:config      // 快捷键 - 配置
+Web-Novel:ui:reader-visible     // UI - 阅读条可见性
+Web-Novel:ui:reader-position    // UI - 阅读条位置
+Web-Novel:ui:reader-font-size   // UI - 字体大小
+Web-Novel:ui:reader-line-height // UI - 行高
+Web-Novel:ui:default-show       // UI - 默认显示
+Web-Novel:ui:page-size          // UI - 每屏字符数
+Web-Novel:app:last-visit        // 应用 - 最后访问
+Web-Novel:app:version           // 应用 - 版本
 ```
 
 ### chrome.storage.local 键名规范

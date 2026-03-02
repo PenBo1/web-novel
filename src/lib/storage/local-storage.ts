@@ -42,17 +42,17 @@ export function removeLocalStorageValue(key: string): void {
 }
 
 /**
- * 清除所有 web-novel 数据
+ * 清除所有 Web-Novel 数据
  */
 export function clearAllLocalStorage(): void {
   try {
     const keys = Object.keys(localStorage);
     keys.forEach((key) => {
-      if (key.startsWith("web-novel:")) {
+      if (key.startsWith("Web-Novel:")) {
         localStorage.removeItem(key);
       }
     });
-    console.log("[LocalStorage] Cleared all web-novel data");
+    console.log("[LocalStorage] Cleared all Web-Novel data");
   } catch (error) {
     console.error("[LocalStorage] Failed to clear all data:", error);
   }
@@ -65,7 +65,7 @@ export function exportLocalStorage(): Record<string, any> {
   const data: Record<string, any> = {};
   const keys = Object.keys(localStorage);
   keys.forEach((key) => {
-    if (key.startsWith("web-novel:")) {
+    if (key.startsWith("Web-Novel:")) {
       try {
         data[key] = JSON.parse(localStorage.getItem(key) || "null");
       } catch {

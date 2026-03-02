@@ -4,7 +4,6 @@ import {
   ChevronLeft,
   ChevronRight,
   List,
-  X,
   Home,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -139,7 +138,7 @@ export default function ReaderPage() {
         // 详情视图
         <div className="min-h-screen bg-background text-foreground font-sans p-8 max-w-4xl mx-auto">
           {/* 页眉 */}
-          <header className="flex items-center justify-between mb-8 border-b pb-6">
+          <header className="sticky top-0 z-50 bg-background/95 backdrop-blur flex items-center justify-between mb-8 border-b pb-6">
             <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-xl bg-primary/10">
                 <BookOpen className="w-6 h-6 text-primary" />
@@ -151,9 +150,6 @@ export default function ReaderPage() {
                 </p>
               </div>
             </div>
-            <Button variant="outline" onClick={() => window.close()}>
-              关闭页面
-            </Button>
           </header>
 
           {/* 书籍详情卡片 */}
@@ -274,13 +270,6 @@ export default function ReaderPage() {
                   onClick={() => setShowToc(!showToc)}
                 >
                   <List className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => window.close()}
-                >
-                  <X className="w-4 h-4" />
                 </Button>
               </div>
             </div>

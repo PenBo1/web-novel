@@ -13,18 +13,18 @@ import { IDBStorageManager, IDBMigrationManager } from "./idb-storage";
  * - IndexedDB: 大数据（书籍、章节、规则）
  */
 export const STORAGE_KEYS = {
-  // localStorage 键（web-novel: 前缀）
-  THEME_PLUGIN: "web-novel:theme:plugin",
-  THEME_READER: "web-novel:theme:reader",
-  SHORTCUTS_CONFIG: "web-novel:shortcuts:config",
-  UI_READER_VISIBLE: "web-novel:ui:reader-visible",
-  UI_READER_POSITION: "web-novel:ui:reader-position",
-  UI_READER_FONT_SIZE: "web-novel:ui:reader-font-size",
-  UI_READER_LINE_HEIGHT: "web-novel:ui:reader-line-height",
-  READER_DEFAULT_SHOW: "web-novel:reader:default-show",
-  READER_PAGE_SIZE: "web-novel:reader:page-size",
-  APP_LAST_VISIT: "web-novel:app:last-visit",
-  APP_VERSION: "web-novel:app:version",
+  // localStorage 键（Web-Novel: 前缀）
+  THEME_PLUGIN: "Web-Novel:theme:plugin",
+  THEME_READER: "Web-Novel:theme:reader",
+  SHORTCUTS_CONFIG: "Web-Novel:shortcuts:config",
+  UI_READER_VISIBLE: "Web-Novel:ui:reader-visible",
+  UI_READER_POSITION: "Web-Novel:ui:reader-position",
+  UI_READER_FONT_SIZE: "Web-Novel:ui:reader-font-size",
+  UI_READER_LINE_HEIGHT: "Web-Novel:ui:reader-line-height",
+  READER_DEFAULT_SHOW: "Web-Novel:reader:default-show",
+  READER_PAGE_SIZE: "Web-Novel:reader:page-size",
+  APP_LAST_VISIT: "Web-Novel:app:last-visit",
+  APP_VERSION: "Web-Novel:app:version",
   
   // chrome.storage.local 键（无前缀）
   ACTIVE_BOOK_ID: "activeBookId",

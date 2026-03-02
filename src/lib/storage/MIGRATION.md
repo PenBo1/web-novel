@@ -81,17 +81,17 @@ await ActiveStorage.setBookId(bookId);
 
 | 旧键 | 新键 | 位置 |
 |------|------|------|
-| `web-novel:theme:plugin` | `STORAGE_KEYS_LOCAL.THEME.PLUGIN` | `constants.ts` |
-| `web-novel:theme:reader` | `STORAGE_KEYS_LOCAL.THEME.READER` | `constants.ts` |
-| `web-novel:shortcuts:config` | `STORAGE_KEYS_LOCAL.SHORTCUTS.CONFIG` | `constants.ts` |
-| `web-novel:ui:reader-visible` | `STORAGE_KEYS_LOCAL.UI.READER_VISIBLE` | `constants.ts` |
-| `web-novel:ui:reader-position` | `STORAGE_KEYS_LOCAL.UI.READER_POSITION` | `constants.ts` |
-| `web-novel:ui:reader-font-size` | `STORAGE_KEYS_LOCAL.UI.READER_FONT_SIZE` | `constants.ts` |
-| `web-novel:ui:reader-line-height` | `STORAGE_KEYS_LOCAL.UI.READER_LINE_HEIGHT` | `constants.ts` |
-| `web-novel:ui:default-show` | `STORAGE_KEYS_LOCAL.UI.DEFAULT_SHOW` | `constants.ts` |
-| `web-novel:ui:page-size` | `STORAGE_KEYS_LOCAL.UI.PAGE_SIZE` | `constants.ts` |
-| `web-novel:app:last-visit` | `STORAGE_KEYS_LOCAL.APP.LAST_VISIT` | `constants.ts` |
-| `web-novel:app:version` | `STORAGE_KEYS_LOCAL.APP.VERSION` | `constants.ts` |
+| `Web-Novel:theme:plugin` | `STORAGE_KEYS_LOCAL.THEME.PLUGIN` | `constants.ts` |
+| `Web-Novel:theme:reader` | `STORAGE_KEYS_LOCAL.THEME.READER` | `constants.ts` |
+| `Web-Novel:shortcuts:config` | `STORAGE_KEYS_LOCAL.SHORTCUTS.CONFIG` | `constants.ts` |
+| `Web-Novel:ui:reader-visible` | `STORAGE_KEYS_LOCAL.UI.READER_VISIBLE` | `constants.ts` |
+| `Web-Novel:ui:reader-position` | `STORAGE_KEYS_LOCAL.UI.READER_POSITION` | `constants.ts` |
+| `Web-Novel:ui:reader-font-size` | `STORAGE_KEYS_LOCAL.UI.READER_FONT_SIZE` | `constants.ts` |
+| `Web-Novel:ui:reader-line-height` | `STORAGE_KEYS_LOCAL.UI.READER_LINE_HEIGHT` | `constants.ts` |
+| `Web-Novel:ui:default-show` | `STORAGE_KEYS_LOCAL.UI.DEFAULT_SHOW` | `constants.ts` |
+| `Web-Novel:ui:page-size` | `STORAGE_KEYS_LOCAL.UI.PAGE_SIZE` | `constants.ts` |
+| `Web-Novel:app:last-visit` | `STORAGE_KEYS_LOCAL.APP.LAST_VISIT` | `constants.ts` |
+| `Web-Novel:app:version` | `STORAGE_KEYS_LOCAL.APP.VERSION` | `constants.ts` |
 
 ### chrome.storage.local 键
 

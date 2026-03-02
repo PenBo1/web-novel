@@ -296,7 +296,7 @@ export default function SearchPage() {
       <Toaster position="top-center" richColors />
       <div className="min-h-screen bg-background text-foreground font-sans p-8 max-w-6xl mx-auto">
         {/* 页眉 */}
-        <header className="flex items-center justify-between mb-8 border-b pb-6">
+        <header className="sticky top-0 z-50 bg-background/95 backdrop-blur flex items-center justify-between mb-8 border-b pb-6">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-primary/10">
               <Search className="w-6 h-6 text-primary" />
@@ -308,15 +308,10 @@ export default function SearchPage() {
               </p>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={openRules} className="gap-2">
-              <Settings className="w-4 h-4" />
-              书源管理
-            </Button>
-            <Button variant="outline" onClick={() => window.close()}>
-              关闭页面
-            </Button>
-          </div>
+          <Button variant="outline" onClick={openRules} className="gap-2">
+            <Settings className="w-4 h-4" />
+            书源管理
+          </Button>
         </header>
 
         {/* 搜索框 */}

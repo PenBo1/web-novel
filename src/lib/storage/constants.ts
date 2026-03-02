@@ -9,7 +9,7 @@
  */
 
 // ============ 前缀定义 ============
-const LS_PREFIX = "web-novel" as const;
+const LS_PREFIX = "Web-Novel" as const;
 const CHROME_PREFIX = "wn" as const;
 
 // ============ localStorage 键定义 ============

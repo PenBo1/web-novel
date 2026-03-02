@@ -484,7 +484,7 @@ export default function Reader() {
   return (
     <div
       key={settings.readerTheme}
-      id="web-novel-host"
+      id="Web-Novel-host"
       style={{
         position: "fixed",
         zIndex: 2147483647,

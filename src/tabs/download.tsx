@@ -359,7 +359,7 @@ export default function DownloadPage() {
       <Toaster position="top-center" richColors />
       <div className="min-h-screen bg-background text-foreground font-sans p-8 max-w-6xl mx-auto">
         {/* 页眉 */}
-        <header className="flex items-center justify-between mb-8 border-b pb-6">
+        <header className="sticky top-0 z-50 bg-background/95 backdrop-blur flex items-center justify-between mb-8 border-b pb-6">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-primary/10">
               <Download className="w-6 h-6 text-primary" />
@@ -371,9 +371,6 @@ export default function DownloadPage() {
               </p>
             </div>
           </div>
-          <Button variant="outline" onClick={() => window.close()}>
-            关闭页面
-          </Button>
         </header>
 
         {/* 统计信息 */}

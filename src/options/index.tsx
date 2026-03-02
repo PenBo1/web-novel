@@ -1,3 +1,11 @@
+import {
+  Settings,
+  Keyboard,
+  Palette,
+  LayoutTemplate,
+  Eye,
+  ArrowDownToLine,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -70,7 +78,7 @@ function OptionsBody() {
           JSON.stringify(s.keys) === JSON.stringify(keys),
       );
       if (conflict) {
-        window.alert(`快捷键冲突：该组合已被“${conflict.label}”占用`);
+        window.alert(`快捷键冲突：该组合已被"${conflict.label}"占用`);
         return;
       }
 
@@ -89,24 +97,24 @@ function OptionsBody() {
     try {
       // 1. 启动存储系统
       await bootstrapStorage();
-      
+
       // 2. 初始化应用状态
       const { AppStateManager } = await import("@/lib/app-state-manager");
       AppStateManager.initializeAppState();
-      
+
       // 3. 初始化主题
       const themeConfig = ThemeManager.getThemeConfig();
-      
+
       // 4. 初始化 UI 设置
       const uiSettings = UISettingsManager.getUISettings();
-      
+
       setSettings({
         pluginTheme: themeConfig.plugin === "dark" ? "21st-dark" : "21st-light",
         readerTheme: themeConfig.reader === "dark" ? "21st-dark" : "21st-light",
         defaultShow: uiSettings.defaultShow,
         position: uiSettings.readerPosition,
       });
-      
+
       // 5. 适配 next-themes
       setTheme(themeConfig.plugin === "dark" ? "dark" : "light");
 
@@ -120,13 +128,13 @@ function OptionsBody() {
 
   const saveSettings = async (newSettings: any) => {
     setSettings(newSettings);
-    
+
     // 保存主题
     const pluginTheme = newSettings.pluginTheme.includes("dark") ? "dark" : "light";
     const readerTheme = newSettings.readerTheme.includes("dark") ? "dark" : "light";
     ThemeManager.setPluginTheme(pluginTheme as any);
     ThemeManager.setReaderTheme(readerTheme as any);
-    
+
     // 保存 UI 设置
     UISettingsManager.setDefaultShow(newSettings.defaultShow);
     UISettingsManager.setReaderPosition(newSettings.position);
@@ -145,136 +153,173 @@ function OptionsBody() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans p-8 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-8">设置与快捷键</h1>
-
-      <div className="space-y-8">
-        {/* 常规设置 */}
-        <section className="space-y-4">
-          <h2 className="text-lg font-semibold border-b pb-2">常规设置</h2>
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label className="text-base">管理界面主题</Label>
-                <p className="text-xs text-muted-foreground">
-                  切换扩展弹出页面的明暗外观
+    <div className="flex h-screen bg-background text-foreground font-sans">
+      {/* 主内容区域 */}
+      <main className="flex-1 overflow-y-auto">
+        <div className="max-w-3xl mx-auto p-8">
+          {/* 页眉 */}
+          <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b pb-6 mb-8">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-primary/10">
+                <Settings className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold">设置与快捷键</h1>
+                <p className="text-sm text-muted-foreground mt-1">
+                  自定义阅读体验与键盘快捷键
                 </p>
               </div>
-              <Switch
-                checked={settings.pluginTheme !== "21st-light"}
-                onCheckedChange={(checked) => {
-                  const newTheme = checked ? "21st-dark" : "21st-light";
-                  saveSettings({ ...settings, pluginTheme: newTheme });
-                  setTheme(checked ? "dark" : "light");
-                }}
-              />
             </div>
+          </header>
 
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label className="text-base">阅读条主题</Label>
-                <p className="text-xs text-muted-foreground">
-                  切换网页底部阅读条的明暗外观
-                </p>
-              </div>
-              <Switch
-                checked={settings.readerTheme !== "21st-light"}
-                onCheckedChange={(checked) => {
-                  const newTheme = checked ? "21st-dark" : "21st-light";
-                  saveSettings({ ...settings, readerTheme: newTheme });
-                }}
-              />
-            </div>
+          <div className="space-y-8">
+            {/* 常规设置 */}
+            <section className="space-y-4">
+              <h2 className="text-lg font-semibold flex items-center gap-2">
+                <Palette className="w-4 h-4 text-primary" />
+                常规设置
+              </h2>
 
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label className="text-base">阅读条默认显示</Label>
-                <p className="text-xs text-muted-foreground">
-                  打开新网页时是否自动显示阅读条
-                </p>
-              </div>
-              <Switch
-                checked={settings.defaultShow}
-                onCheckedChange={(c) =>
-                  saveSettings({ ...settings, defaultShow: c })
-                }
-              />
-            </div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label className="text-base flex items-center gap-2">
+                      <LayoutTemplate className="w-4 h-4 text-primary" />
+                      管理界面主题
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      切换扩展弹出页面的明暗外观
+                    </p>
+                  </div>
+                  <Switch
+                    checked={settings.pluginTheme !== "21st-light"}
+                    onCheckedChange={(checked) => {
+                      const newTheme = checked ? "21st-dark" : "21st-light";
+                      saveSettings({ ...settings, pluginTheme: newTheme });
+                      setTheme(checked ? "dark" : "light");
+                    }}
+                  />
+                </div>
 
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label className="text-base">阅读条位置</Label>
-                <p className="text-xs text-muted-foreground">
-                  选择阅读条固定在屏幕顶部还是底部
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant={settings.position === "top" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => saveSettings({ ...settings, position: "top" })}
-                >
-                  顶部
-                </Button>
-                <Button
-                  variant={settings.position !== "top" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() =>
-                    saveSettings({ ...settings, position: "bottom" })
-                  }
-                >
-                  底部
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label className="text-base flex items-center gap-2">
+                      <Eye className="w-4 h-4 text-primary" />
+                      阅读条主题
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      切换网页底部阅读条的明暗外观
+                    </p>
+                  </div>
+                  <Switch
+                    checked={settings.readerTheme !== "21st-light"}
+                    onCheckedChange={(checked) => {
+                      const newTheme = checked ? "21st-dark" : "21st-light";
+                      saveSettings({ ...settings, readerTheme: newTheme });
+                    }}
+                  />
+                </div>
 
-        {/* 快捷键设置 */}
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold border-b pb-2 flex-1">
-              快捷键设置
-            </h2>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs h-8"
-              onClick={resetShortcuts}
-            >
-              恢复默认
-            </Button>
-          </div>
-          <div className="space-y-3">
-            {shortcuts.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between py-2"
-              >
-                <span className="text-sm font-medium">{item.label}</span>
-                <div className="flex gap-3 items-center">
-                  <Kbd className="text-xs min-w-[80px] justify-center">
-                    {item.keys.join(" + ") || "未设置"}
-                  </Kbd>
-                  <Button
-                    variant={
-                      recordingId === item.id ? "destructive" : "secondary"
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label className="text-base flex items-center gap-2">
+                      <Eye className="w-4 h-4 text-primary" />
+                      阅读条默认显示
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      打开新网页时是否自动显示阅读条
+                    </p>
+                  </div>
+                  <Switch
+                    checked={settings.defaultShow}
+                    onCheckedChange={(c) =>
+                      saveSettings({ ...settings, defaultShow: c })
                     }
-                    size="sm"
-                    className="w-20"
-                    onClick={() =>
-                      setRecordingId(recordingId === item.id ? null : item.id)
-                    }
-                  >
-                    {recordingId === item.id ? "按键录制中" : "修改"}
-                  </Button>
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label className="text-base flex items-center gap-2">
+                      <ArrowDownToLine className="w-4 h-4 text-primary" />
+                      阅读条位置
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      选择阅读条固定在屏幕顶部还是底部
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant={settings.position === "top" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => saveSettings({ ...settings, position: "top" })}
+                    >
+                      顶部
+                    </Button>
+                    <Button
+                      variant={settings.position !== "top" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() =>
+                        saveSettings({ ...settings, position: "bottom" })
+                      }
+                    >
+                      底部
+                    </Button>
+                  </div>
                 </div>
               </div>
-            ))}
+            </section>
+
+            {/* 快捷键设置 */}
+            <section className="space-y-4">
+              <h2 className="text-lg font-semibold flex items-center gap-2">
+                <Keyboard className="w-4 h-4 text-primary" />
+                快捷键设置
+              </h2>
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-muted-foreground">
+                  自定义键盘快捷键，提升阅读效率
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-xs h-8"
+                  onClick={resetShortcuts}
+                >
+                  恢复默认
+                </Button>
+              </div>
+              <div className="space-y-3">
+                {shortcuts.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-between py-2"
+                  >
+                    <span className="text-sm font-medium">{item.label}</span>
+                    <div className="flex gap-3 items-center">
+                      <Kbd className="text-xs min-w-[80px] justify-center">
+                        {item.keys.join(" + ") || "未设置"}
+                      </Kbd>
+                      <Button
+                        variant={
+                          recordingId === item.id ? "destructive" : "secondary"
+                        }
+                        size="sm"
+                        className="w-20"
+                        onClick={() =>
+                          setRecordingId(recordingId === item.id ? null : item.id)
+                        }
+                      >
+                        {recordingId === item.id ? "按键录制中" : "修改"}
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
           </div>
-        </section>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

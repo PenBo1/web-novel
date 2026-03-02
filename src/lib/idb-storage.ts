@@ -48,7 +48,7 @@ interface WebNovelDB extends DBSchema {
   };
 }
 
-const DB_NAME = "web-novel-db";
+const DB_NAME = "Web-Novel-db";
 const DB_VERSION = 3; // v3: 移除 settings 和 shortcuts 表，迁移到 localStorage
 
 /**
